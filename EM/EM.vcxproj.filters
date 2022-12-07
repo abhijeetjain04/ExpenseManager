@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\DBTables">
+      <UniqueIdentifier>{355b87fe-5fb1-4acd-b3e6-8695d59e4d24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ErrorHandling">
+      <UniqueIdentifier>{cc3d9b2a-43b0-4960-adfc-26b9254e9b6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\TableRenderer">
+      <UniqueIdentifier>{698ddb70-2abb-40fa-a00f-424ee7193d08}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="App.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DBTable_Expense.cpp">
+      <Filter>Source Files\DBTables</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionImplementor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DBTable_Category.cpp">
+      <Filter>Source Files\DBTables</Filter>
+    </ClCompile>
+    <ClCompile Include="ReportHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Scope.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Errors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DBTable_Expense.h">
+      <Filter>Source Files\DBTables</Filter>
+    </ClInclude>
+    <ClInclude Include="CmdHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionImplementor.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextTable.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Conditions.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DBTable_Category.h">
+      <Filter>Source Files\DBTables</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorCodes.h">
+      <Filter>Source Files\ErrorHandling</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorMessages.h">
+      <Filter>Source Files\ErrorHandling</Filter>
+    </ClInclude>
+    <ClInclude Include="ReportHandler.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer_TextTable.h">
+      <Filter>Source Files\TableRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
