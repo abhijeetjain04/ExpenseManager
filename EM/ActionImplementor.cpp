@@ -161,6 +161,14 @@ ErrorCode ActionImplementor::ActionHandler_List()
         condGroup.Add(Condition_Category(category));
     }
 
+    // handle name
+    if(cliParser.HasParameter("name"))
+    {
+        std::string name;
+        cliParser.GetParam("name", name);
+        condGroup.Add(Condition_ListNameFilter(name));
+    }
+
     auto table = GetTable<DBTable_Expense>();
     std::vector<DBModel_Expense> rows;
 

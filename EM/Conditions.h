@@ -69,3 +69,15 @@ public:
         : Condition_DeleteRow(std::to_string(rowID))
     {}
 };
+
+
+class Condition_ListNameFilter : public db::Condition
+{
+    using base = db::Condition;
+
+public:
+    Condition_ListNameFilter(const std::string& name)
+        : base("name", std::format("%{}%", name), db::Condition::eLIKE)
+    {}
+
+};
