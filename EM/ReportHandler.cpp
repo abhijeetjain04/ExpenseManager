@@ -25,7 +25,7 @@ ErrorCode ReportHandler::GenerateReport(Option option, int month)
         condGroup.Add(Condition_Month(db::util::GetThisYear()));
         break;
     case Option::MONTH:
-        condGroup.Add(Condition_Month(month));
+        condGroup.Add(Condition_Month(std::to_string(month)));
         break;
     }
 

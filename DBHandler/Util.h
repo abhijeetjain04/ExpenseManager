@@ -22,8 +22,8 @@ struct Time
 
 Time GetNow();
 std::string GetCurrentDate();
-int GetThisDay();
-int GetThisMonth();
-int GetThisYear();
+std::string GetThisDay();
+std::string GetThisMonth();
+std::string GetThisYear();
 
 END_NAMESPACE_DB_UTIL

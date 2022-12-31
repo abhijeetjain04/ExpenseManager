@@ -25,18 +25,16 @@ public:
     {}
 };
 
-
+/**
+* Condition for current year's month.
+*/
 class Condition_Month : public db::Condition
 {
     using base = db::Condition;
 
 public:
-    Condition_Month(const std::string& month)
-        : base("date", std::format("%-{}-%", month), db::Condition::eLIKE)
-    {}
-
-    Condition_Month(int month)
-        : Condition_Month(std::to_string(month))
+    Condition_Month(const std::string& month, const std::string year = db::util::GetThisYear())
+        : base("date", std::format("{}-{}-%", year, month), db::Condition::eLIKE)
     {}
 };
 
@@ -47,12 +45,9 @@ class Condition_Year : public db::Condition
 
 public:
     Condition_Year(const std::string& year)
-        : base("date", std::format("%-{}", year), db::Condition::eLIKE)
+        : base("date", std::format("{}-%", year), db::Condition::eLIKE)
     {}
 
-    Condition_Year(int year)
-        : Condition_Year(std::to_string(year))
-    {}
 };
 
 

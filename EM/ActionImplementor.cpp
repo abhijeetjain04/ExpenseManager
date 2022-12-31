@@ -133,13 +133,29 @@ ErrorCode ActionImplementor::ActionHandler_List()
         cliParser.GetParam("date", date);
         condGroup.Add(Condition_Date(date));
     }
-    if (cliParser.HasParameter("month"))
+
+    if (cliParser.HasParameter("month") && cliParser.HasParameter("year"))
     {
         std::string month;
         cliParser.GetParam("month", month);
+        int monthInInt = std::atoi(month.c_str());
+        month = (monthInInt < 10 ? "0" + std::to_string(monthInInt) : std::to_string(monthInInt));
+
+        std::string year;
+        cliParser.GetParam("year", year);
+        condGroup.Add(Condition_Month(month, year));
+    }
+    else if (cliParser.HasParameter("month"))
+    {
+        std::string month;
+        cliParser.GetParam("month", month);
+
+        int monthInInt = std::atoi(month.c_str());
+        month = (monthInInt < 10 ? "0" + std::to_string(monthInInt) : std::to_string(monthInInt));
+
         condGroup.Add(Condition_Month(month));
     }
-    if (cliParser.HasParameter("year"))
+    else if (cliParser.HasParameter("year"))
     {
         std::string year;
         cliParser.GetParam("year", year);

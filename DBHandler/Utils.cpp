@@ -16,23 +16,29 @@ Time GetNow()
 std::string GetCurrentDate()
 {
     auto t = GetNow();
-    std::string date = std::format("{}-{}-{}", t.Year, t.Month, (t.Day < 10 ? "0" + std::to_string(t.Day) : std::to_string(t.Day)));
+    std::string date = std::format("{}-{}-{}"
+        , t.Year
+        , (t.Month < 10 ? "0" + std::to_string(t.Month) : std::to_string(t.Month))
+        , (t.Day < 10 ? "0" + std::to_string(t.Day) : std::to_string(t.Day)));
     return date;
 }
 
-int GetThisDay()
+std::string GetThisDay()
 {
-    return GetNow().Day;
+    int day = GetNow().Day;
+    return std::string((day < 10 ? "0" + std::to_string(day) : std::to_string(day)));
 }
 
-int GetThisMonth()
+std::string GetThisMonth()
 {
-    return GetNow().Month;
+    int month = GetNow().Month;
+    return (month < 10 ? "0" + std::to_string(month) : std::to_string(month));
 }
 
-int GetThisYear()
+std::string GetThisYear()
 {
-    return GetNow().Year;
+    int year = GetNow().Year;
+    return (year < 10 ? "0" + std::to_string(year) : std::to_string(year));
 }
 
 END_NAMESPACE_DB_UTIL
