@@ -11,9 +11,9 @@ public:
     {
         ALL,
         TODAY,
-        THIS_MONTH,
-        THIS_YEAR,
-        MONTH
+        MONTH,
+        YEAR,
+        MONTH_AND_YEAR
     };
 
     ReportHandler(std::unique_ptr<db::Database_SQLite>& database)
@@ -21,16 +21,7 @@ public:
     {
     }
 
-    ReportHandler(std::unique_ptr<db::Database_SQLite>& database, Option option, int unit)
-        : m_Database(database)
-        , m_Option(option)
-        , m_Unit(unit)
-    {
-        GenerateReport(option, unit);
-    }
-
-
-    ErrorCode GenerateReport(Option option = Option::ALL, int month = -1);
+    ErrorCode GenerateReport(Option option = Option::ALL, const std::string& month = "-1", const std::string& year = "-1");
     void Print(bool sort = true);
 
     const std::vector<std::pair<std::string, double>>& GetPrices() const { return m_Prices; }

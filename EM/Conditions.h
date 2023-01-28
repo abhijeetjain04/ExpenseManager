@@ -50,6 +50,17 @@ public:
 
 };
 
+class Condition_MonthAndYear : public db::Condition
+{
+    using base = db::Condition;
+
+public:
+    Condition_MonthAndYear(const std::string& month, const std::string& year)
+        : base("date", std::format("{}-{}-%", year, month), db::Condition::eLIKE)
+    {}
+
+};
+
 
 class Condition_DeleteRow : public db::Condition
 {

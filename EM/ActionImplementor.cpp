@@ -245,25 +245,51 @@ ErrorCode ActionImplementor::ActionHandler_Remove()
 ErrorCode ActionImplementor::ActionHandler_Report()
 {
     ReportHandler report(m_Database);
-    ReportHandler::Option option = ReportHandler::ALL;
 
-    if (cliParser.HasParameter("month")) 
+    if (cliParser.HasFlag("today"))
     {
-        std::string month;
-        cliParser.GetParam("month", month);
-        report.GenerateReport(ReportHandler::MONTH, std::atoi(month.c_str()));
+        report.GenerateReport(ReportHandler::TODAY);
         report.Print();
         return ErrorCode::Success;
     }
 
-    if (cliParser.HasFlag("today"))
-        option = ReportHandler::TODAY;
-    else if(cliParser.HasFlag("thisMonth"))
-        option = ReportHandler::THIS_MONTH;
-    else if (cliParser.HasFlag("thisYear"))
-        option = ReportHandler::THIS_YEAR;
+    std::string month = "-1";
+    std::string year = "-1";
+    ReportHandler::Option option = ReportHandler::ALL;
 
-    report.GenerateReport(option);
+    // check if month and year both are specified
+    if (cliParser.HasParameter("month") && cliParser.HasParameter("year"))
+    {
+        cliParser.GetParam("month", month);
+        cliParser.GetParam("year", year);
+        option = ReportHandler::MONTH_AND_YEAR;
+    }
+    // check if only month is specified.
+    else if (cliParser.HasParameter("month"))
+    {
+        cliParser.GetParam("month", month);
+        option = ReportHandler::MONTH;
+    }
+    // check if only year is specified.
+    else if (cliParser.HasParameter("year"))
+    {
+        cliParser.GetParam("year", year);
+        option = ReportHandler::YEAR;
+    }
+    // check if --thisMonth is specified
+    else if (cliParser.HasFlag("thisMonth"))
+    {
+        option = ReportHandler::MONTH;
+        month = db::util::GetThisMonth();
+    }
+    // check if --thisYear is specified
+    else if (cliParser.HasFlag("thisYear"))
+    {
+        option = ReportHandler::YEAR;
+        year = db::util::GetThisYear();
+    }
+
+    report.GenerateReport(option, month, year);
     report.Print();
 
     return ErrorCode::Success;
@@ -279,8 +305,11 @@ ErrorCode ActionImplementor::ActionHandler_CompareMonth()
     cliParser.GetParam("month2", month2);
 
     printf("\n comparing %s, %s", month1.c_str(), month2.c_str());
-    ReportHandler report1(m_Database, ReportHandler::MONTH, std::atoi(month1.c_str()));
-    ReportHandler report2(m_Database, ReportHandler::MONTH, std::atoi(month2.c_str()));
+    ReportHandler report1(m_Database);
+    report1.GenerateReport(ReportHandler::MONTH, month1);
+
+    ReportHandler report2(m_Database);
+    report2.GenerateReport(ReportHandler::MONTH, month2);
 
     Renderer_CompareReport::Render(report1, report2);
 

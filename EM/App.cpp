@@ -74,6 +74,7 @@ void InitializeCLI()
 
     cliParser.RegisterCommand(CmdString_Report)
         .AddParameter("month",  { cli::OptionType::INTEGER, "Custom Month's Report."})
+        .AddParameter("year",   { cli::OptionType::INTEGER, "Custom Year's Report." })
         .AddFlag("today",       "Today's Report.")
         .AddFlag("thisMonth",   "This Month's Report.")
         .AddFlag("thisYear",    "This Year's Report.");

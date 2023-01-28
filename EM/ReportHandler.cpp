@@ -9,7 +9,7 @@
 
 
 //public
-ErrorCode ReportHandler::GenerateReport(Option option, int month)
+ErrorCode ReportHandler::GenerateReport(Option option, const std::string& month, const std::string& year)
 {
     db::ConditionGroup condGroup;
 
@@ -18,14 +18,14 @@ ErrorCode ReportHandler::GenerateReport(Option option, int month)
     case Option::TODAY:
         condGroup.Add(Condition_Date(db::util::GetCurrentDate()));
         break;
-    case Option::THIS_MONTH:
-        condGroup.Add(Condition_Month(db::util::GetThisMonth()));
-        break;
-    case Option::THIS_YEAR:
-        condGroup.Add(Condition_Month(db::util::GetThisYear()));
-        break;
     case Option::MONTH:
-        condGroup.Add(Condition_Month(std::to_string(month)));
+        condGroup.Add(Condition_Month(month));
+        break;
+    case Option::YEAR:
+        condGroup.Add(Condition_Year(year));
+        break;
+    case Option::MONTH_AND_YEAR:
+        condGroup.Add(Condition_MonthAndYear(month, year));
         break;
     }
 
