@@ -222,7 +222,7 @@ public:
         : TextTable()
         , m_Rows(rows)
     {
-        add("ROW_ID").add("NAME").add("CATEGORY").add("PRICE").add("DATE").endOfRow();
+        add("ROW_ID").add("NAME").add("CATEGORY").add("PRICE").add("DATE").add("LOCATION").endOfRow();
 
         for (const auto& row : m_Rows)
         {
@@ -231,6 +231,7 @@ public:
             .add((row.Category))
             .add(std::to_string(row.Price))
             .add(row.Date)
+            .add(row.Location)
             .endOfRow();
         }
     }

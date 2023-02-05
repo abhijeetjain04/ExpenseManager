@@ -24,4 +24,10 @@ namespace utils
         assert(false);
         return "";
     }
+
+    std::string GetDefaultLocation() 
+    {
+        return "Pune"; 
+    }
+
 }

@@ -12,6 +12,7 @@ struct DBModel_Expense
     std::string Category;
     double      Price;
     std::string Date;
+    std::string Location;
 };
 
 

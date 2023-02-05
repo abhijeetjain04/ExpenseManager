@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "DBTable_Expense.h"
 #include "DBHandler/Util.h"
+#include "Utils.h"
 
 
 void DBTable_Expense::InitializeColumns()
@@ -34,6 +35,13 @@ void DBTable_Expense::InitializeColumns()
             false,
             false,
             false
+        },
+        {
+            "location",
+            db::ColumnProperty::TEXT,
+            false,
+            true,
+            false
         }
     };
 }
@@ -44,8 +52,11 @@ std::string DBInsertQueryHandler_Expense::GenerateQuery(const DBModel_Expense& m
     std::string date = model.Date;
     if (date.empty())
         date = db::util::GetCurrentDate();
+    std::string location = model.Location;
+    if (location.empty())
+        location = utils::GetDefaultLocation();
 
-    return std::vformat(unformattedQuery, std::make_format_args(model.Name, model.Category, model.Price, date));
+    return std::vformat(unformattedQuery, std::make_format_args(model.Name, model.Category, model.Price, date, location));
 }
 
 
@@ -65,6 +76,7 @@ bool DBSelectQueryHandler_Expense::ParseResult(
             row.Category = stmt->getColumn(index++).getString();
             row.Price = stmt->getColumn(index++).getDouble();
             row.Date = stmt->getColumn(index++).getString();
+            row.Location = stmt->getColumn(index++).getString();
         }
     }
     catch (SQLite::Exception& e)

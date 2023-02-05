@@ -55,7 +55,8 @@ void InitializeCLI()
         .AddParameter("name",       { cli::OptionType::TEXT,            "Name of the Expense.",             true,   1})
         .AddParameter("category",   { cli::OptionType::ALPHA_NUMERIC,   "Category of the Expense.",         true,   2})
         .AddParameter("price",      { cli::OptionType::DOUBLE,          "Price of the Expense.",            true,   3})
-        .AddParameter("date",       { cli::OptionType::DATE,            "Custom Date to add the Expense." });
+        .AddParameter("date",       { cli::OptionType::DATE,            "Custom Date to add the Expense." })
+        .AddParameter("location",   { cli::OptionType::TEXT,            "Custom Location to add the Expense." });
 
     cliParser.RegisterCommand(CmdString_List)
         .AddParameter("name",       { cli::OptionType::TEXT,            "Filters by Regex for Name." })
@@ -63,6 +64,7 @@ void InitializeCLI()
         .AddParameter("date",       { cli::OptionType::DATE,            "Filters by Specific Date."})
         .AddParameter("month",      { cli::OptionType::INTEGER,         "Filters by Month."})
         .AddParameter("year",       { cli::OptionType::INTEGER,         "Filters by Year."})
+        .AddParameter("location",   { cli::OptionType::TEXT,            "Filters by Location." })
         .AddFlag("categories",  "Lists all the available categories.")
         .AddFlag("today",       "Lists today's Expenses.")
         .AddFlag("thisMonth",   "Lists this Month's Expenses.")

@@ -102,6 +102,7 @@ ErrorCode ActionImplementor::ActionHandler_Add()
     cliParser.GetParam("price", price);
     model.Price = std::stod(price);
     cliParser.GetParam("date", model.Date);
+    cliParser.GetParam("location", model.Location);
 
     if (!expenseTable->Insert(model))
     {
@@ -183,6 +184,14 @@ ErrorCode ActionImplementor::ActionHandler_List()
         std::string name;
         cliParser.GetParam("name", name);
         condGroup.Add(Condition_ListNameFilter(name));
+    }
+
+    // handle location
+    if (cliParser.HasParameter("location"))
+    {
+        std::string location;
+        cliParser.GetParam("location", location);
+        condGroup.Add(Condition_LocationFilter(location));
     }
 
     auto table = GetTable<DBTable_Expense>();
