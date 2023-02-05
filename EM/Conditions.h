@@ -87,3 +87,13 @@ public:
     {}
 
 };
+
+class Condition_LocationFilter : public db::Condition
+{
+    using base = db::Condition;
+
+public:
+    Condition_LocationFilter(const std::string& location)
+        : base("location", location, db::Condition::eEQUALS)
+    {}
+};
