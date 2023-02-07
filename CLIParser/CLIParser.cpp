@@ -31,15 +31,14 @@ ValidCommand& CLIParser::RegisterCommand(const std::string& commandName)
     return GetValidCommands().emplace_back(commandName);
 }
 
-//public
-bool CLIParser::GetParam(const std::string& paramName, std::string& outValue) const
+// public 
+CLIParser::Param CLIParser::GetParam(const std::string& paramName) const
 {
     auto iter = m_CommandParams.find(paramName);
     if (iter == m_CommandParams.end())
-        return false;
+        return Param();
 
-    outValue = iter->second;
-    return true;
+    return Param(iter->second);
 }
 
 //public
@@ -55,8 +54,10 @@ bool CLIParser::HasParameter(const std::string& paramName) const
 }
 
 //public
-bool CLIParser::Parse(char** argv, int argc)
+bool CLIParser::Parse(int argc, char** argv)
 {
+    SetExeName(argv[0]);
+        
     argv++; argc--; // skip the .exe name
 
     std::vector<std::string> args;

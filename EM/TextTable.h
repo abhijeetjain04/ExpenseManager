@@ -294,8 +294,8 @@ public:
     {
         // header
         add("Category")
-        .add(utils::GetMonthName(rh1.GetUnit()))
-        .add(utils::GetMonthName(rh2.GetUnit()))
+        .add(utils::GetMonthNameFromNumber(rh1.GetUnit()))
+        .add(utils::GetMonthNameFromNumber(rh2.GetUnit()))
         .endOfRow();
 
         const auto prices1 = rh1.GetPrices();

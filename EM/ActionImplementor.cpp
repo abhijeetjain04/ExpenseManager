@@ -69,7 +69,7 @@ ErrorCode ActionImplementor::DisplayHelp()
 ErrorCode ActionImplementor::ActionHandler_AddCategory()
 {
     DBModel_Category model;
-    cliParser.GetParam("name", model.Name);
+    model.Name = cliParser.GetParam("name").AsString();
 
     auto table = GetTable<DBTable_Category>();
     if (!table->Insert(model))
@@ -89,20 +89,17 @@ ErrorCode ActionImplementor::ActionHandler_Add()
 
     DBModel_Expense model;
     // validate if the category exists
-    cliParser.GetParam("category", model.Category);
+    model.Category = cliParser.GetParam("category").AsString();
     if (!categoryTable->CheckIfExists("name", model.Category))
     {
         ERROR_LOG(ERROR_CATEGORY_DOES_NOT_EXIST, model.Category);
         return ErrorCode::CategoryDoesNotExist;
     }
 
-    cliParser.GetParam("name", model.Name);
-
-    std::string price;
-    cliParser.GetParam("price", price);
-    model.Price = std::stod(price);
-    cliParser.GetParam("date", model.Date);
-    cliParser.GetParam("location", model.Location);
+    model.Name = cliParser.GetParam("name").AsString();
+    model.Price = cliParser.GetParam("price").AsDouble();
+    model.Date = cliParser.GetParam("date").AsString();
+    model.Location = cliParser.GetParam("location").AsString();
 
     if (!expenseTable->Insert(model))
     {
@@ -130,44 +127,34 @@ ErrorCode ActionImplementor::ActionHandler_List()
         condGroup.Add(Condition_Year(db::util::GetThisYear()));
     if (cliParser.HasParameter("date"))
     {
-        std::string date;
-        cliParser.GetParam("date", date);
+        std::string date = cliParser.GetParam("date").AsString();
         condGroup.Add(Condition_Date(date));
     }
 
     if (cliParser.HasParameter("month") && cliParser.HasParameter("year"))
     {
-        std::string month;
-        cliParser.GetParam("month", month);
-        int monthInInt = std::atoi(month.c_str());
-        month = (monthInInt < 10 ? "0" + std::to_string(monthInInt) : std::to_string(monthInInt));
+        std::string month = cliParser.GetParam("month").AsString();
+        utils::FixMonthName(month);
 
-        std::string year;
-        cliParser.GetParam("year", year);
+        std::string year = cliParser.GetParam("year").AsString();
         condGroup.Add(Condition_Month(month, year));
     }
     else if (cliParser.HasParameter("month"))
     {
-        std::string month;
-        cliParser.GetParam("month", month);
-
-        int monthInInt = std::atoi(month.c_str());
-        month = (monthInInt < 10 ? "0" + std::to_string(monthInInt) : std::to_string(monthInInt));
-
+        std::string month = cliParser.GetParam("month").AsString();
+        utils::FixMonthName(month);
         condGroup.Add(Condition_Month(month));
     }
     else if (cliParser.HasParameter("year"))
     {
-        std::string year;
-        cliParser.GetParam("year", year);
+        std::string year = cliParser.GetParam("year").AsString();
         condGroup.Add(Condition_Year(year));
     }
 
     // handle categories
     if (cliParser.HasParameter("category"))
     {
-        std::string category;
-        cliParser.GetParam("category", category);
+        std::string category = cliParser.GetParam("category").AsString();
         // check if the category is valid.
         if (!GetTable<DBTable_Category>()->CheckIfExists("name", category))
         {
@@ -181,16 +168,14 @@ ErrorCode ActionImplementor::ActionHandler_List()
     // handle name
     if(cliParser.HasParameter("name"))
     {
-        std::string name;
-        cliParser.GetParam("name", name);
+        std::string name = cliParser.GetParam("name").AsString();
         condGroup.Add(Condition_ListNameFilter(name));
     }
 
     // handle location
     if (cliParser.HasParameter("location"))
     {
-        std::string location;
-        cliParser.GetParam("location", location);
+        std::string location = cliParser.GetParam("location").AsString();
         condGroup.Add(Condition_LocationFilter(location));
     }
 
@@ -238,8 +223,7 @@ ErrorCode ActionImplementor::ActionHandler_Remove()
 {
     auto table = GetTable<DBTable_Expense>();
 
-    std::string rowID;
-    cliParser.GetParam("row_id", rowID);
+    std::string rowID = cliParser.GetParam("row_id").AsString();
 
     if (!table->Delete(Condition_DeleteRow(rowID)))
     {
@@ -269,20 +253,20 @@ ErrorCode ActionImplementor::ActionHandler_Report()
     // check if month and year both are specified
     if (cliParser.HasParameter("month") && cliParser.HasParameter("year"))
     {
-        cliParser.GetParam("month", month);
-        cliParser.GetParam("year", year);
+        month = cliParser.GetParam("month").AsString();
+        year = cliParser.GetParam("year").AsString();
         option = ReportHandler::MONTH_AND_YEAR;
     }
     // check if only month is specified.
     else if (cliParser.HasParameter("month"))
     {
-        cliParser.GetParam("month", month);
+        month = cliParser.GetParam("month").AsString();
         option = ReportHandler::MONTH;
     }
     // check if only year is specified.
     else if (cliParser.HasParameter("year"))
     {
-        cliParser.GetParam("year", year);
+        year = cliParser.GetParam("year").AsString();
         option = ReportHandler::YEAR;
     }
     // check if --thisMonth is specified
@@ -307,11 +291,9 @@ ErrorCode ActionImplementor::ActionHandler_Report()
 //private
 ErrorCode ActionImplementor::ActionHandler_CompareMonth()
 {
-    std::string month1;
-    cliParser.GetParam("month1", month1);
+    std::string month1 = cliParser.GetParam("month1").AsString();
 
-    std::string month2;
-    cliParser.GetParam("month2", month2);
+    std::string month2 = cliParser.GetParam("month2").AsString();
 
     printf("\n comparing %s, %s", month1.c_str(), month2.c_str());
     ReportHandler report1(m_Database);

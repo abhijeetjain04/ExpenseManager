@@ -3,7 +3,13 @@
 
 namespace utils
 {
-    std::string GetMonthName(int month)
+    void FixMonthName(std::string& month)
+    {
+        int monthInInt = std::atoi(month.c_str());
+        month = (monthInInt < 10 ? "0" + std::to_string(monthInInt) : std::to_string(monthInInt));
+    }
+
+    std::string GetMonthNameFromNumber(int month)
     {
         switch (month) 
         {
