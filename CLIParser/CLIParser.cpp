@@ -3,6 +3,9 @@
 #include "ValidCommand.h"
 #include "Utils.h"
 
+#include "rapidjson/document.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/prettywriter.h"
 
 
 BEGIN_NAMESPACE_CLI
@@ -135,6 +138,60 @@ void CLIParser::DisplayHelp() const
     for (const ValidCommand& cmd : m_ValidCommands)
         GenerateErrorMessage(cmd.GetName());
 }
+
+// public
+std::string CLIParser::AsJson()
+{
+    using namespace std;
+    using namespace rapidjson;
+
+    Document document;
+    document.SetObject();
+
+    rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
+
+    // Add the command name.
+    Value commandStr(kObjectType);
+    commandStr.SetString(m_CurrentCommandName.c_str(), static_cast<SizeType>(m_CurrentCommandName.length()), allocator);
+    document.AddMember("command", commandStr, allocator);
+
+    // Add the options.
+    Value options(kArrayType);
+    Value optionObjs(kObjectType);
+    for (auto iter : m_CommandParams)
+    {
+        const std::string& k = iter.first;
+        const std::string& v = iter.second;
+
+        Value key(kObjectType);
+        key.SetString(k.c_str(), static_cast<SizeType>(k.length()), allocator);
+
+        Value value(kObjectType);
+        value.SetString(v.c_str(), static_cast<SizeType>(v.length()), allocator);
+
+        optionObjs.AddMember(key, value, allocator);
+    }
+    options.PushBack(optionObjs, allocator);
+    document.AddMember("options", options, allocator);
+
+    // Add the flags
+    Value flags(kArrayType);
+    for (auto iter : m_Flags)
+    {
+        Value flagValue(kObjectType);
+        flagValue.SetString(iter.c_str(), static_cast<SizeType>(iter.length()), allocator);
+        flags.PushBack(flagValue, allocator);
+    }
+    document.AddMember("flags", flags, allocator);
+
+    // Convert JSON document to string
+    rapidjson::StringBuffer strbuf;
+    rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(strbuf);
+    document.Accept(writer);
+
+    return strbuf.GetString();
+}
+
 
 //private
 bool CLIParser::Parse(const std::vector<std::string>& args)

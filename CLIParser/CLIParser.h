@@ -123,6 +123,12 @@ public:
     */
     void DisplayHelp() const;
 
+    /**
+    * Returns all the cli command, options, flags as a json string.
+    */
+    std::string AsJson();
+
+
 private:
     CLIParser() = default;
     CLIParser(const CLIParser&) = delete;
