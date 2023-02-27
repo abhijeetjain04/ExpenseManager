@@ -101,11 +101,9 @@ void Initialize()
 
 int main(int argc, char** argv)
 {
-    cliParser.SetExeName(argv[0]);
-
     Initialize();
 
-    if (!cliParser.Parse(argv, argc))
+    if (!cliParser.Parse(argc, argv))
     {
         ERROR_LOG(ERROR_CLI_PARSING);
         return -1;
