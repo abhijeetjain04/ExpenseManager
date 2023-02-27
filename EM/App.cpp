@@ -44,8 +44,6 @@ CmdType GetCmdType(int argc, char** argv)
 
 void InitializeCLI()
 {
-    cliParser.SetHelperMessage("Helper Message");
-
     cliParser.RegisterCommand(CmdString_Help);
 
     cliParser.RegisterCommand(CmdString_AddCategory)
