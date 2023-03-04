@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DBHandler/Database_SQLite.h"
+#include "IActionHandler.h"
 
 #define CmdString_Help          "help"
 #define CmdString_AddCategory   "addCategory"
@@ -10,14 +11,9 @@
 #define CmdString_Report        "report"
 #define CmdString_CompareMonths "compareMonths"
 
-
-namespace db { class Database_SQLite; }
-
 #define actionImpl (*em::ActionImplementor::GetInstance())
 
 BEGIN_NAMESPACE_EM
-
-struct DBModel_Expense;
 
 enum class CmdType
 {
@@ -32,41 +28,36 @@ enum class CmdType
     INVALID
 };
 
-
-
 // singleton
 class ActionImplementor
 {
 public:
-    void Initialize(const char* dbName, int openMode = db::OPEN_CREATE | db::OPEN_READWRITE);
     ErrorCode PerformAction(CmdType cmdType);
-    static ActionImplementor* GetInstance();
 
+    template<typename Handler>
+    ActionImplementor& RegisterHandler(CmdType cmdType);
+
+    static ActionImplementor* GetInstance();
 private:
     ActionImplementor();
     ActionImplementor(const ActionImplementor&) = default;
 
     ErrorCode DisplayHelp();
-    ErrorCode ActionHandler_AddCategory();
-    ErrorCode ActionHandler_Add();
-    ErrorCode ActionHandler_List();
-    ErrorCode ActionHandler_ListCategories();
-    ErrorCode ActionHandler_Remove();
-    ErrorCode ActionHandler_Report();
     ErrorCode ActionHandler_CompareMonth();
 
-    template<typename T>
-    std::shared_ptr<T> GetTable() const
-    {
-        return m_Database->CreateTable<T>();
-    }
-
+    em::action_handler::Interface* GetActionHandler(CmdType type) { return m_ActionHandlers[type]; }
 
 private:
-    std::unique_ptr<db::Database_SQLite> m_Database;
+    std::unordered_map<CmdType, em::action_handler::Interface*>  m_ActionHandlers;
 
     static ActionImplementor* s_Instance;
-
 };
+
+template<typename Handler>
+ActionImplementor& ActionImplementor::RegisterHandler(CmdType cmdType)
+{
+    m_ActionHandlers[cmdType] = new Handler();
+    return *this;
+}
 
 END_NAMESPACE_EM

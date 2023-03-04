@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DBHandler/Condition.h"
+#include "DBHandler/Util.h"
 
 BEGIN_NAMESPACE_EM
 

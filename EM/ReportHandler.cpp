@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ReportHandler.h"
 #include "DBHandler/Util.h"
+#include "DatabaseManager.h"
 #include "DBTable_Category.h"
 #include "DBTable_Expense.h"
 #include "Conditions.h"
@@ -31,10 +32,10 @@ ErrorCode ReportHandler::GenerateReport(Option option, const std::string& month,
     }
 
     std::vector<DBModel_Category> categories;
-    auto categoryTable = m_Database->CreateTable<DBTable_Category>();
+    auto categoryTable = databaseMgr.GetTable<DBTable_Category>();
     categoryTable->Select(categories);
 
-    auto expenseTable = m_Database->CreateTable<DBTable_Expense>();
+    auto expenseTable = databaseMgr.GetTable<DBTable_Expense>();
     for (const DBModel_Category& category : categories)
     {
         condGroup.Add(Condition_Category(category.Name));

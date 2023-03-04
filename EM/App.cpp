@@ -4,6 +4,8 @@
 #include "CLIParser/ValidCommand.h"
 #include "DBTable_Category.h"
 #include "CLIParser/Utils.h"
+#include "CLI_ActionHandlers.h"
+#include "DatabaseManager.h"
 
 #define DATABASE_FILE_NAME "expense.db"
 
@@ -86,11 +88,21 @@ void InitializeCLI()
 
 void InitializeActionImplementor()
 {
-    actionImpl.Initialize(DATABASE_FILE_NAME);
+    actionImpl.RegisterHandler<em::action_handler::cli::List>(em::CmdType::LIST);
+    actionImpl.RegisterHandler<em::action_handler::cli::Add>(em::CmdType::ADD);
+    actionImpl.RegisterHandler<em::action_handler::cli::Remove>(em::CmdType::REMOVE);
+    actionImpl.RegisterHandler<em::action_handler::cli::AddCategory>(em::CmdType::ADD_CATEGORY);
+    actionImpl.RegisterHandler<em::action_handler::cli::Report>(em::CmdType::REPORT);
+}
+
+void InitializeDatabase()
+{
+    DatabaseManager::Create(DATABASE_FILE_NAME);
 }
 
 void Initialize()
 {
+    InitializeDatabase();
     InitializeCLI();
     InitializeActionImplementor();
 }

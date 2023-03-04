@@ -18,6 +18,8 @@ enum class ErrorCode
 
     DBError,
 
+    JSONParsingError,
+
     Invalid
 };
 

@@ -10,7 +10,7 @@ std::mutex DatabaseManager::s_Mutex;
 DatabaseManager* DatabaseManager::GetInstance()
 {
 	if (!s_IsInitialized)
-		assert(!"DatabaseManager Not Initialized yet!");
+		DBG_ASSERT(!"DatabaseManager Not Initialized yet!");
 	return s_Instance;
 }
 

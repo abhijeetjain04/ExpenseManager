@@ -7,4 +7,6 @@
 #define ERROR_DB_INSERT_EXPENSE             "Failed to add Expense: {}"
 #define ERROR_DB_REMOVE_EXPENSE             "Failed to remove Expense: {}"
 
+#define ERROR_ACTIONHANDLER_EXECUTE         "{}"
+
 #define ERROR_CLI_PARSING                   "Failed to parse the cli."

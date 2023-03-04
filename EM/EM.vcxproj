@@ -111,7 +111,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)includes;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -143,8 +143,15 @@
   <ItemGroup>
     <ClCompile Include="ActionImplementor.cpp" />
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="CLI_ActionHandler_Add.cpp" />
+    <ClCompile Include="CLI_ActionHandler_AddCategory.cpp" />
+    <ClCompile Include="CLI_ActionHandler_List.cpp" />
+    <ClCompile Include="CLI_ActionHandler_Remove.cpp" />
+    <ClCompile Include="CLI_ActionHandler_Report.cpp" />
+    <ClCompile Include="DatabaseManager.cpp" />
     <ClCompile Include="DBTable_Category.cpp" />
     <ClCompile Include="DBTable_Expense.cpp" />
+    <ClCompile Include="IActionHandler.cpp" />
     <ClCompile Include="ReportHandler.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
@@ -154,13 +161,20 @@
   <ItemGroup>
     <ClInclude Include="ActionImplementor.h" />
     <ClInclude Include="Assert.h" />
-    <ClInclude Include="CmdHandler.h" />
+    <ClInclude Include="CLI_ActionHandlers.h" />
+    <ClInclude Include="CLI_ActionHandler_Add.h" />
+    <ClInclude Include="CLI_ActionHandler_AddCategory.h" />
+    <ClInclude Include="CLI_ActionHandler_Remove.h" />
+    <ClInclude Include="CLI_ActionHandler_Report.h" />
     <ClInclude Include="Conditions.h" />
+    <ClInclude Include="DatabaseManager.h" />
+    <ClInclude Include="DBTables.h" />
     <ClInclude Include="DBTable_Category.h" />
     <ClInclude Include="DBTable_Expense.h" />
     <ClInclude Include="ErrorCodes.h" />
     <ClInclude Include="ErrorMessages.h" />
-    <ClInclude Include="Errors.h" />
+    <ClInclude Include="CLI_ActionHandler_List.h" />
+    <ClInclude Include="IActionHandler.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Renderer_TextTable.h" />
     <ClInclude Include="ReportHandler.h" />

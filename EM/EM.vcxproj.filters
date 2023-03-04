@@ -13,34 +13,67 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\DBTables">
-      <UniqueIdentifier>{355b87fe-5fb1-4acd-b3e6-8695d59e4d24}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\ErrorHandling">
       <UniqueIdentifier>{cc3d9b2a-43b0-4960-adfc-26b9254e9b6b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\TableRenderer">
       <UniqueIdentifier>{698ddb70-2abb-40fa-a00f-424ee7193d08}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ActionHandlers">
+      <UniqueIdentifier>{689308c3-65c1-454d-be3d-2d46ad3661c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ActionHandlers\CLI">
+      <UniqueIdentifier>{316b1166-0645-470a-b71a-71b7b16fb850}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Database">
+      <UniqueIdentifier>{355b87fe-5fb1-4acd-b3e6-8695d59e4d24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Database\DBTables">
+      <UniqueIdentifier>{aa99e914-cb42-4a1f-8019-4bd7ac08f60b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Database\DatabaseManager">
+      <UniqueIdentifier>{a0ee98d5-9ac0-4b9c-b1b2-457f525ca709}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DBTable_Expense.cpp">
-      <Filter>Source Files\DBTables</Filter>
-    </ClCompile>
     <ClCompile Include="ActionImplementor.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DBTable_Category.cpp">
-      <Filter>Source Files\DBTables</Filter>
     </ClCompile>
     <ClCompile Include="ReportHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Utils.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CLI_ActionHandler_List.cpp">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClCompile>
+    <ClCompile Include="IActionHandler.cpp">
+      <Filter>Source Files\ActionHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="DBTable_Category.cpp">
+      <Filter>Source Files\Database\DBTables</Filter>
+    </ClCompile>
+    <ClCompile Include="DBTable_Expense.cpp">
+      <Filter>Source Files\Database\DBTables</Filter>
+    </ClCompile>
+    <ClCompile Include="DatabaseManager.cpp">
+      <Filter>Source Files\Database\DatabaseManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CLI_ActionHandler_Add.cpp">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClCompile>
+    <ClCompile Include="CLI_ActionHandler_Remove.cpp">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClCompile>
+    <ClCompile Include="CLI_ActionHandler_AddCategory.cpp">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClCompile>
+    <ClCompile Include="CLI_ActionHandler_Report.cpp">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -52,16 +85,7 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Errors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Assert.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DBTable_Expense.h">
-      <Filter>Source Files\DBTables</Filter>
-    </ClInclude>
-    <ClInclude Include="CmdHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ActionImplementor.h">
@@ -72,9 +96,6 @@
     </ClInclude>
     <ClInclude Include="Conditions.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DBTable_Category.h">
-      <Filter>Source Files\DBTables</Filter>
     </ClInclude>
     <ClInclude Include="ErrorCodes.h">
       <Filter>Source Files\ErrorHandling</Filter>
@@ -90,6 +111,39 @@
     </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IActionHandler.h">
+      <Filter>Source Files\ActionHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="CLI_ActionHandler_List.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClInclude>
+    <ClInclude Include="DBTable_Category.h">
+      <Filter>Source Files\Database\DBTables</Filter>
+    </ClInclude>
+    <ClInclude Include="DBTable_Expense.h">
+      <Filter>Source Files\Database\DBTables</Filter>
+    </ClInclude>
+    <ClInclude Include="DatabaseManager.h">
+      <Filter>Source Files\Database\DatabaseManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DBTables.h">
+      <Filter>Source Files\Database\DBTables</Filter>
+    </ClInclude>
+    <ClInclude Include="CLI_ActionHandler_Add.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClInclude>
+    <ClInclude Include="CLI_ActionHandlers.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClInclude>
+    <ClInclude Include="CLI_ActionHandler_Remove.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClInclude>
+    <ClInclude Include="CLI_ActionHandler_AddCategory.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClInclude>
+    <ClInclude Include="CLI_ActionHandler_Report.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

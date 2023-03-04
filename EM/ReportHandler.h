@@ -17,8 +17,7 @@ public:
         MONTH_AND_YEAR
     };
 
-    ReportHandler(std::unique_ptr<db::Database_SQLite>& database)
-        : m_Database(database)
+    ReportHandler()
     {
     }
 
@@ -31,7 +30,6 @@ public:
     
 
 private:
-    std::unique_ptr<db::Database_SQLite>&           m_Database;
     std::vector<std::pair<std::string, double>>     m_Prices;
     Option                                          m_Option;
     int                                             m_Unit;

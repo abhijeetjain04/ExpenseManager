@@ -2,7 +2,7 @@
 
 #include "DBHandler/Database_SQLite.h"
 
-#define databaseMgr DatabaseManager::GetInstance()
+#define databaseMgr (*DatabaseManager::GetInstance())
 
 class DatabaseManager
 {
