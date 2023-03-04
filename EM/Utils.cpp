@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Utils.h"
 
+BEGIN_NAMESPACE_EM
+
 namespace utils
 {
     void FixMonthName(std::string& month)
@@ -37,3 +39,5 @@ namespace utils
     }
 
 }
+
+END_NAMESPACE_EM

@@ -3,6 +3,8 @@
 #include "DBHandler/Util.h"
 
 
+BEGIN_NAMESPACE_EM
+
 void DBTable_Category::InitializeColumns()
 {
     m_ColumnProperties = {
@@ -48,3 +50,4 @@ bool DBSelectQueryHandler_Category::ParseResult(
     return true;
 }
 
+END_NAMESPACE_EM

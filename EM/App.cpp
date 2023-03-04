@@ -7,37 +7,36 @@
 
 #define DATABASE_FILE_NAME "expense.db"
 
-
-CmdType GetCmdType(const char* cmdString)
+em::CmdType GetCmdType(const char* cmdString)
 {
     if (strcmp(cmdString, CmdString_Help) == 0)
-        return CmdType::HELP;
+        return em::CmdType::HELP;
 
     if (strcmp(cmdString, CmdString_AddCategory) == 0)
-        return CmdType::ADD_CATEGORY;
+        return em::CmdType::ADD_CATEGORY;
 
     if (strcmp(cmdString, CmdString_Add) == 0)
-        return CmdType::ADD;
+        return em::CmdType::ADD;
 
     if (strcmp(cmdString, CmdString_Remove) == 0)
-        return CmdType::REMOVE;
+        return em::CmdType::REMOVE;
 
     if (strcmp(cmdString, CmdString_List) == 0)
-        return CmdType::LIST;
+        return em::CmdType::LIST;
 
     if (strcmp(cmdString, CmdString_Report) == 0)
-        return CmdType::REPORT;
+        return em::CmdType::REPORT;
 
     if (strcmp(cmdString, CmdString_CompareMonths) == 0)
-        return CmdType::COMPARE_MONTH;
+        return em::CmdType::COMPARE_MONTH;
 
-    return CmdType::INVALID;
+    return em::CmdType::INVALID;
 }
 
-CmdType GetCmdType(int argc, char** argv)
+em::CmdType GetCmdType(int argc, char** argv)
 {
     if (argc < 2)
-        return CmdType::INVALID;
+        return em::CmdType::INVALID;
 
     return GetCmdType(argv[1]);
 }
@@ -107,10 +106,10 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    CmdType cmdType = GetCmdType(argc, argv);
-    DBG_ASSERT(cmdType != CmdType::INVALID);
+    em::CmdType cmdType = GetCmdType(argc, argv);
+    DBG_ASSERT(cmdType != em::CmdType::INVALID);
 
-    if (actionImpl.PerformAction(cmdType) != ErrorCode::Success)
+    if (actionImpl.PerformAction(cmdType) != em::ErrorCode::Success)
         return -1;
 
     return 0;

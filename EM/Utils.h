@@ -1,5 +1,7 @@
 #pragma once
 
+BEGIN_NAMESPACE_EM
+
 namespace utils
 {
     /**
@@ -16,3 +18,5 @@ namespace utils
 
     std::string GetDefaultLocation();
 }
+
+END_NAMESPACE_EM

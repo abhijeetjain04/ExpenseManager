@@ -10,7 +10,7 @@
 #include "Renderer_TextTable.h"
 #include "ErrorMessages.h"
 
-
+BEGIN_NAMESPACE_EM
 
 ActionImplementor* ActionImplementor::s_Instance = nullptr;
 
@@ -306,3 +306,5 @@ ErrorCode ActionImplementor::ActionHandler_CompareMonth()
 
     return ErrorCode::Success;
 }
+
+END_NAMESPACE_EM

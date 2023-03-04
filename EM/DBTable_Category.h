@@ -4,6 +4,7 @@
 #include "DBHandler/QueryHandler.h"
 #include "DBHandler/Database_SQLite.h"
 
+BEGIN_NAMESPACE_EM
 
 struct DBModel_Category
 {
@@ -62,4 +63,4 @@ public:
 };
 
 
-
+END_NAMESPACE_EM

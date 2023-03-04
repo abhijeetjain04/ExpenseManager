@@ -4,6 +4,7 @@
 #include "DBHandler/QueryHandler.h"
 #include "DBHandler/Database_SQLite.h"
 
+BEGIN_NAMESPACE_EM
 
 struct DBModel_Expense
 {
@@ -66,4 +67,5 @@ public:
 };
 
 
+END_NAMESPACE_EM
 

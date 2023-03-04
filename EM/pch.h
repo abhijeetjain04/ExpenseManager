@@ -1,5 +1,9 @@
 #pragma once
 
+#define BEGIN_NAMESPACE_EM	namespace em {
+#define END_NAMESPACE_EM	}
+
+
 #include "Errors.h"
 #include "Assert.h"
 
@@ -15,5 +19,6 @@
 
 #include "ErrorCodes.h"
 #include "ErrorMessages.h"
+
 
 //#define SQLITE_LOGS_ENABLED

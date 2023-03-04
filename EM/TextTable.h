@@ -17,6 +17,7 @@
 #endif
 #endif
 
+BEGIN_NAMESPACE_EM
 
 class TextTable 
 {
@@ -327,3 +328,4 @@ public:
 
 };
 
+END_NAMESPACE_EM

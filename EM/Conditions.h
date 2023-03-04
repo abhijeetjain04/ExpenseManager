@@ -2,6 +2,7 @@
 
 #include "DBHandler/Condition.h"
 
+BEGIN_NAMESPACE_EM
 
 class Condition_Category : public db::Condition
 {
@@ -97,3 +98,5 @@ public:
         : base("location", location, db::Condition::eEQUALS)
     {}
 };
+
+END_NAMESPACE_EM

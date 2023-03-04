@@ -5,6 +5,7 @@
 #include "TextTable.h"
 #include "ReportHandler.h"
 
+BEGIN_NAMESPACE_EM
 
 class Renderer_ExpenseTable
 {
@@ -47,3 +48,5 @@ public:
     }
 
 };
+
+END_NAMESPACE_EM

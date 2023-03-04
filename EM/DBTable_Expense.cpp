@@ -3,6 +3,7 @@
 #include "DBHandler/Util.h"
 #include "Utils.h"
 
+BEGIN_NAMESPACE_EM
 
 void DBTable_Expense::InitializeColumns()
 {
@@ -88,3 +89,4 @@ bool DBSelectQueryHandler_Expense::ParseResult(
     return true;
 }
 
+END_NAMESPACE_EM

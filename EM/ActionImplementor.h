@@ -13,6 +13,10 @@
 
 namespace db { class Database_SQLite; }
 
+#define actionImpl (*em::ActionImplementor::GetInstance())
+
+BEGIN_NAMESPACE_EM
+
 struct DBModel_Expense;
 
 enum class CmdType
@@ -29,7 +33,6 @@ enum class CmdType
 };
 
 
-#define actionImpl (*ActionImplementor::GetInstance())
 
 // singleton
 class ActionImplementor
@@ -66,3 +69,4 @@ private:
 
 };
 
+END_NAMESPACE_EM

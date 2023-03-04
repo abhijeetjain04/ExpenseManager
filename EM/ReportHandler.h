@@ -2,6 +2,7 @@
 
 namespace db { class Database_SQLite; }
 
+BEGIN_NAMESPACE_EM
 
 class ReportHandler
 {
@@ -37,3 +38,4 @@ private:
 };
 
 
+END_NAMESPACE_EM
