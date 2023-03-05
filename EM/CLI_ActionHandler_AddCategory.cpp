@@ -24,10 +24,10 @@ namespace em::action_handler::cli
         if (!table->Insert(model))
         {
             ERROR_LOG(ERROR_DB_INSERT_CATEGORY, model.Name);
-            return Result::Create(ErrorCode::DBError, std::format(ERROR_DB_INSERT_CATEGORY, model.Name));
+            return Result::Create(StatusCode::DBError, std::format(ERROR_DB_INSERT_CATEGORY, model.Name));
         }
 
-        return Result::Create(ErrorCode::Success);
+        return Result::Create(StatusCode::Success);
     }
 
 }

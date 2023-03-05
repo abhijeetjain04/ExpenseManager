@@ -4,7 +4,7 @@
 
 BEGIN_NAMESPACE_EM
 
-enum class ErrorCode
+enum class StatusCode
 {
     Success,
 

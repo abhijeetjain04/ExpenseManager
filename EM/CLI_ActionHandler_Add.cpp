@@ -26,7 +26,7 @@ namespace em::action_handler::cli
         if (!categoryTable->CheckIfExists("name", model.Category))
         {
             ERROR_LOG(ERROR_CATEGORY_DOES_NOT_EXIST, model.Category);
-            return Result::Create(ErrorCode::CategoryDoesNotExist, std::format(ERROR_CATEGORY_DOES_NOT_EXIST, model.Category));
+            return Result::Create(StatusCode::CategoryDoesNotExist, std::format(ERROR_CATEGORY_DOES_NOT_EXIST, model.Category));
         }
 
         model.Name = options.at("name");
@@ -37,10 +37,10 @@ namespace em::action_handler::cli
         if (!expenseTable->Insert(model))
         {
             ERROR_LOG(ERROR_DB_INSERT_EXPENSE, model.Name);
-            return Result::Create(ErrorCode::DBError, std::format(ERROR_DB_INSERT_EXPENSE, model.Name));
+            return Result::Create(StatusCode::DBError, std::format(ERROR_DB_INSERT_EXPENSE, model.Name));
         }
 
-        return Result::Create(ErrorCode::Success);
+        return Result::Create(StatusCode::Success);
     }
 
 }

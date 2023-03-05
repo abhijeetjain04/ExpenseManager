@@ -5,13 +5,12 @@
 #include "DBTable_Category.h"
 #include "DBTable_Expense.h"
 #include "Conditions.h"
-#include "ErrorCodes.h"
 #include "TextTable.h"
 
 BEGIN_NAMESPACE_EM
 
 //public
-ErrorCode ReportHandler::GenerateReport(Option option, const std::string& month, const std::string& year)
+StatusCode ReportHandler::GenerateReport(Option option, const std::string& month, const std::string& year)
 {
     db::ConditionGroup condGroup;
 
@@ -53,7 +52,7 @@ ErrorCode ReportHandler::GenerateReport(Option option, const std::string& month,
         condGroup.PopBack();
     }
 
-    return ErrorCode::Success;
+    return StatusCode::Success;
 }
 
 //public

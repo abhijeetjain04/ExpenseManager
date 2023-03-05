@@ -171,7 +171,7 @@
     <ClInclude Include="DBTables.h" />
     <ClInclude Include="DBTable_Category.h" />
     <ClInclude Include="DBTable_Expense.h" />
-    <ClInclude Include="ErrorCodes.h" />
+    <ClInclude Include="StatusCodes.h" />
     <ClInclude Include="ErrorMessages.h" />
     <ClInclude Include="CLI_ActionHandler_List.h" />
     <ClInclude Include="IActionHandler.h" />

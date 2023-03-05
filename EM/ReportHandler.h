@@ -21,7 +21,7 @@ public:
     {
     }
 
-    ErrorCode GenerateReport(Option option = Option::ALL, const std::string& month = "-1", const std::string& year = "-1");
+    StatusCode GenerateReport(Option option = Option::ALL, const std::string& month = "-1", const std::string& year = "-1");
     void Print(bool sort = true);
 
     const std::vector<std::pair<std::string, double>>& GetPrices() const { return m_Prices; }

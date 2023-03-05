@@ -23,10 +23,10 @@ namespace em::action_handler::cli
         if (!table->Delete(Condition_DeleteRow(rowID)))
         {
             ERROR_LOG(ERROR_DB_REMOVE_EXPENSE, rowID);
-            return Result::Create(ErrorCode::DBError, std::format(ERROR_DB_REMOVE_EXPENSE, rowID));
+            return Result::Create(StatusCode::DBError, std::format(ERROR_DB_REMOVE_EXPENSE, rowID));
         }
 
-        return Result::Create(ErrorCode::Success);
+        return Result::Create(StatusCode::Success);
     }
 
 }

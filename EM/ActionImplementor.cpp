@@ -29,7 +29,7 @@ ActionImplementor* ActionImplementor::GetInstance()
 }
 
 //public
-ErrorCode ActionImplementor::PerformAction(CmdType cmdType)
+StatusCode ActionImplementor::PerformAction(CmdType cmdType)
 {
     if (cmdType == CmdType::HELP)
         return DisplayHelp();
@@ -37,27 +37,27 @@ ErrorCode ActionImplementor::PerformAction(CmdType cmdType)
     auto actionHandler = GetActionHandler(cmdType);
     DBG_ASSERT(actionHandler || !"Action handler does not exist for this cmdType!");
     if (!actionHandler)
-        return ErrorCode::CommandDoesNotExist;
+        return StatusCode::CommandDoesNotExist;
 
     em::action_handler::ResultSPtr result = actionHandler->Execute(cliParser.AsJson());
-    if (result->errorCode != ErrorCode::Success)
+    if (result->statusCode != StatusCode::Success)
     {
-        ERROR_LOG(ERROR_ACTIONHANDLER_EXECUTE, result->errorMessage);
+        ERROR_LOG(ERROR_ACTIONHANDLER_EXECUTE, result->message);
         DBG_ASSERT(false);
     }
 
-    return result->errorCode;
+    return result->statusCode;
 }
 
 
-ErrorCode ActionImplementor::DisplayHelp()
+StatusCode ActionImplementor::DisplayHelp()
 {
     cliParser.DisplayHelp();
-    return ErrorCode::Success;
+    return StatusCode::Success;
 }
 
 //private
-ErrorCode ActionImplementor::ActionHandler_CompareMonth()
+StatusCode ActionImplementor::ActionHandler_CompareMonth()
 {
     std::string month1 = cliParser.GetParam("month1").AsString();
 
@@ -72,7 +72,7 @@ ErrorCode ActionImplementor::ActionHandler_CompareMonth()
 
     Renderer_CompareReport::Render(report1, report2);
 
-    return ErrorCode::Success;
+    return StatusCode::Success;
 }
 
 END_NAMESPACE_EM

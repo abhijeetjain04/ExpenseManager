@@ -8,13 +8,12 @@ namespace em::action_handler
 
 	struct Result
 	{
-		ErrorCode	errorCode;
-		std::string errorMessage;
-		std::string resultMessage;
+		StatusCode	statusCode;
+		std::string message;
 
-		static ResultSPtr Create(ErrorCode errorCode, const std::string& errMessage = "", const std::string& resMessage = "")
+		static ResultSPtr Create(StatusCode statusCode, const std::string& message = "")
 		{
-			return std::make_shared<Result>(errorCode, errMessage, resMessage);
+			return std::make_shared<Result>(statusCode, message);
 		}
 	};
 

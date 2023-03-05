@@ -32,7 +32,7 @@ enum class CmdType
 class ActionImplementor
 {
 public:
-    ErrorCode PerformAction(CmdType cmdType);
+    StatusCode PerformAction(CmdType cmdType);
 
     template<typename Handler>
     ActionImplementor& RegisterHandler(CmdType cmdType);
@@ -42,8 +42,8 @@ private:
     ActionImplementor();
     ActionImplementor(const ActionImplementor&) = default;
 
-    ErrorCode DisplayHelp();
-    ErrorCode ActionHandler_CompareMonth();
+    StatusCode DisplayHelp();
+    StatusCode ActionHandler_CompareMonth();
 
     em::action_handler::Interface* GetActionHandler(CmdType type) { return m_ActionHandlers[type]; }
 

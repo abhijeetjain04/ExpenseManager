@@ -121,7 +121,7 @@ int main(int argc, char** argv)
     em::CmdType cmdType = GetCmdType(argc, argv);
     DBG_ASSERT(cmdType != em::CmdType::INVALID);
 
-    if (actionImpl.PerformAction(cmdType) != em::ErrorCode::Success)
+    if (actionImpl.PerformAction(cmdType) != em::StatusCode::Success)
         return -1;
 
     return 0;

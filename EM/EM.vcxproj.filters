@@ -97,7 +97,7 @@
     <ClInclude Include="Conditions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="ErrorCodes.h">
+    <ClInclude Include="StatusCodes.h">
       <Filter>Source Files\ErrorHandling</Filter>
     </ClInclude>
     <ClInclude Include="ErrorMessages.h">

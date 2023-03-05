@@ -12,7 +12,7 @@ namespace em::action_handler
 
         rapidjson::Document doc;
         if (doc.Parse(json.c_str(), json.length()).HasParseError())
-            return Result::Create(ErrorCode::JSONParsingError, "Failed to parse JSON.", "");
+            return Result::Create(StatusCode::JSONParsingError, "Failed to parse JSON.");
 
         // get the command name.
         commandName = doc["command"].GetString();

@@ -63,7 +63,7 @@ namespace em::action_handler::cli
             if (!databaseMgr.GetTable<DBTable_Category>()->CheckIfExists("name", category))
             {
                 return em::action_handler::Result::Create(
-                    ErrorCode::CategoryDoesNotExist, 
+                    StatusCode::CategoryDoesNotExist, 
                     std::format(ERROR_CATEGORY_DOES_NOT_EXIST, category));
             }
 
@@ -92,7 +92,7 @@ namespace em::action_handler::cli
             orderBy.SetType(db::Clause_OrderBy::ASCENDING);
 
         if (!table->Select(rows, condGroup, orderBy))
-            return Result::Create(ErrorCode::DBError, "Failed to retrieve from table!");
+            return Result::Create(StatusCode::DBError, "Failed to retrieve from table!");
 
         // sort according to price, highest to lowest
 
@@ -105,7 +105,7 @@ namespace em::action_handler::cli
         double totalExpense = table->SumOf("price", condGroup);
         Renderer_ExpenseTable::Render(rows, totalExpense);
 
-		return Result::Create(ErrorCode::Success);
+		return Result::Create(StatusCode::Success);
 	}
 
 	em::action_handler::ResultSPtr List::ListCategories()
@@ -116,11 +116,11 @@ namespace em::action_handler::cli
 		if (!table->Select(rows))
 		{
 			ERROR_LOG(ERROR_DB_SELECT_CATEGORY);
-			return em::action_handler::Result::Create(ErrorCode::DBError, ERROR_DB_SELECT_CATEGORY);
+			return em::action_handler::Result::Create(StatusCode::DBError, ERROR_DB_SELECT_CATEGORY);
 		}
 
 		Renderer_CategoryTable::Render(rows);
-		return em::action_handler::Result::Create(ErrorCode::Success);
+		return em::action_handler::Result::Create(StatusCode::Success);
 	}
 
 }
