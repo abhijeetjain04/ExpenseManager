@@ -5,6 +5,9 @@
 
 BEGIN_NAMESPACE_EM
 
+/**
+* This class represents the condition used to handle the filteration on 'list' command based on category.
+*/
 class Condition_Category : public db::Condition
 {
     using base = db::Condition;
@@ -16,7 +19,9 @@ public:
     }
 };
 
-
+/**
+* This class represents the condition used to handle the filteration on 'list' command based on date.
+*/
 class Condition_Date : public db::Condition
 {
     using base = db::Condition;
@@ -40,7 +45,9 @@ public:
     {}
 };
 
-
+/**
+* This class represents the condition used to handle the filteration on 'list' command based on year.
+*/
 class Condition_Year : public db::Condition
 {
     using base = db::Condition;
@@ -52,6 +59,9 @@ public:
 
 };
 
+/**
+* This class represents the condition used to handle the filteration on 'list' command based on month and year.
+*/
 class Condition_MonthAndYear : public db::Condition
 {
     using base = db::Condition;
@@ -63,7 +73,9 @@ public:
 
 };
 
-
+/**
+* This class represents the condition used to remove a row from table based on the rowID.
+*/
 class Condition_DeleteRow : public db::Condition
 {
     using base = db::Condition;
@@ -79,6 +91,9 @@ public:
 };
 
 
+/**
+* This class represents the condition used to handle the filteration on 'list' command based on name.
+*/
 class Condition_ListNameFilter : public db::Condition
 {
     using base = db::Condition;
@@ -90,6 +105,9 @@ public:
 
 };
 
+/**
+* This class represents the condition used to handle the filteration on 'list' command based on location.
+*/
 class Condition_LocationFilter : public db::Condition
 {
     using base = db::Condition;

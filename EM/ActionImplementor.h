@@ -15,6 +15,9 @@
 
 BEGIN_NAMESPACE_EM
 
+/**
+* List of supported commands by the application.
+*/
 enum class CmdType
 {
     HELP,
@@ -28,28 +31,50 @@ enum class CmdType
     INVALID
 };
 
-// singleton
+/**
+* Singleton class to execute the commands for cli.
+*/
 class ActionImplementor
 {
 public:
     StatusCode PerformAction(CmdType cmdType);
 
+    /**
+    * Function used to register custom handlers for CmdType.
+    */
     template<typename Handler>
     ActionImplementor& RegisterHandler(CmdType cmdType);
 
+    /* static function to get the Singleton Instance. */
     static ActionImplementor* GetInstance();
 private:
     ActionImplementor();
     ActionImplementor(const ActionImplementor&) = default;
 
+    /**
+    * Displays help for the cli commands.
+    */
     StatusCode DisplayHelp();
+
+    /**
+    * Will be moved in the future.
+    */
     StatusCode ActionHandler_CompareMonth();
 
+    /**
+    * Helper functon to get the corresponding ActionHandler.
+    * 
+    * @params [in] type
+    *       Type of command to get the action handler for.
+    */
     em::action_handler::Interface* GetActionHandler(CmdType type) { return m_ActionHandlers[type]; }
 
 private:
+
+    /* DataStructure to manage the ActionHandlers for all the commands. */
     std::unordered_map<CmdType, em::action_handler::Interface*>  m_ActionHandlers;
 
+    /* Single Instance. */
     static ActionImplementor* s_Instance;
 };
 

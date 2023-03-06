@@ -21,9 +21,33 @@ namespace em::action_handler
 	class Interface
 	{
 	public:
+		/**
+		* This function will parse the json and call the appropriate Derived class Execute function.
+		* 
+		* @params [in] json
+		*		json string representing all the details required to execute the command.
+		* 
+		* @return
+		*		Object of ResultSPtr that contains the result details on execution of the function.
+		*/
 		ResultSPtr Execute(const std::string& json);
 
 	protected:
+		/**
+		* This pure virtual function will be overwritten by the command specific action handler classes.
+		* 
+		* @params [in] commandName
+		*		Name of the command that needs to be executed.
+		* 
+		* @params [in] flags
+		*		Flags passed in by user.
+		* 
+		* @params [in] options
+		*		Options passed in by user.
+		* 
+		* @return
+		*		Object of ResultSPtr that contains the result details on execution of the function.
+		*/
 		virtual ResultSPtr Execute(
 			const std::string& commandName,
 			const std::unordered_set<std::string>& flags, 
@@ -32,3 +56,5 @@ namespace em::action_handler
 	};
 
 }
+
+

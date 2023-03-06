@@ -19,6 +19,9 @@
 
 BEGIN_NAMESPACE_EM
 
+/**
+* This class can be used to create a table for representing data on the CLI.
+*/
 class TextTable 
 {
 public:

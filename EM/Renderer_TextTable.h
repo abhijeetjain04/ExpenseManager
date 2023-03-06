@@ -7,10 +7,22 @@
 
 BEGIN_NAMESPACE_EM
 
+/**
+* Helper class that can be used to display data from DBTable_Expense in the form of table for CLI.
+*/
 class Renderer_ExpenseTable
 {
 public:
 
+    /**
+    * This function renders the data in table format.
+    * 
+    * @params [in] rows
+    *       Rows representing the rows from DBTable_Expense that needs to be displayed in the table.
+    * 
+    * @params [in] total
+    *       This arg is used to display the 'price' parameter's total.
+    */
     static void Render(const std::vector<DBModel_Expense>& rows, double total = 0)
     {
         printf("\n Total Rows : %zd", rows.size());
@@ -23,10 +35,19 @@ public:
 
 };
 
+/**
+* Helper class that can be used to display data from DBTable_Category in the form of table for CLI.
+*/
 class Renderer_CategoryTable
 {
 public:
 
+    /**
+    * This function renders the data in table format.
+    *
+    * @params [in] rows
+    *       Rows representing the rows from DBTable_Category that needs to be displayed in the table.
+    */
     static void Render(const std::vector<DBModel_Category>& rows)
     {
         printf("\n Total Rows : %zd", rows.size());
