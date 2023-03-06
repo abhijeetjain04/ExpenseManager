@@ -15,12 +15,12 @@ BEGIN_NAMESPACE_EM
 
 ActionImplementor* ActionImplementor::s_Instance = nullptr;
 
-//private
+// private
 ActionImplementor::ActionImplementor()
 {
 }
 
-//public
+// public
 ActionImplementor* ActionImplementor::GetInstance()
 {
     if (s_Instance == nullptr)
@@ -60,14 +60,14 @@ StatusCode ActionImplementor::PerformAction(CmdType cmdType)
     return result->statusCode;
 }
 
-
+// private
 StatusCode ActionImplementor::DisplayHelp()
 {
     cliParser.DisplayHelp();
     return StatusCode::Success;
 }
 
-//private
+// private
 StatusCode ActionImplementor::ActionHandler_CompareMonth()
 {
     std::string month1 = cliParser.GetParam("month1").AsString();

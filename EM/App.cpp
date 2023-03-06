@@ -85,7 +85,6 @@ void InitializeCLI()
         .AddParameter("month2", { cli::OptionType::INTEGER, "Second Month to compare",  true,   2 });
 }
 
-
 void InitializeActionImplementor()
 {
     actionImpl.Initialize();
