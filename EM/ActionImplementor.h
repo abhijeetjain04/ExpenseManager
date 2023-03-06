@@ -40,6 +40,11 @@ public:
     StatusCode PerformAction(CmdType cmdType);
 
     /**
+    * Registers the action handlers for all the supoprted commands.
+    */
+    void Initialize();
+
+    /**
     * Function used to register custom handlers for CmdType.
     */
     template<typename Handler>

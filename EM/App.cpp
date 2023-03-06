@@ -88,11 +88,7 @@ void InitializeCLI()
 
 void InitializeActionImplementor()
 {
-    actionImpl.RegisterHandler<em::action_handler::cli::List>(em::CmdType::LIST);
-    actionImpl.RegisterHandler<em::action_handler::cli::Add>(em::CmdType::ADD);
-    actionImpl.RegisterHandler<em::action_handler::cli::Remove>(em::CmdType::REMOVE);
-    actionImpl.RegisterHandler<em::action_handler::cli::AddCategory>(em::CmdType::ADD_CATEGORY);
-    actionImpl.RegisterHandler<em::action_handler::cli::Report>(em::CmdType::REPORT);
+    actionImpl.Initialize();
 }
 
 void InitializeDatabase()

@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "ActionImplementor.h"
 #include "CLIParser/CLIParser.h"
+#include "DBHandler/Util.h"
 #include "DBTable_Expense.h"
 #include "DBTable_Category.h"
-#include "DBHandler/Util.h"
+#include "CLI_ActionHandlers.h"
 #include "TextTable.h"
 #include "Conditions.h"
 #include "ReportHandler.h"
@@ -26,6 +27,16 @@ ActionImplementor* ActionImplementor::GetInstance()
         s_Instance = new ActionImplementor();
 
     return s_Instance;
+}
+
+// public
+void ActionImplementor::Initialize()
+{
+    RegisterHandler<em::action_handler::cli::List>(em::CmdType::LIST);
+    RegisterHandler<em::action_handler::cli::Add>(em::CmdType::ADD);
+    RegisterHandler<em::action_handler::cli::Remove>(em::CmdType::REMOVE);
+    RegisterHandler<em::action_handler::cli::AddCategory>(em::CmdType::ADD_CATEGORY);
+    RegisterHandler<em::action_handler::cli::Report>(em::CmdType::REPORT);
 }
 
 //public
