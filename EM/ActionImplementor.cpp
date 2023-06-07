@@ -58,10 +58,7 @@ StatusCode ActionImplementor::PerformAction(CmdType cmdType)
 
     em::action_handler::ResultSPtr result = actionHandler->Execute(cliParser.AsJson());
     if (result->statusCode != StatusCode::Success)
-    {
         ERROR_LOG(ERROR_ACTIONHANDLER_EXECUTE, result->message);
-        DBG_ASSERT(false);
-    }
 
     return result->statusCode;
 }

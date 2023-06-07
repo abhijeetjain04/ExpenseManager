@@ -24,10 +24,7 @@ namespace em::action_handler::cli
         // validate if the category exists
         model.Category = options.at("category");
         if (!categoryTable->CheckIfExists("name", model.Category))
-        {
-            ERROR_LOG(ERROR_CATEGORY_DOES_NOT_EXIST, model.Category);
             return Result::Create(StatusCode::CategoryDoesNotExist, std::format(ERROR_CATEGORY_DOES_NOT_EXIST, model.Category));
-        }
 
         model.Name = options.at("name");
         model.Price = std::stod(options.at("price"));

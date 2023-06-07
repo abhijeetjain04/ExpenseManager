@@ -160,10 +160,14 @@ int main(int argc, char** argv)
             cliParser.Parse(args);
 
             em::CmdType cmdType = GetCmdType(args);
-            DBG_ASSERT(cmdType != em::CmdType::INVALID);
+            if (cmdType == em::CmdType::INVALID)
+            {
+                printf("\nInvalid Command: %s", args[0].c_str());
+                continue;
+            }
 
             if (actionImpl.PerformAction(cmdType) != em::StatusCode::Success)
-                return -1;
+                printf("\nFailed to execute command!");
 
             printf("=============================================================");
         }
