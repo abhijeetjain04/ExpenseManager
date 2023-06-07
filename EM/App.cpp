@@ -169,7 +169,7 @@ int main(int argc, char** argv)
             if (actionImpl.PerformAction(cmdType) != em::StatusCode::Success)
                 printf("\nFailed to execute command!");
 
-            printf("=============================================================");
+            printf("\n=============================================================");
         }
     }
     catch (std::exception& e)
