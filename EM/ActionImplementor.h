@@ -3,6 +3,7 @@
 #include "DBHandler/Database_SQLite.h"
 #include "IActionHandler.h"
 
+#define CmdString_Cls          "cls"
 #define CmdString_Help          "help"
 #define CmdString_AddCategory   "addCategory"
 #define CmdString_Add           "add"
@@ -27,6 +28,7 @@ enum class CmdType
     LIST,
     REPORT,
     COMPARE_MONTH,
+    CLS,
 
     INVALID
 };

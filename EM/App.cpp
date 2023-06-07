@@ -13,19 +13,14 @@
 
 void GetCommandString(std::string& commandStr, std::vector<std::string>& args)
 {
-    std::cout << ">> ";
+    printf("\n\n>> ");
     std::getline(std::cin, commandStr);
 
-    size_t pos = 0;
-    std::string delimiter = " ";
-    std::string token;
-    while ((pos = commandStr.find(delimiter)) != std::string::npos) {
-        token = commandStr.substr(0, pos);
-        std::cout << token << std::endl;
-        args.push_back(token);
-        commandStr.erase(0, pos + delimiter.length());
-    }
-    args.push_back(commandStr);
+    std::istringstream iss(commandStr);
+    std::vector<std::string> v;
+    std::string s;
+    while (iss >> std::quoted(s)) 
+        args.push_back(s);
 }
 
 void GetDatabaseNameInput(std::string& dbName)
@@ -36,6 +31,10 @@ void GetDatabaseNameInput(std::string& dbName)
 
 em::CmdType GetCmdType(const char* cmdString)
 {
+
+    if (strcmp(cmdString, CmdString_Cls) == 0)
+        return em::CmdType::CLS;
+
     if (strcmp(cmdString, CmdString_Help) == 0)
         return em::CmdType::HELP;
 
@@ -165,6 +164,8 @@ int main(int argc, char** argv)
 
             if (actionImpl.PerformAction(cmdType) != em::StatusCode::Success)
                 return -1;
+
+            printf("=============================================================");
         }
     }
     catch (std::exception& e)
@@ -175,7 +176,6 @@ int main(int argc, char** argv)
     {
         printf("Unhandled Exception!");
     }
-
 
     return 0;
 }

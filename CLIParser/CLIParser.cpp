@@ -193,11 +193,21 @@ std::string CLIParser::AsJson()
 }
 
 
+// private
+void CLIParser::Clear()
+{
+    m_Flags.clear();
+    m_CommandParams.clear();
+    m_CurrentCommandName = "";
+}
+
 //private
 bool CLIParser::Parse(const std::vector<std::string>& args)
 {
     if (args.size() < 1)
         return false;
+
+    Clear();
 
     m_CurrentCommandName = args[0];
     ValidCommand validCommand;

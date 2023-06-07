@@ -42,6 +42,12 @@ void ActionImplementor::Initialize()
 //public
 StatusCode ActionImplementor::PerformAction(CmdType cmdType)
 {
+    if (cmdType == CmdType::CLS)
+    {
+        system("cls");
+        return StatusCode::Success;
+    }
+
     if (cmdType == CmdType::HELP)
         return DisplayHelp();
 

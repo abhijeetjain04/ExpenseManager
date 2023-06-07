@@ -145,6 +145,11 @@ private:
     CLIParser(const CLIParser&) = delete;
 
     /**
+    * Clears all flags, options and commandName
+    */
+    void Clear();
+
+    /**
     * If the parsing fails, this function is used to generate the appropriate message on how to use the command.
     * 
     * @param [in] commandName
