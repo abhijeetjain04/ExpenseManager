@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "Utils.h"
 
+#include <filesystem>
+#include <windows.h>
+
 BEGIN_NAMESPACE_EM
 
 namespace utils
@@ -33,9 +36,22 @@ namespace utils
         return "";
     }
 
-    std::string GetDefaultLocation() 
+    std::string GetConfigFilePath()
     {
-        return "Pune"; 
+        return GetExecutableDirPath() + "config.json";
+    }
+
+    std::string GetExecutableDirPath()
+    {
+        TCHAR buffer[MAX_PATH] = { 0 };
+        GetModuleFileName(NULL, buffer, MAX_PATH);
+        std::wstring::size_type pos = std::wstring(buffer).find_last_of(L"\\/");
+        std::wstring wideString = std::wstring(buffer).substr(0, pos);
+        std::string result;
+        std::transform(wideString.begin(), wideString.end(), std::back_inserter(result), [](wchar_t c) {
+            return (char)c;
+            });
+        return result + "\\";
     }
 
 }

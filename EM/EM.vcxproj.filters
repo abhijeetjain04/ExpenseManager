@@ -34,6 +34,12 @@
     <Filter Include="Source Files\Database\DatabaseManager">
       <UniqueIdentifier>{a0ee98d5-9ac0-4b9c-b1b2-457f525ca709}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Json">
+      <UniqueIdentifier>{231cf4e2-c2f0-4802-b9a1-bc55210328da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ConfigManager">
+      <UniqueIdentifier>{d4dbeb0f-58d9-4fbc-a5ea-8fdbe5299fed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -74,6 +80,12 @@
     </ClCompile>
     <ClCompile Include="CLI_ActionHandler_Report.cpp">
       <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClCompile>
+    <ClCompile Include="jsoncpp.cpp">
+      <Filter>Source Files\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigManager.cpp">
+      <Filter>Source Files\ConfigManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +156,18 @@
     </ClInclude>
     <ClInclude Include="CLI_ActionHandler_Report.h">
       <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClInclude>
+    <ClInclude Include="json.h">
+      <Filter>Source Files\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="json-forwards.h">
+      <Filter>Source Files\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigManager.h">
+      <Filter>Source Files\ConfigManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Exception_Config.h">
+      <Filter>Source Files\ConfigManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

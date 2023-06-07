@@ -2,6 +2,7 @@
 #include "DBTable_Expense.h"
 #include "DBHandler/Util.h"
 #include "Utils.h"
+#include "ConfigManager.h"
 
 BEGIN_NAMESPACE_EM
 
@@ -55,7 +56,7 @@ std::string DBInsertQueryHandler_Expense::GenerateQuery(const DBModel_Expense& m
         date = db::util::GetCurrentDate();
     std::string location = model.Location;
     if (location.empty())
-        location = utils::GetDefaultLocation();
+        location = ConfigManager::GetInstance().GetDefaultLocation();
 
     return std::vformat(unformattedQuery, std::make_format_args(model.Name, model.Category, model.Price, date, location));
 }

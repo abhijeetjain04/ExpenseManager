@@ -16,7 +16,15 @@ namespace utils
     */
     std::string GetMonthNameFromNumber(int month);
 
-    std::string GetDefaultLocation();
+    /**
+    * This function returns the absolute file path of the config.json file.
+    */
+    std::string GetConfigFilePath();
+
+    /**
+    * This function returns absolute directory file where the executable lies.
+    */
+    std::string GetExecutableDirPath();
 }
 
 END_NAMESPACE_EM

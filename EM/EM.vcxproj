@@ -148,10 +148,12 @@
     <ClCompile Include="CLI_ActionHandler_List.cpp" />
     <ClCompile Include="CLI_ActionHandler_Remove.cpp" />
     <ClCompile Include="CLI_ActionHandler_Report.cpp" />
+    <ClCompile Include="ConfigManager.cpp" />
     <ClCompile Include="DatabaseManager.cpp" />
     <ClCompile Include="DBTable_Category.cpp" />
     <ClCompile Include="DBTable_Expense.cpp" />
     <ClCompile Include="IActionHandler.cpp" />
+    <ClCompile Include="jsoncpp.cpp" />
     <ClCompile Include="ReportHandler.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
@@ -167,10 +169,14 @@
     <ClInclude Include="CLI_ActionHandler_Remove.h" />
     <ClInclude Include="CLI_ActionHandler_Report.h" />
     <ClInclude Include="Conditions.h" />
+    <ClInclude Include="Exception_Config.h" />
+    <ClInclude Include="ConfigManager.h" />
     <ClInclude Include="DatabaseManager.h" />
     <ClInclude Include="DBTables.h" />
     <ClInclude Include="DBTable_Category.h" />
     <ClInclude Include="DBTable_Expense.h" />
+    <ClInclude Include="json-forwards.h" />
+    <ClInclude Include="json.h" />
     <ClInclude Include="StatusCodes.h" />
     <ClInclude Include="ErrorMessages.h" />
     <ClInclude Include="CLI_ActionHandler_List.h" />

@@ -6,8 +6,33 @@
 #include "CLIParser/Utils.h"
 #include "CLI_ActionHandlers.h"
 #include "DatabaseManager.h"
+#include "ConfigManager.h"
+#include "Exception_Config.h"
 
 #define DATABASE_FILE_NAME "expense.db"
+
+void GetCommandString(std::string& commandStr, std::vector<std::string>& args)
+{
+    std::cout << ">> ";
+    std::getline(std::cin, commandStr);
+
+    size_t pos = 0;
+    std::string delimiter = " ";
+    std::string token;
+    while ((pos = commandStr.find(delimiter)) != std::string::npos) {
+        token = commandStr.substr(0, pos);
+        std::cout << token << std::endl;
+        args.push_back(token);
+        commandStr.erase(0, pos + delimiter.length());
+    }
+    args.push_back(commandStr);
+}
+
+void GetDatabaseNameInput(std::string& dbName)
+{
+    std::cout << "Database Name: ";
+    std::getline(std::cin, dbName);
+}
 
 em::CmdType GetCmdType(const char* cmdString)
 {
@@ -41,6 +66,14 @@ em::CmdType GetCmdType(int argc, char** argv)
         return em::CmdType::INVALID;
 
     return GetCmdType(argv[1]);
+}
+
+em::CmdType GetCmdType(std::vector<std::string>& args)
+{
+    if (args.size() < 1)
+        return em::CmdType::INVALID;
+
+    return GetCmdType(args[0].c_str());
 }
 
 void InitializeCLI()
@@ -92,7 +125,15 @@ void InitializeActionImplementor()
 
 void InitializeDatabase()
 {
-    DatabaseManager::Create(DATABASE_FILE_NAME);
+    std::string dbName;
+    GetDatabaseNameInput(dbName);
+
+    if (!em::ConfigManager::GetInstance().IsValidDatabaseName(dbName))
+        throw em::Exception_Config(std::format("Invalid database Name : {}", dbName));
+
+    std::string databaseName = dbName + "_expense.db";
+
+    DatabaseManager::Create(databaseName.c_str());
 }
 
 void Initialize()
@@ -102,22 +143,39 @@ void Initialize()
     InitializeActionImplementor();
 }
 
-
 int main(int argc, char** argv)
 {
-    Initialize();
-
-    if (!cliParser.Parse(argc, argv))
+    try
     {
-        ERROR_LOG(ERROR_CLI_PARSING);
-        return -1;
+        Initialize();
+
+        bool quit = false;
+        while (!quit)
+        {
+            std::string commandStr;
+            std::vector<std::string> args;
+            GetCommandString(commandStr, args);
+            if (commandStr.empty() || commandStr == "quit")
+                break;
+
+            cliParser.Parse(args);
+
+            em::CmdType cmdType = GetCmdType(args);
+            DBG_ASSERT(cmdType != em::CmdType::INVALID);
+
+            if (actionImpl.PerformAction(cmdType) != em::StatusCode::Success)
+                return -1;
+        }
+    }
+    catch (std::exception& e)
+    {
+        printf(e.what());
+    }
+    catch (...)
+    {
+        printf("Unhandled Exception!");
     }
 
-    em::CmdType cmdType = GetCmdType(argc, argv);
-    DBG_ASSERT(cmdType != em::CmdType::INVALID);
-
-    if (actionImpl.PerformAction(cmdType) != em::StatusCode::Success)
-        return -1;
 
     return 0;
 }

@@ -86,6 +86,17 @@ public:
     bool Parse(int argc, char** argv);
 
     /**
+    * Helper function to parse the cli arguments, which takes args in the form of a vector and has the .exe arg removed.
+    *
+    * @param [in] args
+    *       CLI arguments passed to the application.
+    *
+    * @return
+    *       True, if parsing was successful.
+    */
+    bool Parse(const std::vector<std::string>& args);
+
+    /**
     * This function returns the value of the parameter.
     * 
     * @param [in] paramName
@@ -140,17 +151,6 @@ private:
     *       Name of the command for which we need to generate the message.
     */
     void GenerateErrorMessage(const std::string& commandName) const;
-
-    /**
-    * Helper function to parse the cli arguments, which takes args in the form of a vector and has the .exe arg removed.
-    * 
-    * @param [in] args
-    *       CLI arguments passed to the application.
-    * 
-    * @return
-    *       True, if parsing was successful.
-    */
-    bool Parse(const std::vector<std::string>& args);
 
     /**
     * Generates the appropriate message on how to use the command for 'm_CurrentCommand'.
