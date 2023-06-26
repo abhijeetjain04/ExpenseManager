@@ -1,16 +1,10 @@
 {
-  "commands": [
-    {
-      "name": "add",
-      "params": [
-        {
-          "name": "name",
-          "optionType": "text",
-          "description": "Name of the Expense.",
-          "isMandatory": true,
-          "index":  1
-        }
-      ]
-    }
+  "default" : {
+	  "location" : "Pune"
+  },
+  "validDatabaseNames" : [
+	"household",
+	"personal",
+	"marriage"
   ]
 }
