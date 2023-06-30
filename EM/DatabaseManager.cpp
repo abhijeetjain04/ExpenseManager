@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "DatabaseManager.h"
 
+BEGIN_NAMESPACE_EM
+
 // private
 DatabaseManager* DatabaseManager::s_Instance = nullptr;
 bool DatabaseManager::s_IsInitialized = false;
@@ -37,4 +39,4 @@ void DatabaseManager::Create(const char* dbName, int openMode)
 	}
 }
 
-
+END_NAMESPACE_EM

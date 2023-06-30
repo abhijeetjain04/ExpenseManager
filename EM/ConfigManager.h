@@ -2,7 +2,7 @@
 
 BEGIN_NAMESPACE_EM
 
-typedef std::vector<std::string> ValidDatabaseNames;
+typedef std::vector<std::string> ValidAccountNames;
 
 /**
 * This Singleton class handles everything related to the Configuration data 
@@ -16,15 +16,15 @@ class ConfigManager
 	struct Data
 	{
 		std::string DefaultLocation;
-		ValidDatabaseNames ValidDatabaseNames;
+		ValidAccountNames ValidAccountNames;
 	};
 
 public:
 	ConfigManager();
 
 	const std::string& GetDefaultLocation() const;
-	bool IsValidDatabaseName(const std::string& dbName) const;
-	ValidDatabaseNames GetValidDatabaseNames() const;
+	bool IsValidAccountName(const std::string& dbName) const;
+	ValidAccountNames GetValidAccountNames() const;
 
 	static ConfigManager& GetInstance();
 

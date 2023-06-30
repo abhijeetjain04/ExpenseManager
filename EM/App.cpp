@@ -3,6 +3,7 @@
 #include "CLIParser/CLIParser.h"
 #include "CLIParser/ValidCommand.h"
 #include "DBTable_Category.h"
+#include "DBTable_Expense.h"
 #include "CLIParser/Utils.h"
 #include "CLI_ActionHandlers.h"
 #include "DatabaseManager.h"
@@ -23,10 +24,10 @@ void GetCommandString(std::string& commandStr, std::vector<std::string>& args)
         args.push_back(s);
 }
 
-void GetDatabaseNameInput(std::string& dbName)
+void GetAccountNameInput(std::string& accountName)
 {
-    std::cout << "Database Name: ";
-    std::getline(std::cin, dbName);
+    std::cout << "Account: ";
+    std::getline(std::cin, accountName);
 }
 
 em::CmdType GetCmdType(const char* cmdString)
@@ -122,17 +123,42 @@ void InitializeActionImplementor()
     actionImpl.Initialize();
 }
 
+void SetCurrentExpenseTable(const std::string& tableName)
+{
+    if (tableName == "personal_expense")
+    {
+        em::DatabaseManager::GetInstance()->SetCurrentExpenseTable<em::DBTable_PersonalExpense>();
+        return;
+    }
+    
+    if (tableName == "household_expense")
+    {
+        em::DatabaseManager::GetInstance()->SetCurrentExpenseTable<em::DBTable_HouseholdExpense>();
+        return;
+    }
+
+    if (tableName == "marriage_expense")
+    {
+        em::DatabaseManager::GetInstance()->SetCurrentExpenseTable<em::DBTable_MarriageExpense>();
+        return;
+    }
+
+    DBG_ASSERT(!"Invalid Table Name");
+}
+
 void InitializeDatabase()
 {
-    std::string dbName;
-    GetDatabaseNameInput(dbName);
+    // Account name is used as the table name to store in DB.
+    std::string tableName;
+    GetAccountNameInput(tableName);
 
-    if (!em::ConfigManager::GetInstance().IsValidDatabaseName(dbName))
-        throw em::Exception_Config(std::format("Invalid database Name : {}", dbName));
+    if (!em::ConfigManager::GetInstance().IsValidAccountName(tableName))
+        throw em::Exception_Config(std::format("Invalid table Name : {}", tableName));
 
-    std::string databaseName = dbName + "_expense.db";
+    std::string fullTableName = tableName + "_expense";
 
-    DatabaseManager::Create(databaseName.c_str());
+    em::DatabaseManager::Create(DATABASE_FILE_NAME);
+    SetCurrentExpenseTable(fullTableName);
 }
 
 void Initialize()
@@ -183,5 +209,4 @@ int main(int argc, char** argv)
 
     return 0;
 }
-
 

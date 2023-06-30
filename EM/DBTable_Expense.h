@@ -79,6 +79,22 @@ public:
     bool ParseResult(const std::shared_ptr<SQLite::Statement>& stmt, std::vector<DBModel_Expense>& rows) override;
 };
 
+
+#define DB_EXPENSE_TABLE(classname, db_tablename) \
+class classname : public DBTable_Expense \
+{ \
+    using base = DBTable_Expense; \
+ \
+public: \
+    REGISTER_TABLE(db_tablename) \
+ \
+    classname(db::Database_SQLite& db, const std::string& tablename) \
+    : base(db, tablename) \
+    { \
+    } \
+};
+
+
 /**
 * This class represents the 'Expense' table from the Database.
 * Object of this class should only be created through DatabaseManager class.
@@ -115,6 +131,10 @@ public:
     void operator=(const DBTable_Expense& rhs) = delete;
 
 };
+
+DB_EXPENSE_TABLE(DBTable_PersonalExpense, "personal_expense");
+DB_EXPENSE_TABLE(DBTable_HouseholdExpense, "household_expense");
+DB_EXPENSE_TABLE(DBTable_MarriageExpense, "marriage_expense");
 
 
 END_NAMESPACE_EM

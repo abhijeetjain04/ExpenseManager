@@ -1,9 +1,11 @@
 #pragma once
 
 #include "DBHandler/Database_SQLite.h"
+#include "DBTable_Expense.h"
 
-#define databaseMgr (*DatabaseManager::GetInstance())
+#define databaseMgr (*em::DatabaseManager::GetInstance())
 
+BEGIN_NAMESPACE_EM
 
 /**
 * Singleton class that deals with the lower layers handlings of the database.
@@ -23,6 +25,12 @@ public:
 	*/
 	static void Create(const char* dbName, int openMode = db::OPEN_CREATE | db::OPEN_READWRITE);
 
+	template<typename T>
+	void SetCurrentExpenseTable()
+	{
+		m_ExpenseTable = m_Database->CreateTable<T>();
+	}
+
 	/**
 	* Retrieves the logical database table from the DB.
 	* If the table does not exist, a new table will be creted.
@@ -37,6 +45,15 @@ public:
 	}
 
 	/**
+	* Returns the Expense Table that is currently being used.
+	*/
+	template<>
+	std::shared_ptr<DBTable_Expense> GetTable() const
+	{
+		return m_ExpenseTable;
+	}
+
+	/**
 	* Getter for the singleton instance.
 	*/
 	static DatabaseManager* GetInstance();
@@ -47,7 +64,8 @@ private:
 	DatabaseManager(DatabaseManager&&) = default;
 
 	std::unique_ptr<db::Database_SQLite> m_Database;
-
+	std::shared_ptr<DBTable_Expense> m_ExpenseTable;
+		
 	static std::mutex s_Mutex;
 	static DatabaseManager* s_Instance;
 
@@ -56,3 +74,5 @@ private:
 
 };
 
+
+END_NAMESPACE_EM

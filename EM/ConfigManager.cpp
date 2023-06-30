@@ -23,16 +23,16 @@ const std::string& ConfigManager::GetDefaultLocation() const
 }
 
 // public
-bool ConfigManager::IsValidDatabaseName(const std::string& dbName) const
+bool ConfigManager::IsValidAccountName(const std::string& dbName) const
 {
-	const std::vector<std::string>& validDbNames = m_Data.ValidDatabaseNames;
+	const std::vector<std::string>& validDbNames = m_Data.ValidAccountNames;
 	return std::find(validDbNames.begin(), validDbNames.end(), dbName) != validDbNames.end();
 }
 
 // public
-ValidDatabaseNames ConfigManager::GetValidDatabaseNames() const
+ValidAccountNames ConfigManager::GetValidAccountNames() const
 {
-	return m_Data.ValidDatabaseNames;
+	return m_Data.ValidAccountNames;
 }
 
 // private
@@ -52,7 +52,7 @@ void ConfigManager::Initialize()
 		// store valid database names
 		DBG_ASSERT(root.isMember("validDatabaseNames"));
 		for (const auto& name : root["validDatabaseNames"])
-			m_Data.ValidDatabaseNames.push_back(name.asString());
+			m_Data.ValidAccountNames.push_back(name.asString());
 
 	}
 	catch (std::exception& e)
