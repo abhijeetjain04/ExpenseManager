@@ -40,6 +40,12 @@
     <Filter Include="Source Files\ConfigManager">
       <UniqueIdentifier>{d4dbeb0f-58d9-4fbc-a5ea-8fdbe5299fed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Exceptions">
+      <UniqueIdentifier>{3c6352af-62c7-4bbe-8bb2-2de3eb03a437}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Exceptions\Database">
+      <UniqueIdentifier>{04dbefe8-839a-488a-a1ac-1cd5f15afe86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -86,6 +92,9 @@
     </ClCompile>
     <ClCompile Include="ConfigManager.cpp">
       <Filter>Source Files\ConfigManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CLI_ActionHandler_List_AllAccounts.cpp">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -166,8 +175,17 @@
     <ClInclude Include="ConfigManager.h">
       <Filter>Source Files\ConfigManager</Filter>
     </ClInclude>
-    <ClInclude Include="Exception_Config.h">
-      <Filter>Source Files\ConfigManager</Filter>
+    <ClInclude Include="CLI_ActionHandler_List_AllAccounts.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClInclude>
+    <ClInclude Include="Exceptions\Config.h">
+      <Filter>Source Files\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Exceptions\Database\Common.h">
+      <Filter>Source Files\Exceptions\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Exceptions\Base.h">
+      <Filter>Source Files\Exceptions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

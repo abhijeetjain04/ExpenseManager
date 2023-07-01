@@ -2,7 +2,7 @@
 #include "ConfigManager.h"
 #include "Utils.h"
 #include "json.h"
-#include "Exception_Config.h"
+#include "Exceptions/Config.h"
 
 #include <fstream>
 
@@ -57,7 +57,7 @@ void ConfigManager::Initialize()
 	}
 	catch (std::exception& e)
 	{
-		throw Exception_Config(e.what());
+		throw em::exception::Config(e.what());
 	}
 
 }

@@ -23,7 +23,7 @@ public:
     * @params [in] total
     *       This arg is used to display the 'price' parameter's total.
     */
-    static void Render(const std::vector<DBModel_Expense>& rows, double total = 0)
+    static void Render(const std::vector<DBModel_Expense>& rows, double total = 0.0)
     {
         printf("\n Total Rows : %zd", rows.size());
         TextTable_Expense t(rows);

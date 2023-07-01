@@ -84,29 +84,34 @@ namespace em::action_handler::cli
             condGroup.Add(Condition_LocationFilter(location));
         }
 
-        auto table = databaseMgr.GetTable<DBTable_Expense>();
-        std::vector<DBModel_Expense> rows;
 
         db::Clause_OrderBy orderBy("date", db::Clause_OrderBy::DESCENDING);
         if (flags.contains("ascending"))
             orderBy.SetType(db::Clause_OrderBy::ASCENDING);
 
-        if (!table->Select(rows, condGroup, orderBy))
+        return ProcessDBTable(condGroup, orderBy);
+	}
+
+    em::action_handler::ResultSPtr List::ProcessDBTable(const db::ConditionGroup& condGroup, const db::Clause_OrderBy& orderBy)
+    {
+        std::vector<DBModel_Expense> rows;
+
+        auto expenseTable = databaseMgr.GetTable<DBTable_Expense>();
+        if (!expenseTable->Select(rows, condGroup, orderBy))
             return Result::Create(StatusCode::DBError, "Failed to retrieve from table!");
 
         // sort according to price, highest to lowest
-
         std::sort(rows.begin(), rows.end(),
             [](const DBModel_Expense& e1, const DBModel_Expense& e2)
             {
                 return e1.Price > e2.Price;
             });
 
-        double totalExpense = table->SumOf("price", condGroup);
+        double totalExpense = expenseTable->SumOf("price", condGroup);
         Renderer_ExpenseTable::Render(rows, totalExpense);
 
-		return Result::Create(StatusCode::Success);
-	}
+        return Result::Create(StatusCode::Success);
+    }
 
 	em::action_handler::ResultSPtr List::ListCategories()
 	{

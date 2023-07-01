@@ -29,16 +29,6 @@ ActionImplementor* ActionImplementor::GetInstance()
     return s_Instance;
 }
 
-// public
-void ActionImplementor::Initialize()
-{
-    RegisterHandler<em::action_handler::cli::List>(em::CmdType::LIST);
-    RegisterHandler<em::action_handler::cli::Add>(em::CmdType::ADD);
-    RegisterHandler<em::action_handler::cli::Remove>(em::CmdType::REMOVE);
-    RegisterHandler<em::action_handler::cli::AddCategory>(em::CmdType::ADD_CATEGORY);
-    RegisterHandler<em::action_handler::cli::Report>(em::CmdType::REPORT);
-}
-
 //public
 StatusCode ActionImplementor::PerformAction(CmdType cmdType)
 {

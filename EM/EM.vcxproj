@@ -146,6 +146,7 @@
     <ClCompile Include="CLI_ActionHandler_Add.cpp" />
     <ClCompile Include="CLI_ActionHandler_AddCategory.cpp" />
     <ClCompile Include="CLI_ActionHandler_List.cpp" />
+    <ClCompile Include="CLI_ActionHandler_List_AllAccounts.cpp" />
     <ClCompile Include="CLI_ActionHandler_Remove.cpp" />
     <ClCompile Include="CLI_ActionHandler_Report.cpp" />
     <ClCompile Include="ConfigManager.cpp" />
@@ -166,15 +167,18 @@
     <ClInclude Include="CLI_ActionHandlers.h" />
     <ClInclude Include="CLI_ActionHandler_Add.h" />
     <ClInclude Include="CLI_ActionHandler_AddCategory.h" />
+    <ClInclude Include="CLI_ActionHandler_List_AllAccounts.h" />
     <ClInclude Include="CLI_ActionHandler_Remove.h" />
     <ClInclude Include="CLI_ActionHandler_Report.h" />
     <ClInclude Include="Conditions.h" />
-    <ClInclude Include="Exception_Config.h" />
+    <ClInclude Include="Exceptions\Base.h" />
+    <ClInclude Include="Exceptions\Config.h" />
     <ClInclude Include="ConfigManager.h" />
     <ClInclude Include="DatabaseManager.h" />
     <ClInclude Include="DBTables.h" />
     <ClInclude Include="DBTable_Category.h" />
     <ClInclude Include="DBTable_Expense.h" />
+    <ClInclude Include="Exceptions\Database\Common.h" />
     <ClInclude Include="json-forwards.h" />
     <ClInclude Include="json.h" />
     <ClInclude Include="StatusCodes.h" />

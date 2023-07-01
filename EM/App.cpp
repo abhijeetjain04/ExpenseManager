@@ -8,7 +8,7 @@
 #include "CLI_ActionHandlers.h"
 #include "DatabaseManager.h"
 #include "ConfigManager.h"
-#include "Exception_Config.h"
+#include "Exceptions/Config.h"
 
 #define DATABASE_FILE_NAME "expense.db"
 
@@ -120,26 +120,49 @@ void InitializeCLI()
 
 void InitializeActionImplementor()
 {
-    actionImpl.Initialize();
+    if (em::DatabaseManager::GetInstance()->IsUsingAllAccounts())
+    {
+        actionImpl.RegisterHandler<em::action_handler::cli::List_AllAccounts>(em::CmdType::LIST);
+    }
+    else
+    {
+        actionImpl.RegisterHandler<em::action_handler::cli::List>(em::CmdType::LIST);
+        actionImpl.RegisterHandler<em::action_handler::cli::Add>(em::CmdType::ADD);
+        actionImpl.RegisterHandler<em::action_handler::cli::Remove>(em::CmdType::REMOVE);
+    }
+
+    actionImpl.RegisterHandler<em::action_handler::cli::AddCategory>(em::CmdType::ADD_CATEGORY);
+    actionImpl.RegisterHandler<em::action_handler::cli::Report>(em::CmdType::REPORT);
 }
 
-void SetCurrentExpenseTable(const std::string& tableName)
+void RegisterTables(const std::string& accountName)
 {
-    if (tableName == "personal_expense")
+    if (accountName == "all")
     {
-        em::DatabaseManager::GetInstance()->SetCurrentExpenseTable<em::DBTable_PersonalExpense>();
+        auto dbMgr = em::DatabaseManager::GetInstance();
+        dbMgr->RegisterTable<em::DBTable_PersonalExpense>("personal_expense");
+        dbMgr->RegisterTable<em::DBTable_HouseholdExpense>("household_expense");
+        dbMgr->RegisterTable<em::DBTable_MarriageExpense>("marriage_expenses");
+        return;
+    }
+
+    const std::string& tableName = accountName;
+    std::string fullTableName = tableName + "_expense";
+    if (fullTableName == "personal_expense")
+    {
+        em::DatabaseManager::GetInstance()->RegisterTable<em::DBTable_PersonalExpense>(tableName);
         return;
     }
     
-    if (tableName == "household_expense")
+    if (fullTableName == "household_expense")
     {
-        em::DatabaseManager::GetInstance()->SetCurrentExpenseTable<em::DBTable_HouseholdExpense>();
+        em::DatabaseManager::GetInstance()->RegisterTable<em::DBTable_HouseholdExpense>(tableName);
         return;
     }
 
-    if (tableName == "marriage_expense")
+    if (fullTableName == "marriage_expense")
     {
-        em::DatabaseManager::GetInstance()->SetCurrentExpenseTable<em::DBTable_MarriageExpense>();
+        em::DatabaseManager::GetInstance()->RegisterTable<em::DBTable_MarriageExpense>(tableName);
         return;
     }
 
@@ -152,13 +175,18 @@ void InitializeDatabase()
     std::string tableName;
     GetAccountNameInput(tableName);
 
-    if (!em::ConfigManager::GetInstance().IsValidAccountName(tableName))
-        throw em::Exception_Config(std::format("Invalid table Name : {}", tableName));
+    bool isTableName = tableName != "all";
 
-    std::string fullTableName = tableName + "_expense";
+    bool useAllAccounts = true;
+    if (isTableName)
+    {
+        useAllAccounts = false;
+        if (!em::ConfigManager::GetInstance().IsValidAccountName(tableName))
+            throw em::exception::Config(std::format("Invalid table Name : {}", tableName));
+    }
 
-    em::DatabaseManager::Create(DATABASE_FILE_NAME);
-    SetCurrentExpenseTable(fullTableName);
+    em::DatabaseManager::Create(DATABASE_FILE_NAME, useAllAccounts);
+    RegisterTables(tableName);
 }
 
 void Initialize()
@@ -200,12 +228,15 @@ int main(int argc, char** argv)
     }
     catch (std::exception& e)
     {
-        printf(e.what());
+        printf("\n%s", e.what());
     }
     catch (...)
     {
-        printf("Unhandled Exception!");
+        printf("\nUnhandled Exception!");
     }
+
+    printf("\n\n");
+    std::system("pause");
 
     return 0;
 }
