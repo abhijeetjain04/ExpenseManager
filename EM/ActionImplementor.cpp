@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "ActionImplementor.h"
+#include "Common/CommonEnums.h"
+#include "Common/EnumAndStringConverter.h"
 #include "CLIParser/CLIParser.h"
 #include "DBHandler/Util.h"
 #include "DBTable_Expense.h"
@@ -32,17 +34,16 @@ ActionImplementor* ActionImplementor::GetInstance()
 //public
 StatusCode ActionImplementor::PerformAction(CmdType cmdType)
 {
-    if (cmdType == CmdType::CLS)
+    if (cmdType == CmdType::ClearScreen)
     {
         system("cls");
         return StatusCode::Success;
     }
 
-    if (cmdType == CmdType::HELP)
+    if (cmdType == CmdType::Help)
         return DisplayHelp();
 
     auto actionHandler = GetActionHandler(cmdType);
-    DBG_ASSERT(actionHandler || !"Action handler does not exist for this cmdType!");
     if (!actionHandler)
         return StatusCode::CommandDoesNotExist;
 

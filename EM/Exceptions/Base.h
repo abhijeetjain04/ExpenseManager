@@ -25,7 +25,7 @@ namespace em::exception
 	protected:
 		void SetMessage(const std::string& message)
 		{
-			m_Message = message;
+			m_Message = "EXCEPTION: " + message;
 		}
 
 	private:

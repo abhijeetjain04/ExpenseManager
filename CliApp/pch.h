@@ -3,8 +3,6 @@
 #define BEGIN_NAMESPACE_EM	namespace em {
 #define END_NAMESPACE_EM	}
 
-#include "EM/Assertion.h"
-
 #include <string_view>
 #include <string>
 #include <vector>
@@ -18,6 +16,7 @@
 #include <format>
 #include <iomanip>
 
+#include "EM/Assertion.h"
 #include "EM/StatusCodes.h"
 #include "EM/ErrorMessages.h"
 

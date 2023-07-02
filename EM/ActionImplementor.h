@@ -2,8 +2,9 @@
 
 #include "DBHandler/Database_SQLite.h"
 #include "IActionHandler.h"
+#include "Common/CommonEnums.h"
 
-#define CmdString_Cls          "cls"
+#define CmdString_Cls           "cls"
 #define CmdString_Help          "help"
 #define CmdString_AddCategory   "addCategory"
 #define CmdString_Add           "add"
@@ -15,23 +16,6 @@
 #define actionImpl (*em::ActionImplementor::GetInstance())
 
 BEGIN_NAMESPACE_EM
-
-/**
-* List of supported commands by the application.
-*/
-enum class CmdType
-{
-    HELP,
-    ADD_CATEGORY,
-    ADD,
-    REMOVE,
-    LIST,
-    REPORT,
-    COMPARE_MONTH,
-    CLS,
-
-    INVALID
-};
 
 /**
 * Singleton class to execute the commands for cli.

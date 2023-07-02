@@ -150,6 +150,9 @@
     <ClCompile Include="CLI_ActionHandler_List_AllAccounts.cpp" />
     <ClCompile Include="CLI_ActionHandler_Remove.cpp" />
     <ClCompile Include="CLI_ActionHandler_Report.cpp" />
+    <ClCompile Include="Common\EnumAndStringConverter.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../pch.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="ConfigManager.cpp" />
     <ClCompile Include="DatabaseManager.cpp" />
     <ClCompile Include="DBTable_Category.cpp" />
@@ -171,6 +174,8 @@
     <ClInclude Include="CLI_ActionHandler_List_AllAccounts.h" />
     <ClInclude Include="CLI_ActionHandler_Remove.h" />
     <ClInclude Include="CLI_ActionHandler_Report.h" />
+    <ClInclude Include="Common\CommonEnums.h" />
+    <ClInclude Include="Common\EnumAndStringConverter.h" />
     <ClInclude Include="Conditions.h" />
     <ClInclude Include="Exceptions\Base.h" />
     <ClInclude Include="Exceptions\Config.h" />
@@ -180,6 +185,7 @@
     <ClInclude Include="DBTable_Category.h" />
     <ClInclude Include="DBTable_Expense.h" />
     <ClInclude Include="Exceptions\Database\Common.h" />
+    <ClInclude Include="Exceptions\EnumStringConverter.h" />
     <ClInclude Include="json-forwards.h" />
     <ClInclude Include="json.h" />
     <ClInclude Include="StatusCodes.h" />

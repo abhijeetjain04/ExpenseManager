@@ -46,6 +46,9 @@
     <Filter Include="Source Files\Exceptions\Database">
       <UniqueIdentifier>{04dbefe8-839a-488a-a1ac-1cd5f15afe86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Common">
+      <UniqueIdentifier>{0ceb05ec-5d8d-4b6b-a87a-3c5970f0ba3e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ActionImplementor.cpp">
@@ -92,6 +95,9 @@
     </ClCompile>
     <ClCompile Include="CLI_ActionHandler_List_AllAccounts.cpp">
       <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\EnumAndStringConverter.cpp">
+      <Filter>Source Files\Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +188,15 @@
       <Filter>Source Files\Exceptions\Database</Filter>
     </ClInclude>
     <ClInclude Include="Exceptions\Base.h">
+      <Filter>Source Files\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\EnumAndStringConverter.h">
+      <Filter>Source Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CommonEnums.h">
+      <Filter>Source Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Exceptions\EnumStringConverter.h">
       <Filter>Source Files\Exceptions</Filter>
     </ClInclude>
   </ItemGroup>

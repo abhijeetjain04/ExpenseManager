@@ -26,7 +26,7 @@ public:
 	* @params [in] openMode
 	*		Mode in which we want to open the database.
 	*/
-	static void Create(const char* dbName, bool useAllAccounts = false, int openMode = db::OPEN_CREATE | db::OPEN_READWRITE);
+	static void Create(const char* dbName, const std::string& accountName, int openMode = db::OPEN_CREATE | db::OPEN_READWRITE);
 
 	/**
 	* Returns flag used to determine if we are considering all accounts for DB queries.
@@ -34,21 +34,14 @@ public:
 	bool IsUsingAllAccounts() const;
 
 	/**
-	* This function is used to set the expense table that will be used to perform the actions on.
-	*
-	* In case all accounts are to be queried, m_ExpenseTable will be a nullptr.
+	* This function is used to Register expense tables with the Database Manager.
+	* The Database Manager will only be able to deal with an expense tables, when it is registered,
 	*
 	* @template T
-	*		child of DBTable_Expense, that  will be used to perform DB actions.
+	*		Child of DBTable_Expense.
 	*/
 	template<typename T>
-	void RegisterTables()
-	{
-		m_ExpenseTable = m_Database->CreateTable<T>();
-	}
-
-	template<typename T>
-	void RegisterTable(const std::string& tablename)
+	void RegisterExpenseTable(const std::string& tablename)
 	{
 		if (m_ExpenseTables.find(tablename) != m_ExpenseTables.end())
 			throw em::exception::TableAlreadyRegistered(tablename);
@@ -71,6 +64,8 @@ public:
 
 	/**
 	* Returns the Expense Table that is currently being used.
+	* 
+	* Specialization of th template<T> GetTable()
 	*/
 	template<>
 	std::shared_ptr<DBTable_Expense> GetTable() const
@@ -79,9 +74,22 @@ public:
 		return m_ExpenseTables.begin()->second;
 	}
 
+	/**
+	* Getter for all expense tables.
+	* 
+	* This function will be used when we are dealing with all accounts in the database.
+	*/
 	const Map_DBTables& GetExpenseTables() const
 	{
 		return m_ExpenseTables;
+	}
+
+	/**
+	* Getter for Account Name.
+	*/
+	const std::string& GetAccountName() const
+	{
+		return m_AccountName;
 	}
 
 	/**
@@ -90,7 +98,7 @@ public:
 	static DatabaseManager* GetInstance();
 
 private:
-	DatabaseManager(const char* dbName, bool useAllAccounts, int openMode);
+	DatabaseManager(const char* dbName, const std::string& accountName, int openMode);
 	DatabaseManager(const DatabaseManager&) = default;
 	DatabaseManager(DatabaseManager&&) = default;
 
@@ -98,6 +106,7 @@ private:
 	std::shared_ptr<DBTable_Expense> m_ExpenseTable;
 	Map_DBTables m_ExpenseTables;
 	bool m_UseAllAccounts;
+	std::string m_AccountName;
 		
 	static std::mutex s_Mutex;
 	static DatabaseManager* s_Instance;

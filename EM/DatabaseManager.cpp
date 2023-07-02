@@ -17,14 +17,15 @@ DatabaseManager* DatabaseManager::GetInstance()
 }
 
 // public
-DatabaseManager::DatabaseManager(const char* dbName, bool useAllAccounts, int openMode)
-	: m_UseAllAccounts(useAllAccounts)
+DatabaseManager::DatabaseManager(const char* dbName, const std::string& accountName, int openMode)
+	: m_AccountName(accountName)
 {
+	m_UseAllAccounts = (accountName == "all");
 	m_Database = std::make_unique<db::Database_SQLite>(dbName, openMode);
 }
 
 // public static
-void DatabaseManager::Create(const char* dbName, bool useAllAccounts, int openMode)
+void DatabaseManager::Create(const char* dbName, const std::string& accountName, int openMode)
 {
 	if (s_Instance == nullptr)
 	{
@@ -32,7 +33,7 @@ void DatabaseManager::Create(const char* dbName, bool useAllAccounts, int openMo
 
 		if (s_Instance == nullptr)
 		{
-			s_Instance = new DatabaseManager(dbName, useAllAccounts, openMode);
+			s_Instance = new DatabaseManager(dbName, accountName, openMode);
 			s_IsInitialized = true;
 		}
 
