@@ -48,9 +48,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="App.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ActionImplementor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -106,7 +103,7 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Assert.h">
+    <ClInclude Include="Assertion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ActionImplementor.h">

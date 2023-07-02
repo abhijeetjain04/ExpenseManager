@@ -3,6 +3,8 @@
 #define BEGIN_NAMESPACE_EM	namespace em {
 #define END_NAMESPACE_EM	}
 
+#include "EM/Assertion.h"
+
 #include <string_view>
 #include <string>
 #include <vector>
@@ -14,11 +16,10 @@
 #include <algorithm>
 #include <memory>
 #include <format>
+#include <iomanip>
 
-
-#include "Assertion.h"
-#include "StatusCodes.h"
-#include "ErrorMessages.h"
+#include "EM/StatusCodes.h"
+#include "EM/ErrorMessages.h"
 
 
 //#define SQLITE_LOGS_ENABLED

@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{972408e7-1f13-40e0-b59c-148996943dcb}</ProjectGuid>
-    <RootNamespace>DBHandler</RootNamespace>
+    <ProjectGuid>{ec1a2c37-3145-405e-8875-20a28ff1ef95}</ProjectGuid>
+    <RootNamespace>CliApp</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -40,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -70,6 +70,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>EM</TargetName>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -104,14 +107,16 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)EM;$(SolutionDir);$(SolutionDir)includes\</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <AdditionalIncludeDirectories>$(ProjectDir)sqlite\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>DBHandler.lib;CLIParser.lib;EM-lib.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -131,48 +136,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Clause.h" />
-    <ClInclude Include="ColumnProperty.h" />
-    <ClInclude Include="Common.h" />
-    <ClInclude Include="Condition.h" />
-    <ClInclude Include="Database_SQLite.h" />
-    <ClInclude Include="QueryHandler.h" />
-    <ClInclude Include="QueryHandler.hpp" />
-    <ClInclude Include="Table.h" />
-    <ClInclude Include="Database_SQLite.hpp" />
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="SQLiteCpp.h" />
-    <ClInclude Include="sqlite\include\sqlite3.h" />
-    <ClInclude Include="SQLite_Assertion.h" />
-    <ClInclude Include="SQLite_Backup.h" />
-    <ClInclude Include="SQLite_Column.h" />
-    <ClInclude Include="SQLite_Database.h" />
-    <ClInclude Include="SQLite_Exception.h" />
-    <ClInclude Include="SQLite_ExecuteMany.h" />
-    <ClInclude Include="SQLite_Savepoint.h" />
-    <ClInclude Include="SQLite_SQLiteCpp.h" />
-    <ClInclude Include="SQLite_Statement.h" />
-    <ClInclude Include="SQLite_Transaction.h" />
-    <ClInclude Include="SQLite_Utils.h" />
-    <ClInclude Include="SQLite_VariadicBind.h" />
-    <ClInclude Include="Table.hpp" />
-    <ClInclude Include="Util.h" />
+    <ClCompile Include="CliApp.cpp" />
+    <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Clause.cpp" />
-    <ClCompile Include="Condition.cpp" />
-    <ClCompile Include="Database_SQLite.cpp" />
-    <ClCompile Include="QueryHandler.cpp" />
-    <ClCompile Include="Table.cpp" />
-    <ClCompile Include="sqlite3.c" />
-    <ClCompile Include="SQLite_Backup.cpp" />
-    <ClCompile Include="SQLite_Column.cpp" />
-    <ClCompile Include="SQLite_Database.cpp" />
-    <ClCompile Include="SQLite_Exception.cpp" />
-    <ClCompile Include="SQLite_Savepoint.cpp" />
-    <ClCompile Include="SQLite_Statement.cpp" />
-    <ClCompile Include="SQLite_Transaction.cpp" />
-    <ClCompile Include="Utils.cpp" />
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

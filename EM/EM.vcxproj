@@ -24,6 +24,7 @@
     <ProjectGuid>{341c5e70-91be-47b0-9a32-8fdb8b255c38}</ProjectGuid>
     <RootNamespace>EM</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>EM</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -40,7 +41,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -72,6 +73,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <GenerateManifest>false</GenerateManifest>
+    <TargetName>$(ProjectName)-lib</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -142,7 +144,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ActionImplementor.cpp" />
-    <ClCompile Include="App.cpp" />
     <ClCompile Include="CLI_ActionHandler_Add.cpp" />
     <ClCompile Include="CLI_ActionHandler_AddCategory.cpp" />
     <ClCompile Include="CLI_ActionHandler_List.cpp" />
@@ -163,7 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActionImplementor.h" />
-    <ClInclude Include="Assert.h" />
+    <ClInclude Include="Assertion.h" />
     <ClInclude Include="CLI_ActionHandlers.h" />
     <ClInclude Include="CLI_ActionHandler_Add.h" />
     <ClInclude Include="CLI_ActionHandler_AddCategory.h" />

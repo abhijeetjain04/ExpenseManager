@@ -13,7 +13,7 @@
 #include "SQLite_Database.h"
 #include "SQLite_Assertion.h"
 
-#include "sqlite3.h""
+#include "sqlite3.h"
 
 namespace SQLite
 {
