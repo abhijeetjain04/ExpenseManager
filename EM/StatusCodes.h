@@ -20,6 +20,8 @@ enum class StatusCode
 
     JSONParsingError,
 
+    NotImplementedYet,
+
     Invalid
 };
 

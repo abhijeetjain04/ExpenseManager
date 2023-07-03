@@ -1,13 +1,14 @@
 #pragma once
 
-#include "IActionHandler.h"
+#include "../IActionHandler.h"
 
 namespace em::action_handler::cli
 {
 
-	class AddCategory : public em::action_handler::Interface
+	class SwitchAccount : public em::action_handler::Interface
 	{
 	public:
+
 		/**
 		* Same as em::action_handler::Interface::Execute(...)
 		*/
@@ -15,8 +16,6 @@ namespace em::action_handler::cli
 			const std::string& commandName,
 			const std::unordered_set<std::string>& flags,
 			const std::map<std::string, std::string>& options) override;
-
 	};
 
 }
-

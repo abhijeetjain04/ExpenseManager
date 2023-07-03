@@ -114,7 +114,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)includes;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,13 +143,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Account\Account.cpp" />
+    <ClCompile Include="Account\Manager.cpp" />
+    <ClCompile Include="ActionHandlers\Cli\AddCategory.cpp" />
+    <ClCompile Include="ActionHandlers\Cli\List.cpp" />
+    <ClCompile Include="ActionHandlers\Cli\List_AllAccounts.cpp" />
+    <ClCompile Include="ActionHandlers\Cli\Remove.cpp" />
+    <ClCompile Include="ActionHandlers\Cli\Report.cpp" />
+    <ClCompile Include="ActionHandlers\Cli\SwitchAccount.cpp" />
     <ClCompile Include="ActionImplementor.cpp" />
-    <ClCompile Include="CLI_ActionHandler_Add.cpp" />
-    <ClCompile Include="CLI_ActionHandler_AddCategory.cpp" />
-    <ClCompile Include="CLI_ActionHandler_List.cpp" />
-    <ClCompile Include="CLI_ActionHandler_List_AllAccounts.cpp" />
-    <ClCompile Include="CLI_ActionHandler_Remove.cpp" />
-    <ClCompile Include="CLI_ActionHandler_Report.cpp" />
+    <ClCompile Include="ActionHandlers\Cli\Add.cpp" />
     <ClCompile Include="Common\EnumAndStringConverter.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -157,7 +160,7 @@
     <ClCompile Include="DatabaseManager.cpp" />
     <ClCompile Include="DBTable_Category.cpp" />
     <ClCompile Include="DBTable_Expense.cpp" />
-    <ClCompile Include="IActionHandler.cpp" />
+    <ClCompile Include="ActionHandlers\IActionHandler.cpp" />
     <ClCompile Include="jsoncpp.cpp" />
     <ClCompile Include="ReportHandler.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -166,14 +169,19 @@
     <Text Include="Scope.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Account\Account.h" />
+    <ClInclude Include="Account\Exceptions\InvalidAccountName.h" />
+    <ClInclude Include="Account\Manager.h" />
+    <ClInclude Include="ActionHandlers\Cli\ActionHandlers.h" />
+    <ClInclude Include="ActionHandlers\Cli\Add.h" />
+    <ClInclude Include="ActionHandlers\Cli\AddCategory.h" />
+    <ClInclude Include="ActionHandlers\Cli\List.h" />
+    <ClInclude Include="ActionHandlers\Cli\List_AllAccounts.h" />
+    <ClInclude Include="ActionHandlers\Cli\Remove.h" />
+    <ClInclude Include="ActionHandlers\Cli\Report.h" />
+    <ClInclude Include="ActionHandlers\Cli\SwitchAccount.h" />
     <ClInclude Include="ActionImplementor.h" />
     <ClInclude Include="Assertion.h" />
-    <ClInclude Include="CLI_ActionHandlers.h" />
-    <ClInclude Include="CLI_ActionHandler_Add.h" />
-    <ClInclude Include="CLI_ActionHandler_AddCategory.h" />
-    <ClInclude Include="CLI_ActionHandler_List_AllAccounts.h" />
-    <ClInclude Include="CLI_ActionHandler_Remove.h" />
-    <ClInclude Include="CLI_ActionHandler_Report.h" />
     <ClInclude Include="Common\CommonEnums.h" />
     <ClInclude Include="Common\EnumAndStringConverter.h" />
     <ClInclude Include="Conditions.h" />
@@ -190,8 +198,7 @@
     <ClInclude Include="json.h" />
     <ClInclude Include="StatusCodes.h" />
     <ClInclude Include="ErrorMessages.h" />
-    <ClInclude Include="CLI_ActionHandler_List.h" />
-    <ClInclude Include="IActionHandler.h" />
+    <ClInclude Include="ActionHandlers\IActionHandler.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Renderer_TextTable.h" />
     <ClInclude Include="ReportHandler.h" />

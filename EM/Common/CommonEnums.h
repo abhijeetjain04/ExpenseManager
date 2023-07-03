@@ -14,6 +14,8 @@ namespace em
         List,
         Report,
         CompareMonths,
+        SwitchAccount,
+
         ClearScreen,
         Invalid
     };

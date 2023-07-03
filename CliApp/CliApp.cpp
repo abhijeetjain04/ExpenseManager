@@ -5,11 +5,13 @@
 #include "EM/DBTable_Category.h"
 #include "EM/DBTable_Expense.h"
 #include "CLIParser/Utils.h"
-#include "EM/CLI_ActionHandlers.h"
+#include "EM/ActionHandlers/Cli/ActionHandlers.h"
 #include "EM/DatabaseManager.h"
 #include "EM/ConfigManager.h"
 #include "EM/Exceptions/Config.h"
 #include "EM/Common/EnumAndStringConverter.h"
+#include "EM/Account/Account.h"
+#include "EM/Account/Manager.h"
 
 #define DATABASE_FILE_NAME "expense.db"
 
@@ -59,6 +61,9 @@ em::CmdType GetCmdType(const char* cmdString)
     if (strcmp(cmdString, CmdString_CompareMonths) == 0)
         return em::CmdType::CompareMonths;
 
+    if (strcmp(cmdString, CmdString_SwitchAccount) == 0)
+        return em::CmdType::SwitchAccount;
+
     return em::CmdType::Invalid;
 }
 
@@ -93,17 +98,17 @@ void InitializeCLI()
         .AddParameter("location", { cli::OptionType::TEXT,            "Custom Location to add the Expense." });
 
     cliParser.RegisterCommand(CmdString_List)
-        .AddParameter("name", { cli::OptionType::TEXT,            "Filters by Regex for Name." })
-        .AddParameter("category", { cli::OptionType::ALPHA_NUMERIC,   "Filters by Category." })
-        .AddParameter("date", { cli::OptionType::DATE,            "Filters by Specific Date." })
-        .AddParameter("month", { cli::OptionType::INTEGER,         "Filters by Month." })
-        .AddParameter("year", { cli::OptionType::INTEGER,         "Filters by Year." })
-        .AddParameter("location", { cli::OptionType::TEXT,            "Filters by Location." })
-        .AddFlag("categories", "Lists all the available categories.")
-        .AddFlag("today", "Lists today's Expenses.")
-        .AddFlag("thisMonth", "Lists this Month's Expenses.")
-        .AddFlag("thisYear", "Lists this Year's Expenses.")
-        .AddFlag("ascending", "Lists in ascending order of date.");
+        .AddParameter("name",       { cli::OptionType::TEXT,                  "Filters by Regex for Name." })
+        .AddParameter("category",   { cli::OptionType::ALPHA_NUMERIC,     "Filters by Category." })
+        .AddParameter("date",       { cli::OptionType::DATE,                  "Filters by Specific Date." })
+        .AddParameter("month",      { cli::OptionType::INTEGER,              "Filters by Month." })
+        .AddParameter("year",       { cli::OptionType::INTEGER,               "Filters by Year." })
+        .AddParameter("location",   { cli::OptionType::TEXT,              "Filters by Location." })
+        .AddFlag("categories",  "Lists all the available categories.")
+        .AddFlag("today",       "Lists today's Expenses.")
+        .AddFlag("thisMonth",   "Lists this Month's Expenses.")
+        .AddFlag("thisYear",    "Lists this Year's Expenses.")
+        .AddFlag("ascending",   "Lists in ascending order of date.");
 
     cliParser.RegisterCommand(CmdString_Remove)
         .AddParameter("row_id", { cli::OptionType::INTEGER, "", true, 1 });
@@ -118,11 +123,15 @@ void InitializeCLI()
     cliParser.RegisterCommand(CmdString_CompareMonths)
         .AddParameter("month1", { cli::OptionType::INTEGER, "First Month to compare",   true,   1 })
         .AddParameter("month2", { cli::OptionType::INTEGER, "Second Month to compare",  true,   2 });
+
+    cliParser.RegisterCommand(CmdString_SwitchAccount)
+        .AddParameter("accountName", { cli::OptionType::TEXT, "Name of the account to switch to.",   true,   1 });
+
 }
 
 void InitializeActionImplementor()
 {
-    if (em::DatabaseManager::GetInstance()->IsUsingAllAccounts())
+    if (em::account::Manager::GetInstance().IsUsingAllAccounts())
     {
         actionImpl.RegisterHandler<em::action_handler::cli::List_AllAccounts>(em::CmdType::List);
     }
@@ -134,43 +143,8 @@ void InitializeActionImplementor()
         actionImpl.RegisterHandler<em::action_handler::cli::Report>(em::CmdType::Report);
     }
 
+    actionImpl.RegisterHandler<em::action_handler::cli::SwitchAccount>(em::CmdType::SwitchAccount);
     actionImpl.RegisterHandler<em::action_handler::cli::AddCategory>(em::CmdType::AddCategory);
-}
-
-void RegisterTables(const std::string& accountName)
-{
-    if (accountName == "all")
-    {
-        auto dbMgr = em::DatabaseManager::GetInstance();
-        dbMgr->RegisterExpenseTable<em::DBTable_PersonalExpense>("personal_expense");
-        dbMgr->RegisterExpenseTable<em::DBTable_HouseholdExpense>("household_expense");
-        dbMgr->RegisterExpenseTable<em::DBTable_MarriageExpense>("marriage_expenses");
-        return;
-    }
-
-    // expeses for different accounts are stored as different tables in the database.
-    const std::string& tableName = accountName;
-    std::string fullTableName = tableName + "_expense";
-    if (fullTableName == "personal_expense")
-    {
-        em::DatabaseManager::GetInstance()->RegisterExpenseTable<em::DBTable_PersonalExpense>(tableName);
-        return;
-    }
-
-    if (fullTableName == "household_expense")
-    {
-        em::DatabaseManager::GetInstance()->RegisterExpenseTable<em::DBTable_HouseholdExpense>(tableName);
-        return;
-    }
-
-    if (fullTableName == "marriage_expense")
-    {
-        em::DatabaseManager::GetInstance()->RegisterExpenseTable<em::DBTable_MarriageExpense>(tableName);
-        return;
-    }
-
-    assert(false);
-    DBG_ASSERT(!"Invalid Table Name");
 }
 
 void InitializeDatabase()
@@ -184,16 +158,24 @@ void InitializeDatabase()
 
     if (isTableName)
     {
-        if (!em::ConfigManager::GetInstance().IsValidAccountName(tableName))
-            throw em::exception::Config(std::format("Invalid table Name : {}", tableName));
+        if (!em::account::Manager::GetInstance().AccountExists(accountName))
+            throw em::exception::Config(std::format("Invalid account : {}", accountName));
     }
 
-    em::DatabaseManager::Create(DATABASE_FILE_NAME, accountName);
-    RegisterTables(tableName);
+    em::account::Manager::GetInstance().SetCurrentAccountName(accountName);
+
+    em::DatabaseManager::Create(DATABASE_FILE_NAME);
+    em::DatabaseManager::GetInstance()->RegisterExpenseTables();
+}
+
+void InitializeAccountManager()
+{
+    em::account::Manager::Create();
 }
 
 void Initialize()
 {
+    InitializeAccountManager();
     InitializeDatabase();
     InitializeCLI();
     InitializeActionImplementor();
@@ -202,7 +184,7 @@ void Initialize()
 void HandleErrorStatusCode(em::CmdType cmdType, em::StatusCode code)
 {
     const std::string& cmdTypStr = em::common::EnumAndStringConverter::ConvertCmdTypeEnumToString(cmdType);
-    const std::string& accountName = em::DatabaseManager::GetInstance()->GetAccountName();
+    const std::string& accountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
 
     if(code == em::StatusCode::CommandDoesNotExist)
     {

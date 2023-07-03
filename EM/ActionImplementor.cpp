@@ -6,7 +6,7 @@
 #include "DBHandler/Util.h"
 #include "DBTable_Expense.h"
 #include "DBTable_Category.h"
-#include "CLI_ActionHandlers.h"
+#include "ActionHandlers/Cli/ActionHandlers.h"
 #include "TextTable.h"
 #include "Conditions.h"
 #include "ReportHandler.h"

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "DBHandler/Database_SQLite.h"
-#include "IActionHandler.h"
+#include "ActionHandlers/IActionHandler.h"
 #include "Common/CommonEnums.h"
 
 #define CmdString_Cls           "cls"
@@ -12,6 +12,7 @@
 #define CmdString_List          "list"
 #define CmdString_Report        "report"
 #define CmdString_CompareMonths "compareMonths"
+#define CmdString_SwitchAccount "switchAccount"
 
 #define actionImpl (*em::ActionImplementor::GetInstance())
 

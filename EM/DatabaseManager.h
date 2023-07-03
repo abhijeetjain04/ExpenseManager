@@ -26,12 +26,7 @@ public:
 	* @params [in] openMode
 	*		Mode in which we want to open the database.
 	*/
-	static void Create(const char* dbName, const std::string& accountName, int openMode = db::OPEN_CREATE | db::OPEN_READWRITE);
-
-	/**
-	* Returns flag used to determine if we are considering all accounts for DB queries.
-	*/
-	bool IsUsingAllAccounts() const;
+	static void Create(const char* dbName, int openMode = db::OPEN_CREATE | db::OPEN_READWRITE);
 
 	/**
 	* This function is used to Register expense tables with the Database Manager.
@@ -85,12 +80,20 @@ public:
 	}
 
 	/**
-	* Getter for Account Name.
+	* Registers the expense tables based on what account is currently selected.
+	* 
+	* @params [in] accountName
+	*		Name of the account to set expense tables for.
 	*/
-	const std::string& GetAccountName() const
-	{
-		return m_AccountName;
-	}
+	void RegisterExpenseTables();
+
+	/**
+	* This function is used to switch account.
+	* 
+	* @params [in] accountName
+	*		Name of the account to switch to
+	*/
+	void OnSwitchAccount();
 
 	/**
 	* Getter for the singleton instance.
@@ -98,15 +101,12 @@ public:
 	static DatabaseManager* GetInstance();
 
 private:
-	DatabaseManager(const char* dbName, const std::string& accountName, int openMode);
+	DatabaseManager(const char* dbName, int openMode);
 	DatabaseManager(const DatabaseManager&) = default;
 	DatabaseManager(DatabaseManager&&) = default;
 
 	std::unique_ptr<db::Database_SQLite> m_Database;
-	std::shared_ptr<DBTable_Expense> m_ExpenseTable;
 	Map_DBTables m_ExpenseTables;
-	bool m_UseAllAccounts;
-	std::string m_AccountName;
 		
 	static std::mutex s_Mutex;
 	static DatabaseManager* s_Instance;
