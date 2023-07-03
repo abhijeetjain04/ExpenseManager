@@ -131,20 +131,7 @@ void InitializeCLI()
 
 void InitializeActionImplementor()
 {
-    if (em::account::Manager::GetInstance().IsUsingAllAccounts())
-    {
-        actionImpl.RegisterHandler<em::action_handler::cli::List_AllAccounts>(em::CmdType::List);
-    }
-    else
-    {
-        actionImpl.RegisterHandler<em::action_handler::cli::List>(em::CmdType::List);
-        actionImpl.RegisterHandler<em::action_handler::cli::Add>(em::CmdType::Add);
-        actionImpl.RegisterHandler<em::action_handler::cli::Remove>(em::CmdType::Remove);
-        actionImpl.RegisterHandler<em::action_handler::cli::Report>(em::CmdType::Report);
-    }
-
-    actionImpl.RegisterHandler<em::action_handler::cli::SwitchAccount>(em::CmdType::SwitchAccount);
-    actionImpl.RegisterHandler<em::action_handler::cli::AddCategory>(em::CmdType::AddCategory);
+    em::ActionImplementor::Create();
 }
 
 void InitializeDatabase()
@@ -165,7 +152,7 @@ void InitializeDatabase()
     em::account::Manager::GetInstance().SetCurrentAccountName(accountName);
 
     em::DatabaseManager::Create(DATABASE_FILE_NAME);
-    em::DatabaseManager::GetInstance()->RegisterExpenseTables();
+    em::DatabaseManager::GetInstance().RegisterExpenseTables();
 }
 
 void InitializeAccountManager()
@@ -218,10 +205,7 @@ int main(int argc, char** argv)
 
             em::StatusCode status = actionImpl.PerformAction(cmdType);
             if (status != em::StatusCode::Success)
-            {
-                printf("\nFailed to execute command!");
                 HandleErrorStatusCode(cmdType, status);
-            }
 
             printf("\n=============================================================");
         }

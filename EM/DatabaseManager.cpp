@@ -11,11 +11,11 @@ bool DatabaseManager::s_IsInitialized = false;
 std::mutex DatabaseManager::s_Mutex;
 
 // public
-DatabaseManager* DatabaseManager::GetInstance()
+DatabaseManager& DatabaseManager::GetInstance()
 {
 	if (!s_IsInitialized)
 		DBG_ASSERT(!"DatabaseManager Not Initialized yet!");
-	return s_Instance;
+	return *s_Instance;
 }
 
 // public

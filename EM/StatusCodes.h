@@ -22,6 +22,10 @@ enum class StatusCode
 
     NotImplementedYet,
 
+    // Account Related
+    AccountAlreadySelected,
+    AccountDoesNotExist,
+
     Invalid
 };
 

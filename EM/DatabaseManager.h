@@ -4,7 +4,7 @@
 #include "DBTable_Expense.h"
 #include "Exceptions/Database/Common.h"
 
-#define databaseMgr (*em::DatabaseManager::GetInstance())
+#define databaseMgr (em::DatabaseManager::GetInstance())
 
 BEGIN_NAMESPACE_EM
 
@@ -98,7 +98,7 @@ public:
 	/**
 	* Getter for the singleton instance.
 	*/
-	static DatabaseManager* GetInstance();
+	static DatabaseManager& GetInstance();
 
 private:
 	DatabaseManager(const char* dbName, int openMode);

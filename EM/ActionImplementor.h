@@ -14,7 +14,7 @@
 #define CmdString_CompareMonths "compareMonths"
 #define CmdString_SwitchAccount "switchAccount"
 
-#define actionImpl (*em::ActionImplementor::GetInstance())
+#define actionImpl (em::ActionImplementor::GetInstance())
 
 BEGIN_NAMESPACE_EM
 
@@ -24,16 +24,31 @@ BEGIN_NAMESPACE_EM
 class ActionImplementor
 {
 public:
+    /**
+    * This function handle the actual processing of the command.
+    * 
+    * @params [in] cmdType
+    *       Type of the command that will be executed
+    * 
+    * @returns
+    *       StatusCode representing the result of the function.
+    */
     StatusCode PerformAction(CmdType cmdType);
 
     /**
-    * Function used to register custom handlers for CmdType.
+    * This function should be called when the account gets switched.
     */
-    template<typename Handler>
-    ActionImplementor& RegisterHandler(CmdType cmdType);
+    void OnAccountSwitched();
 
-    /* static function to get the Singleton Instance. */
-    static ActionImplementor* GetInstance();
+    /**
+    * This creates the singleton instance.
+    */
+    static void Create();
+
+    /**
+    * Getter for the Singleton Instance. 
+    */
+    static ActionImplementor& GetInstance();
 private:
     ActionImplementor();
     ActionImplementor(const ActionImplementor&) = default;
@@ -57,6 +72,27 @@ private:
     em::action_handler::Interface* GetActionHandler(CmdType type) { return m_ActionHandlers[type]; }
 
 private:
+
+    /**
+    */
+    void Initialize();
+
+    /**
+    * Initializes the action handlers 
+    */
+    void InitializeActionHandlers();
+
+    /**
+    * This function is used to register custom handlers for CmdType.
+    * 
+    * @params [in] cmdType
+    *       Command Type for which we are registering the handler.
+    * 
+    * @template_params Handler
+    *       Child class of IActionHandler, which will handle the command.
+    */
+    template<typename Handler>
+    ActionImplementor& RegisterHandler(CmdType cmdType);
 
     /* DataStructure to manage the ActionHandlers for all the commands. */
     std::unordered_map<CmdType, em::action_handler::Interface*>  m_ActionHandlers;

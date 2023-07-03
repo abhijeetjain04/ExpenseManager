@@ -25,8 +25,11 @@ namespace em::account
         * 
         * @params [in] accountName
         *       Name of the account that we want to switch to.
+        * 
+        * @returns 
+        *       True, if account was switched successfully.
         */
-        void SwitchAccount(const std::string& newAccountName);
+        StatusCode SwitchAccount(const std::string& newAccountName);
 
         /**
         * Returns true if the account exists with the account manager.

@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "ActionImplementor.h"
+#include "Account/Manager.h"
+#include "Account/Account.h"
 #include "Common/CommonEnums.h"
 #include "Common/EnumAndStringConverter.h"
 #include "CLIParser/CLIParser.h"
@@ -22,13 +24,39 @@ ActionImplementor::ActionImplementor()
 {
 }
 
-// public
-ActionImplementor* ActionImplementor::GetInstance()
+// private
+void ActionImplementor::Initialize()
 {
-    if (s_Instance == nullptr)
-        s_Instance = new ActionImplementor();
+    InitializeActionHandlers();
+}
 
-    return s_Instance;
+// private
+void ActionImplementor::InitializeActionHandlers()
+{
+    // clear the action handlers before assiging them again,
+    // as the same command can have different action handlers for different accounts.
+    m_ActionHandlers.clear();
+
+    if (em::account::Manager::GetInstance().IsUsingAllAccounts())
+    {
+        RegisterHandler<em::action_handler::cli::List_AllAccounts>(em::CmdType::List);
+    }
+    else
+    {
+        RegisterHandler<em::action_handler::cli::List>(em::CmdType::List);
+        RegisterHandler<em::action_handler::cli::Add>(em::CmdType::Add);
+        RegisterHandler<em::action_handler::cli::Remove>(em::CmdType::Remove);
+        RegisterHandler<em::action_handler::cli::Report>(em::CmdType::Report);
+    }
+
+    RegisterHandler<em::action_handler::cli::SwitchAccount>(em::CmdType::SwitchAccount);
+    RegisterHandler<em::action_handler::cli::AddCategory>(em::CmdType::AddCategory);
+}
+
+// public
+void ActionImplementor::OnAccountSwitched()
+{
+    InitializeActionHandlers();
 }
 
 //public
@@ -48,9 +76,6 @@ StatusCode ActionImplementor::PerformAction(CmdType cmdType)
         return StatusCode::CommandDoesNotExist;
 
     em::action_handler::ResultSPtr result = actionHandler->Execute(cliParser.AsJson());
-    if (result->statusCode != StatusCode::Success)
-        ERROR_LOG(ERROR_ACTIONHANDLER_EXECUTE, result->message);
-
     return result->statusCode;
 }
 
@@ -79,5 +104,21 @@ StatusCode ActionImplementor::ActionHandler_CompareMonth()
 
     return StatusCode::Success;
 }
+
+// public static
+void ActionImplementor::Create()
+{
+    DBG_ASSERT(s_Instance == nullptr);
+    s_Instance = new ActionImplementor();
+    s_Instance->Initialize();
+}
+
+// public static
+ActionImplementor& ActionImplementor::GetInstance()
+{
+    DBG_ASSERT(s_Instance != nullptr);
+    return *s_Instance;
+}
+
 
 END_NAMESPACE_EM

@@ -15,7 +15,7 @@ namespace em::action_handler::cli
         std::vector<DBModel_Expense> rows;
 
         double totalExpense = 0.0; // store the total expense from all tables.
-        const Map_DBTables& expenseTables = em::DatabaseManager::GetInstance()->GetExpenseTables();
+        const Map_DBTables& expenseTables = em::DatabaseManager::GetInstance().GetExpenseTables();
         for (auto iter = expenseTables.begin(); iter != expenseTables.end(); iter++)
         {
             const std::string& tableName = iter->first;

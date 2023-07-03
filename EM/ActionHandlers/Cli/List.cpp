@@ -117,7 +117,7 @@ namespace em::action_handler::cli
 	{
 		std::vector<DBModel_Category> rows;
 
-		auto table = DatabaseManager::GetInstance()->GetTable<DBTable_Category>();
+		auto table = DatabaseManager::GetInstance().GetTable<DBTable_Category>();
 		if (!table->Select(rows))
 		{
 			ERROR_LOG(ERROR_DB_SELECT_CATEGORY);

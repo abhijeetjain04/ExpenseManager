@@ -14,19 +14,17 @@ namespace em::common
 	private:
 		inline static std::unordered_map<em::CmdType, std::string> s_MapCmdTypeEnumToString
 		{
-			{em::CmdType::Help, "Help"},
-			{em::CmdType::AddCategory, "AddCategory"},
-			{em::CmdType::Add, "Add"},
-			{em::CmdType::Remove, "Remove"},
-			{em::CmdType::List, "List"},
-			{em::CmdType::Report, "Report"},
-			{em::CmdType::CompareMonths, "CompareMonths"},
-			{em::CmdType::ClearScreen, "ClearScreen"},
-			{em::CmdType::Invalid, "Invalid"},
+			MAP_ENTRY(em::CmdType, Help),
+			MAP_ENTRY(em::CmdType, AddCategory),
+			MAP_ENTRY(em::CmdType, Add),
+			MAP_ENTRY(em::CmdType, Remove),
+			MAP_ENTRY(em::CmdType, List),
+			MAP_ENTRY(em::CmdType, Report),
+			MAP_ENTRY(em::CmdType, CompareMonths),
+			MAP_ENTRY(em::CmdType, SwitchAccount),
+			MAP_ENTRY(em::CmdType, ClearScreen),
 			MAP_ENTRY(em::CmdType, Invalid)
 		};
-
-
 	};
 }
 

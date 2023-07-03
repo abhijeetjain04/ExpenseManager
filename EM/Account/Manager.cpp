@@ -25,15 +25,16 @@ namespace em::account
     }
 
     // public
-    void Manager::SwitchAccount(const std::string& newAccountName)
+    StatusCode Manager::SwitchAccount(const std::string& newAccountName)
     {
+        if (m_CurrentAccountName == newAccountName)
+            return StatusCode::AccountAlreadySelected;
+
         if (!AccountExists(newAccountName))
-        {
-            printf("\nAccount does not exist: %s", newAccountName.c_str());
-            return;
-        }
+            return StatusCode::AccountDoesNotExist;
 
         SetCurrentAccountName(newAccountName);
+        return StatusCode::Success;
     }
 
     // public
