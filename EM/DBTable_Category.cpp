@@ -3,51 +3,53 @@
 #include "DBHandler/Util.h"
 
 
-BEGIN_NAMESPACE_EM
-
-void DBTable_Category::InitializeColumns()
+namespace em
 {
-    m_ColumnProperties = {
-        db::ColumnProperty_RowID(),
-        {
-            "name",
-            db::ColumnProperty::TEXT,
-            false,
-            true,
-            true
-        },
-    };
-}
-
-std::string DBInsertQueryHandler_Category::GenerateQuery(const DBModel_Category& model)
-{
-    const std::string& unformattedQuery = base::GenerateQueryTemplate();
-    return std::vformat(unformattedQuery, std::make_format_args(model.Name));
-}
 
 
-bool DBSelectQueryHandler_Category::ParseResult(
-    const std::shared_ptr<SQLite::Statement>& stmt,
-    std::vector<DBModel_Category>& rows)
-{
-    try
+    void DBTable_Category::InitializeColumns()
     {
-        int count = 0;
-        while (stmt->executeStep())
+        m_ColumnProperties = {
+            db::ColumnProperty_RowID(),
+            {
+                "name",
+                db::ColumnProperty::TEXT,
+                false,
+                true,
+                true
+            },
+        };
+    }
+
+    std::string DBInsertQueryHandler_Category::GenerateQuery(const DBModel_Category& model)
+    {
+        const std::string& unformattedQuery = base::GenerateQueryTemplate();
+        return std::vformat(unformattedQuery, std::make_format_args(model.Name));
+    }
+
+
+    bool DBSelectQueryHandler_Category::ParseResult(
+        const std::shared_ptr<SQLite::Statement>& stmt,
+        std::vector<DBModel_Category>& rows)
+    {
+        try
         {
-            int index = 0;
-            DBModel_Category& row = rows.emplace_back();
-            row.RowID = stmt->getColumn(index++);
-            row.Name = stmt->getColumn(index++).getString();
+            int count = 0;
+            while (stmt->executeStep())
+            {
+                int index = 0;
+                DBModel_Category& row = rows.emplace_back();
+                row.RowID = stmt->getColumn(index++);
+                row.Name = stmt->getColumn(index++).getString();
+            }
         }
-    }
-    catch (SQLite::Exception& e)
-    {
-        SQLITE_EXCEPTION(e);
-        return false;
+        catch (SQLite::Exception& e)
+        {
+            SQLITE_EXCEPTION(e);
+            return false;
+        }
+
+        return true;
     }
 
-    return true;
 }
-
-END_NAMESPACE_EM

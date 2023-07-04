@@ -1,8 +1,5 @@
 #pragma once
 
-#define BEGIN_NAMESPACE_EM	namespace em {
-#define END_NAMESPACE_EM	}
-
 #include <string_view>
 #include <string>
 #include <vector>

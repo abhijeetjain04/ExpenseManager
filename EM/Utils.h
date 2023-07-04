@@ -1,9 +1,8 @@
 #pragma once
 
-BEGIN_NAMESPACE_EM
-
-namespace utils
+namespace em::utils
 {
+
     /**
     * This Functions updates the month's value as is expected by the Database.
     * e.g.: if month="1" => month="01" etc.
@@ -25,6 +24,9 @@ namespace utils
     * This function returns absolute directory file where the executable lies.
     */
     std::string GetExecutableDirPath();
-}
 
-END_NAMESPACE_EM
+    /**
+    * This function converts an unordered_map to vector<pair>
+    */
+    void ConvertToVector(const std::unordered_map<std::string, double>& map, std::vector<std::pair<std::string, double>>& vector, bool sortByValue = true);
+}

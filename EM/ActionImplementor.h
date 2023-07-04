@@ -16,96 +16,98 @@
 
 #define actionImpl (em::ActionImplementor::GetInstance())
 
-BEGIN_NAMESPACE_EM
-
-/**
-* Singleton class to execute the commands for cli.
-*/
-class ActionImplementor
+namespace em
 {
-public:
-    /**
-    * This function handle the actual processing of the command.
-    * 
-    * @params [in] cmdType
-    *       Type of the command that will be executed
-    * 
-    * @returns
-    *       StatusCode representing the result of the function.
-    */
-    StatusCode PerformAction(CmdType cmdType);
+
 
     /**
-    * This function should be called when the account gets switched.
+    * Singleton class to execute the commands for cli.
     */
-    void OnAccountSwitched();
+    class ActionImplementor
+    {
+    public:
+        /**
+        * This function handle the actual processing of the command.
+        *
+        * @params [in] cmdType
+        *       Type of the command that will be executed
+        *
+        * @returns
+        *       StatusCode representing the result of the function.
+        */
+        StatusCode PerformAction(CmdType cmdType);
 
-    /**
-    * This creates the singleton instance.
-    */
-    static void Create();
+        /**
+        * This function should be called when the account gets switched.
+        */
+        void OnAccountSwitched();
 
-    /**
-    * Getter for the Singleton Instance. 
-    */
-    static ActionImplementor& GetInstance();
-private:
-    ActionImplementor();
-    ActionImplementor(const ActionImplementor&) = default;
+        /**
+        * This creates the singleton instance.
+        */
+        static void Create();
 
-    /**
-    * Displays help for the cli commands.
-    */
-    StatusCode DisplayHelp();
+        /**
+        * Getter for the Singleton Instance.
+        */
+        static ActionImplementor& GetInstance();
+    private:
+        ActionImplementor();
+        ActionImplementor(const ActionImplementor&) = default;
 
-    /**
-    * Will be moved in the future.
-    */
-    StatusCode ActionHandler_CompareMonth();
+        /**
+        * Displays help for the cli commands.
+        */
+        StatusCode DisplayHelp();
 
-    /**
-    * Helper functon to get the corresponding ActionHandler.
-    * 
-    * @params [in] type
-    *       Type of command to get the action handler for.
-    */
-    em::action_handler::Interface* GetActionHandler(CmdType type) { return m_ActionHandlers[type]; }
+        /**
+        * Will be moved in the future.
+        */
+        StatusCode ActionHandler_CompareMonth();
 
-private:
+        /**
+        * Helper functon to get the corresponding ActionHandler.
+        *
+        * @params [in] type
+        *       Type of command to get the action handler for.
+        */
+        em::action_handler::Interface* GetActionHandler(CmdType type) { return m_ActionHandlers[type]; }
 
-    /**
-    */
-    void Initialize();
+    private:
 
-    /**
-    * Initializes the action handlers 
-    */
-    void InitializeActionHandlers();
+        /**
+        */
+        void Initialize();
 
-    /**
-    * This function is used to register custom handlers for CmdType.
-    * 
-    * @params [in] cmdType
-    *       Command Type for which we are registering the handler.
-    * 
-    * @template_params Handler
-    *       Child class of IActionHandler, which will handle the command.
-    */
+        /**
+        * Initializes the action handlers
+        */
+        void InitializeActionHandlers();
+
+        /**
+        * This function is used to register custom handlers for CmdType.
+        *
+        * @params [in] cmdType
+        *       Command Type for which we are registering the handler.
+        *
+        * @template_params Handler
+        *       Child class of IActionHandler, which will handle the command.
+        */
+        template<typename Handler>
+        ActionImplementor& RegisterHandler(CmdType cmdType);
+
+        /* DataStructure to manage the ActionHandlers for all the commands. */
+        std::unordered_map<CmdType, em::action_handler::Interface*>  m_ActionHandlers;
+
+        /* Single Instance. */
+        static ActionImplementor* s_Instance;
+    };
+
     template<typename Handler>
-    ActionImplementor& RegisterHandler(CmdType cmdType);
+    ActionImplementor& ActionImplementor::RegisterHandler(CmdType cmdType)
+    {
+        m_ActionHandlers[cmdType] = new Handler();
+        return *this;
+    }
 
-    /* DataStructure to manage the ActionHandlers for all the commands. */
-    std::unordered_map<CmdType, em::action_handler::Interface*>  m_ActionHandlers;
-
-    /* Single Instance. */
-    static ActionImplementor* s_Instance;
-};
-
-template<typename Handler>
-ActionImplementor& ActionImplementor::RegisterHandler(CmdType cmdType)
-{
-    m_ActionHandlers[cmdType] = new Handler();
-    return *this;
 }
-
-END_NAMESPACE_EM

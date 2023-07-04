@@ -4,10 +4,9 @@
 #include <filesystem>
 #include <windows.h>
 
-BEGIN_NAMESPACE_EM
-
-namespace utils
+namespace em::utils
 {
+
     void FixMonthName(std::string& month)
     {
         int monthInInt = std::atoi(month.c_str());
@@ -16,7 +15,7 @@ namespace utils
 
     std::string GetMonthNameFromNumber(int month)
     {
-        switch (month) 
+        switch (month)
         {
         case 1:     return "January";
         case 2:     return "February";
@@ -54,6 +53,22 @@ namespace utils
         return result + "\\";
     }
 
-}
+    void ConvertToVector(const std::unordered_map<std::string, double>& map, std::vector<std::pair<std::string, double>>& vector, bool sortByValue)
+    {
+        // Copy key-value pair from Map
+        // to vector of pairs
+        for (auto& it : map) {
+            vector.push_back(it);
+        }
 
-END_NAMESPACE_EM
+        if (sortByValue)
+        {
+            // Sort using comparator function
+            std::sort(vector.begin(), vector.end(), 
+                [&](const std::pair<std::string, double>& val1, const std::pair<std::string, double>& val2)
+                {
+                    return val1.second > val2.second;
+                });
+        }
+    }
+}

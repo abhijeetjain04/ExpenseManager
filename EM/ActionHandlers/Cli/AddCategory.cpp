@@ -3,7 +3,6 @@
 #include "EM/DatabaseManager.h"
 #include "EM/DBTables.h"
 #include "EM/Conditions.h"
-#include "EM/Renderer_TextTable.h"
 
 #include "DBHandler/Util.h"
 
