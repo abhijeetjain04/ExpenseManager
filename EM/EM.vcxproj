@@ -146,6 +146,7 @@
     <ClCompile Include="Account\Account.cpp" />
     <ClCompile Include="Account\Manager.cpp" />
     <ClCompile Include="ActionHandlers\Cli\AddCategory.cpp" />
+    <ClCompile Include="ActionHandlers\Cli\CompareMonths.cpp" />
     <ClCompile Include="ActionHandlers\Cli\List.cpp" />
     <ClCompile Include="ActionHandlers\Cli\List_AllAccounts.cpp" />
     <ClCompile Include="ActionHandlers\Cli\Remove.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="ActionHandlers\Cli\ActionHandlers.h" />
     <ClInclude Include="ActionHandlers\Cli\Add.h" />
     <ClInclude Include="ActionHandlers\Cli\AddCategory.h" />
+    <ClInclude Include="ActionHandlers\Cli\CompareMonths.h" />
     <ClInclude Include="ActionHandlers\Cli\List.h" />
     <ClInclude Include="ActionHandlers\Cli\List_AllAccounts.h" />
     <ClInclude Include="ActionHandlers\Cli\Remove.h" />

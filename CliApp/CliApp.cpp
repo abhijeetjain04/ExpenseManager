@@ -136,21 +136,6 @@ void InitializeActionImplementor()
 
 void InitializeDatabase()
 {
-    std::string accountName;
-    GetAccountNameInput(accountName);
-
-    // Account name is used as the table name to store in DB.
-    const std::string& tableName = accountName;
-    bool isTableName = tableName != "all";
-
-    if (isTableName)
-    {
-        if (!em::account::Manager::GetInstance().AccountExists(accountName))
-            throw em::exception::Config(std::format("Invalid account : {}", accountName));
-    }
-
-    em::account::Manager::GetInstance().SetCurrentAccountName(accountName);
-
     em::DatabaseManager::Create(DATABASE_FILE_NAME);
     em::DatabaseManager::GetInstance().RegisterExpenseTables();
 }
@@ -158,6 +143,14 @@ void InitializeDatabase()
 void InitializeAccountManager()
 {
     em::account::Manager::Create();
+
+    std::string accountName;
+    GetAccountNameInput(accountName);
+
+    if (!em::account::Manager::GetInstance().AccountExists(accountName))
+        throw em::exception::Config(std::format("Invalid account : {}", accountName));
+
+    em::account::Manager::GetInstance().SetCurrentAccountName(accountName);
 }
 
 void Initialize()

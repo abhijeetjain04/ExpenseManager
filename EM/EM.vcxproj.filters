@@ -108,6 +108,9 @@
     <ClCompile Include="Account\Account.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ActionHandlers\Cli\CompareMonths.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Scope.txt">
@@ -218,6 +221,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Account\Exceptions\InvalidAccountName.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionHandlers\Cli\CompareMonths.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

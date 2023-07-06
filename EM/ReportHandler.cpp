@@ -18,6 +18,8 @@ namespace em
     //public
     StatusCode ReportHandler::GenerateReport(Option option, const std::string& month, const std::string& year)
     {
+        m_Unit = std::stoi(month);
+
         db::ConditionGroup condGroup;
         GetCondGroup(condGroup, option, month, year);
 

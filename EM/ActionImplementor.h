@@ -61,11 +61,6 @@ namespace em
         StatusCode DisplayHelp();
 
         /**
-        * Will be moved in the future.
-        */
-        StatusCode ActionHandler_CompareMonth();
-
-        /**
         * Helper functon to get the corresponding ActionHandler.
         *
         * @params [in] type

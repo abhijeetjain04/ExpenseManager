@@ -5,7 +5,7 @@
   "validDatabaseNames" : [
 	"household",
 	"personal",
-	"marriage"
-	"all",
+	"marriage",
+	"all"
   ]
 }

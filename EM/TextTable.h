@@ -298,23 +298,31 @@ namespace em
         TextTable_CompareReport(const ReportHandler& rh1, const ReportHandler& rh2)
             : TextTable()
         {
-            /*
             // header
             add("Category")
                 .add(utils::GetMonthNameFromNumber(rh1.GetUnit()))
                 .add(utils::GetMonthNameFromNumber(rh2.GetUnit()))
                 .endOfRow();
 
-            const auto prices1 = rh1.GetPrices();
-            const auto prices2 = rh2.GetPrices();
+            const auto& prices1 = rh1.GetPrices();
+            const auto& prices2 = rh2.GetPrices();
+
+            DBG_ASSERT(prices1.size() == prices2.size());
 
             double total1 = 0.0;
             double total2 = 0.0;
-            for (size_t i = 0; i < prices1.size(); ++i)
+
+            for (auto iter1 = prices1.begin(); iter1 != prices1.end(); ++iter1)
             {
-                const std::string& categoryName = prices1[i].first;
-                double p1 = prices1[i].second;
-                double p2 = prices2[i].second;
+                const std::string& categoryName = iter1->first;
+
+                // category must be present in the second report.
+                DBG_ASSERT(prices2.find(categoryName) != prices2.end());
+
+                auto iter2 = prices2.find(categoryName);
+
+                double p1 = iter1->second;
+                double p2 = iter2->second;
 
                 total1 += p1;
                 total2 += p2;
@@ -330,7 +338,7 @@ namespace em
                 .add(std::to_string(total1))
                 .add(std::to_string(total2))
                 .endOfRow();
-            */
+            
         }
 
     };

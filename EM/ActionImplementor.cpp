@@ -53,6 +53,7 @@ namespace em
         RegisterHandler<em::action_handler::cli::Report>(em::CmdType::Report);
         RegisterHandler<em::action_handler::cli::SwitchAccount>(em::CmdType::SwitchAccount);
         RegisterHandler<em::action_handler::cli::AddCategory>(em::CmdType::AddCategory);
+        RegisterHandler<em::action_handler::cli::CompareMonths>(em::CmdType::CompareMonths);
     }
 
     // public
@@ -85,25 +86,6 @@ namespace em
     StatusCode ActionImplementor::DisplayHelp()
     {
         cliParser.DisplayHelp();
-        return StatusCode::Success;
-    }
-
-    // private
-    StatusCode ActionImplementor::ActionHandler_CompareMonth()
-    {
-        std::string month1 = cliParser.GetParam("month1").AsString();
-
-        std::string month2 = cliParser.GetParam("month2").AsString();
-
-        printf("\n comparing %s, %s", month1.c_str(), month2.c_str());
-        ReportHandler report1;
-        report1.GenerateReport(ReportHandler::MONTH, month1);
-
-        ReportHandler report2;
-        report2.GenerateReport(ReportHandler::MONTH, month2);
-
-        Renderer_CompareReport::Render(report1, report2);
-
         return StatusCode::Success;
     }
 
