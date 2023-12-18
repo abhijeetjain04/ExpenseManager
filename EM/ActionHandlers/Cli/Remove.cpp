@@ -3,6 +3,7 @@
 #include "EM/DatabaseManager.h"
 #include "EM/DBTables.h"
 #include "EM/Conditions.h"
+#include "EM/Renderer_TextTable.h"
 
 #include "DBHandler/Util.h"
 
@@ -19,7 +20,28 @@ namespace em::action_handler::cli
 
         std::string rowID = options.at("row_id");
 
-        if (!table->Delete(Condition_DeleteRow(rowID)))
+        auto condition = Condition_DeleteRow(rowID);
+
+        std::vector<DBModel_Expense> rows;
+        if (!table->Select(rows, condition))
+        {
+            ERROR_LOG(ERROR_DB_REMOVE_EXPENSE, rowID);
+            return Result::Create(StatusCode::DBError, std::format(ERROR_DB_REMOVE_EXPENSE, rowID));
+        }
+
+        printf("\nFollowing row will be deleted: ");
+        Renderer_ExpenseTable::Render(rows);
+        printf("\nProceed? : ");
+
+        int userInput = 0;
+        std::cin >> userInput;
+        if (userInput == 0)
+        {
+            printf("\nSkipped deletion.");
+            return Result::Create(StatusCode::Success);
+        }
+
+        if (!table->Delete(condition))
         {
             ERROR_LOG(ERROR_DB_REMOVE_EXPENSE, rowID);
             return Result::Create(StatusCode::DBError, std::format(ERROR_DB_REMOVE_EXPENSE, rowID));

@@ -31,8 +31,11 @@ namespace em
             TextTable_Expense t(rows);
             t.Print();
 
-            TextTable_TotalExpense tx(total);
-            tx.Print();
+            if (total != 0.0)
+            {
+                TextTable_TotalExpense tx(total);
+                tx.Print();
+            }
         }
 
     };
