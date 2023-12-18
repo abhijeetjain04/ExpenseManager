@@ -63,23 +63,31 @@ namespace em
     }
 
     //public
-    StatusCode ActionImplementor::PerformAction(CmdType cmdType)
+    action_handler::ResultSPtr ActionImplementor::PerformAction(CmdType cmdType)
     {
         if (cmdType == CmdType::ClearScreen)
         {
             system("cls");
-            return StatusCode::Success;
+            return action_handler::Result::Create(StatusCode::Success);
         }
 
         if (cmdType == CmdType::Help)
-            return DisplayHelp();
+        {
+            StatusCode code = DisplayHelp();
+            return action_handler::Result::Create(code);
+        }
 
         auto actionHandler = GetActionHandler(cmdType);
         if (!actionHandler)
-            return StatusCode::CommandDoesNotExist;
+        {
+            std::string accountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
+            std::string cmdTypeStr = em::common::EnumAndStringConverter::ConvertCmdTypeEnumToString(cmdType);
+            std::string message = std::format("\nCommand: '{}' is not supported for account: '{}'", cmdTypeStr, accountName);
+            return action_handler::Result::Create(StatusCode::CommandDoesNotExist, message);
+        }
 
         em::action_handler::ResultSPtr result = actionHandler->Execute(cliParser.AsJson());
-        return result->statusCode;
+        return result;
     }
 
     // private

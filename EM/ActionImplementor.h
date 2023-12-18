@@ -33,9 +33,9 @@ namespace em
         *       Type of the command that will be executed
         *
         * @returns
-        *       StatusCode representing the result of the function.
+        *       action_handler::ResultSPtr - representing the result of the function.
         */
-        StatusCode PerformAction(CmdType cmdType);
+        action_handler::ResultSPtr PerformAction(CmdType cmdType);
 
         /**
         * This function should be called when the account gets switched.

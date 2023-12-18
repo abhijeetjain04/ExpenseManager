@@ -161,17 +161,6 @@ void Initialize()
     InitializeActionImplementor();
 }
 
-void HandleErrorStatusCode(em::CmdType cmdType, em::StatusCode code)
-{
-    const std::string& cmdTypStr = em::common::EnumAndStringConverter::ConvertCmdTypeEnumToString(cmdType);
-    const std::string& accountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
-
-    if(code == em::StatusCode::CommandDoesNotExist)
-    {
-        printf("%s", std::format("\nCommand: '{}' is not supported for account: '{}'", cmdTypStr, accountName).c_str());
-    }
-}
-
 int main(int argc, char** argv)
 {
     try
@@ -184,10 +173,15 @@ int main(int argc, char** argv)
             std::string commandStr;
             std::vector<std::string> args;
             GetCommandString(commandStr, args);
-            if (commandStr.empty() || commandStr == "quit")
+
+            if (commandStr.empty())
+                continue;
+
+            if (commandStr == "quit")
                 break;
 
-            cliParser.Parse(args);
+            if (!cliParser.Parse(args))
+                continue;
 
             em::CmdType cmdType = GetCmdType(args);
             if (cmdType == em::CmdType::Invalid)
@@ -196,9 +190,9 @@ int main(int argc, char** argv)
                 continue;
             }
 
-            em::StatusCode status = actionImpl.PerformAction(cmdType);
-            if (status != em::StatusCode::Success)
-                HandleErrorStatusCode(cmdType, status);
+            em::action_handler::ResultSPtr actionResult = actionImpl.PerformAction(cmdType);
+            if (actionResult->statusCode != em::StatusCode::Success)
+                printf("%s", actionResult->message.c_str());
 
             printf("\n=============================================================");
         }
@@ -206,10 +200,6 @@ int main(int argc, char** argv)
     catch (std::exception& e)
     {
         printf("\n%s", e.what());
-    }
-    catch (...)
-    {
-        printf("\nUnhandled Exception!");
     }
 
     printf("\n\n");

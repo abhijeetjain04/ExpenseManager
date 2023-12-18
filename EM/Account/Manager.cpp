@@ -70,7 +70,7 @@ namespace em::account
         if (!AccountExists(m_CurrentAccountName))
             throw em::account::exceptions::InvalidAccountName(m_CurrentAccountName);
 
-            return m_Accounts.at(m_CurrentAccountName);
+        return m_Accounts.at(m_CurrentAccountName);
     }
 
     // public
