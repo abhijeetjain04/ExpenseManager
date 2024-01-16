@@ -127,6 +127,8 @@ void InitializeCLI()
     cliParser.RegisterCommand(CmdString_SwitchAccount)
         .AddParameter("accountName", { cli::OptionType::TEXT, "Name of the account to switch to.",   true,   1 });
 
+    cliParser.RegisterCommand(CmdString_Cls);
+
 }
 
 void InitializeActionImplementor()

@@ -4,6 +4,8 @@
 #include "EM/DBTables.h"
 #include "EM/Conditions.h"
 #include "EM/Renderer_TextTable.h"
+#include "EM/Account/Account.h"
+#include "EM/Account/Manager.h"
 
 #include "DBHandler/Util.h"
 
@@ -107,8 +109,10 @@ namespace em::action_handler::cli
                 return e1.Price > e2.Price;
             });
 
+        const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
+
         double totalExpense = expenseTable->SumOf("price", condGroup);
-        Renderer_ExpenseTable::Render(rows, totalExpense);
+        Renderer_ExpenseTable::Render(currentAccountName, rows, totalExpense);
 
         return Result::Create(StatusCode::Success);
     }

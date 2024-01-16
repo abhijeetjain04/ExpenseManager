@@ -4,6 +4,8 @@
 #include "EM/DBTables.h"
 #include "EM/Conditions.h"
 #include "EM/Renderer_TextTable.h"
+#include "EM/Account/Account.h"
+#include "EM/Account/Manager.h"
 
 #include "DBHandler/Util.h"
 
@@ -29,8 +31,10 @@ namespace em::action_handler::cli
             return Result::Create(StatusCode::DBError, std::format(ERROR_DB_REMOVE_EXPENSE, rowID));
         }
 
+        const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
+
         printf("\nFollowing row will be deleted: ");
-        Renderer_ExpenseTable::Render(rows);
+        Renderer_ExpenseTable::Render(currentAccountName, rows);
         printf("\nProceed? : ");
 
         int userInput = 0;

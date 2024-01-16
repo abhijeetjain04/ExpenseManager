@@ -6,14 +6,7 @@
 
 namespace em::exception
 {
-	class Config : public em::exception::Base
-	{
-	public:
-		Config(const std::string& message)
-			: em::exception::Base(message)
-		{
-		}
-	};
+	EXCEPTION_CLASS(Config);
 }
 
 

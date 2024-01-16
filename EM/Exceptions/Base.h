@@ -2,9 +2,21 @@
 
 #include <exception>
 #include <cstdarg>
+#include <format>
+
+#define EXCEPTION_CLASS(class_name) \
+	class class_name : public em::exception::Base \
+	{ \
+	public: \
+		class_name(const std::string& message) \
+			: Base(message, __FILE__, __FUNCTION__) \
+		{ \
+		} \
+	}; \
 
 namespace em::exception
 {
+
 	class Base : public std::exception
 	{
 
@@ -12,10 +24,11 @@ namespace em::exception
 		Base() : Base("")
 		{}
 
-		Base(const std::string& message)
+		Base(const std::string& message, const std::string& fileName = "", const std::string& functionName = "")
 			: std::exception()
-			, m_Message("EXCEPTION: " + message)
-		{}
+		{
+			SetMessage(message, fileName, functionName);
+		}
 
 		virtual char const* what() const override
 		{
@@ -23,9 +36,9 @@ namespace em::exception
 		}
 
 	protected:
-		void SetMessage(const std::string& message)
+		void SetMessage(const std::string& message, const std::string& fileName = "", const std::string& functionName = "")
 		{
-			m_Message = "EXCEPTION: " + message;
+			m_Message = std::format("Exception {}, {} : {}", fileName, functionName, message);
 		}
 
 	private:
