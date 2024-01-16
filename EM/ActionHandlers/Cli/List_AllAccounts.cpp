@@ -4,6 +4,7 @@
 #include "EM/DBTables.h"
 #include "EM/Conditions.h"
 #include "EM/Renderer_TextTable.h"
+#include "EM/ConfigManager.h"
 
 #include "DBHandler/Util.h"
 
@@ -31,15 +32,25 @@ namespace em::action_handler::cli
                     return e1.Price > e2.Price;
                 });
 
-            rows.insert(std::make_pair(tableName, std::move(tableRows)));
+            const std::string& accountName = RetrieveMatchingAccountName(tableName);
+            rows.insert(std::make_pair(accountName, std::move(tableRows)));
 
             totalExpense += expenseTable->SumOf("price", condGroup);
         }
 
-
         Renderer_ExpenseTable::Render(rows, totalExpense);
 
         return Result::Create(StatusCode::Success);
+    }
+
+    std::string List_AllAccounts::RetrieveMatchingAccountName(const std::string& tableName) const
+    {
+        const std::vector<std::string>& accountNames = em::ConfigManager::GetInstance().GetValidAccountNames();
+        for (const std::string& accountName : accountNames)
+        {
+            if (tableName.starts_with(accountName))
+                return accountName;
+        }
     }
 
 }

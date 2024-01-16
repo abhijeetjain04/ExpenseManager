@@ -22,6 +22,14 @@ namespace em::action_handler::cli
 		*/
 		virtual em::action_handler::ResultSPtr ProcessDBTable(const db::ConditionGroup& condGroup, const db::Clause_OrderBy& orderBy) override;
 
+	private:
+		/**
+		* Helper Function. As tableName in database is stored as '{accountName}_expense', this function will retrieve only the accountName part of the tableName.
+		* 
+		* @params [in] tableName
+		*		Name of the table in the database.
+		*/
+		std::string RetrieveMatchingAccountName(const std::string& tableName) const;
 	};
 
 }

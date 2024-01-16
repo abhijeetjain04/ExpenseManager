@@ -233,7 +233,7 @@ namespace em
         *       Name of the account for which we are rendering the records.
         *
         * @params [in] records
-        *       Vector of records for the given account
+        *       Vector of records for the given account.
         */
         TextTable_Expense(const std::string& accountName, const std::vector<DBModel_Expense>& records)
             : TextTable()
@@ -270,7 +270,6 @@ namespace em
         {
             if (rows.size() < 1)
                 return;
-
 
             for (const auto& row : rows)
             {
