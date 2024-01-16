@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
+#include <unordered_map>
 #include <string>
 #include <vector>
 
@@ -46,6 +47,9 @@ namespace em
 
         virtual void Print()
         {
+            if (rows().size() < 1)
+                return;
+
             printf("\n%s", toString().c_str());
         }
 
@@ -224,13 +228,51 @@ namespace em
     class TextTable_Expense : public TextTable
     {
     public:
-        TextTable_Expense(const std::vector<DBModel_Expense>& rows)
+        /**
+        * @params [in] accountName
+        *       Name of the account for which we are rendering the records.
+        *
+        * @params [in] records
+        *       Vector of records for the given account
+        */
+        TextTable_Expense(const std::string& accountName, const std::vector<DBModel_Expense>& records)
             : TextTable()
-            , m_Rows(rows)
         {
-            add("ROW_ID").add("NAME").add("CATEGORY").add("PRICE").add("DATE").add("LOCATION").endOfRow();
+            AppendHeader();
+            AppendRows(records, accountName);
+        }
 
-            for (const auto& row : m_Rows)
+        /**
+        * @params [in] rows
+        *       A map with key as the accountName that the expenses belong to, and value as the actual expense records for the given account.
+        */
+        TextTable_Expense(const std::unordered_map<std::string, std::vector<DBModel_Expense>>& rows)
+            : TextTable()
+        {
+            AppendHeader();
+            for (auto iter = rows.begin(); iter != rows.end(); iter++)
+            {
+                const std::string& accountName = iter->first;
+                const std::vector<DBModel_Expense> records = iter->second;
+
+                AppendRows(records, accountName);
+            }
+        }
+
+    private:
+
+        void AppendHeader()
+        {
+            add("ROW_ID").add("NAME").add("CATEGORY").add("PRICE").add("DATE").add("LOCATION").add("ACCOUNT").endOfRow();
+        }
+
+        void AppendRows(const std::vector<DBModel_Expense>& rows, const std::string& accountName)
+        {
+            if (rows.size() < 1)
+                return;
+
+
+            for (const auto& row : rows)
             {
                 add(std::to_string(row.RowID))
                     .add((row.Name))
@@ -238,12 +280,10 @@ namespace em
                     .add(std::to_string(row.Price))
                     .add(row.Date)
                     .add(row.Location)
+                    .add(accountName)
                     .endOfRow();
             }
         }
-
-    private:
-        const std::vector<DBModel_Expense>& m_Rows;
     };
 
 
