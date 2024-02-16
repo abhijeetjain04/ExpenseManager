@@ -37,7 +37,7 @@ namespace em::utils::string
     /**
     * Splits the string with the 'del' delimiter
     */
-    void SplitString(const std::string& s, char del, std::vector<std::string>& splits, bool trimResultStrings = true);
+    void SplitString(const std::string& s, std::vector<std::string>& splits, char del= ',', bool trimResultStrings = true);
 
     /**
     * Removes spaces from the start of the string.

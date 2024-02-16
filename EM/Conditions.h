@@ -12,15 +12,11 @@ namespace em
     */
     class Condition_Category : public db::Condition
     {
-        using base = db::Condition;
-
-        Condition_Category(const std::string& category)
-            : base("category", category, base::eEQUALS)
-        {
-        }
-        
     public:
-        static Condition_Category* Create(const std::string& category) { return new Condition_Category(category); }
+        static db::Condition* Create(const std::string& category)
+        { 
+            return new db::Condition("category", category, db::Condition::Type::EQUALS);
+        }
     };
 
     /**
@@ -28,14 +24,11 @@ namespace em
     */
     class Condition_Date : public db::Condition
     {
-        using base = db::Condition;
-
-        Condition_Date(const std::string& date)
-            : base("date", date, db::Condition::eEQUALS)
-        {}
-
     public:
-        static Condition_Date* Create(const std::string& date) { return new Condition_Date(date); }
+        static db::Condition* Create(const std::string& date)
+        { 
+            return new db::Condition("date", date, db::Condition::Type::EQUALS); 
+        }
     };
 
     /**
@@ -43,16 +36,10 @@ namespace em
     */
     class Condition_Month : public db::Condition
     {
-        using base = db::Condition;
-
-        Condition_Month(const std::string& month, const std::string year)
-            : base("date", std::format("{}-{}-%", year, month), db::Condition::eLIKE)
-        {}
-
     public:
-        static Condition_Month* Create(const std::string& month, const std::string year = db::util::GetThisYear())
+        static db::Condition* Create(const std::string& month, const std::string year = db::util::GetThisYear())
         {
-            return new Condition_Month(month, year);
+            return new db::Condition("date", std::format("{}-{}-%", year, month), db::Condition::Type::LIKE);
         }
     };
 
@@ -61,16 +48,10 @@ namespace em
     */
     class Condition_Year : public db::Condition
     {
-        using base = db::Condition;
-
-        Condition_Year(const std::string& year)
-            : base("date", std::format("{}-%", year), db::Condition::eLIKE)
-        {}
-
     public:
-        static Condition_Year* Create(const std::string& year)
+        static db::Condition* Create(const std::string& year)
         {
-            return new Condition_Year(year);
+            return new db::Condition("date", std::format("{}-%", year), db::Condition::Type::LIKE);
         }
     };
 
@@ -79,16 +60,10 @@ namespace em
     */
     class Condition_MonthAndYear : public db::Condition
     {
-        using base = db::Condition;
-
-        Condition_MonthAndYear(const std::string& month, const std::string& year)
-            : base("date", std::format("{}-{}-%", year, month), db::Condition::eLIKE)
-        {}
-
     public:
-        static Condition_MonthAndYear* Create(const std::string& month, const std::string& year)
+        static db::Condition* Create(const std::string& month, const std::string& year)
         {
-            return new Condition_MonthAndYear(month, year);
+            return new db::Condition("date", std::format("{}-{}-%", year, month), db::Condition::Type::LIKE);
         }
     };
 
@@ -97,20 +72,14 @@ namespace em
     */
     class Condition_DeleteRow : public db::Condition
     {
-        using base = db::Condition;
-
-        Condition_DeleteRow(const std::string& rowID)
-            : base("row_id", rowID, db::Condition::eEQUALS)
-        {}
-
     public:
-        static Condition_DeleteRow* Create(int rowID)
+        static db::Condition* Create(int rowID)
         {
-            return new Condition_DeleteRow(std::to_string(rowID));
+            return Create(std::to_string(rowID));
         }
-        static Condition_DeleteRow* Create(const std::string& rowID)
+        static db::Condition* Create(const std::string& rowID)
         {
-            return new Condition_DeleteRow(rowID);
+            return new db::Condition("row_id", rowID, db::Condition::Type::EQUALS);
         }
     };
 
@@ -120,16 +89,10 @@ namespace em
     */
     class Condition_ListNameFilter : public db::Condition
     {
-        using base = db::Condition;
-
-        Condition_ListNameFilter(const std::string& name)
-            : base("name", std::format("%{}%", name), db::Condition::eLIKE)
-        {}
-
     public:
-        static Condition_ListNameFilter* Create(const std::string& name)
+        static db::Condition* Create(const std::string& name)
         {
-            return new Condition_ListNameFilter(name);
+            return new db::Condition("name", std::format("%{}%", name), db::Condition::Type::LIKE);
         }
     };
 
@@ -138,16 +101,22 @@ namespace em
     */
     class Condition_LocationFilter : public db::Condition
     {
-        using base = db::Condition;
-
-        Condition_LocationFilter(const std::string& location)
-            : base("location", location, db::Condition::eEQUALS)
-        {}
-
     public:
-        static Condition_LocationFilter* Create(const std::string& location)
+        static db::Condition* Create(const std::string& location)
         {
-            return new Condition_LocationFilter(location);
+            return new db::Condition("location", location, db::Condition::Type::EQUALS);
+        }
+    };
+
+    /**
+    * This class represents the condition used to handle the filteration on 'list' and ignore the mentioned category.
+    */
+    class Condition_IgnoreCategory : public db::Condition
+    {
+    public:
+        static db::Condition* Create(const std::string& categoryName)
+        {
+            return new db::Condition("category", categoryName, db::Condition::Type::NOT_LIKE);
         }
     };
 

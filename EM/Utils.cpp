@@ -76,7 +76,7 @@ namespace em::utils
 
 namespace em::utils::string
 {
-    void SplitString(const std::string& s, char del, std::vector<std::string>& splits, bool trimResultStrings)
+    void SplitString(const std::string& s, std::vector<std::string>& splits, char del, bool trimResultStrings)
     {
         std::stringstream ss(s);
         std::string word;

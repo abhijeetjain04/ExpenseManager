@@ -65,7 +65,7 @@ bool Table<template_args>::CheckIfExists(const std::string& columnName, const st
         return false;
 
     std::vector<Model> rows;
-    Select(rows, Condition(columnName, value, Condition::eEQUALS));
+    Select(rows, Condition(columnName, value, Condition::Type::EQUALS));
     return rows.size() >= 1;
 }
 

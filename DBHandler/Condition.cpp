@@ -40,14 +40,17 @@ std::string Condition::ToString() const
         std::string oper;
         switch (GetType())
         {
-        case Type::eEQUALS:
+        case Type::EQUALS:
             oper = " = ";
             break;
-        case Type::eNOT_EQUALS:
+        case Type::NOT_EQUALS:
             oper = " != ";
             break;
-        case Type::eLIKE:
+        case Type::LIKE:
             oper = " LIKE ";
+            break;
+        case Type::NOT_LIKE:
+            oper = " NOT LIKE ";
             break;
         }
         oss << GetName() << oper << "'" << GetValue() << "'";

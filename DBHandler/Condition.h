@@ -6,23 +6,24 @@ class Condition
 {
 public:
 
-    enum RelationshipType
+    enum class RelationshipType
     {
         AND,
         OR,
         INVALID
     };
 
-    enum Type
+    enum class Type
     {
-        eEQUALS,
-        eNOT_EQUALS,
-        eLIKE,
+        EQUALS,
+        NOT_EQUALS,
+        LIKE,
+        NOT_LIKE,
 
-        eINVALID
+        INVALID
     };
 
-    Condition(RelationshipType relationshipType = RelationshipType::AND) : Condition("", "", Type::eINVALID, relationshipType) {}
+    Condition(RelationshipType relationshipType = RelationshipType::AND) : Condition("", "", Type::INVALID, relationshipType) {}
     Condition(const std::string& name, const std::string& value, Type type, RelationshipType relationshipType = RelationshipType::INVALID);
     ~Condition();
 

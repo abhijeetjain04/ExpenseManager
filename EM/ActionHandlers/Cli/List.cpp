@@ -79,6 +79,13 @@ namespace em::action_handler::cli
             if (result->statusCode != StatusCode::Success)
                 return result;
         }
+        else if (options.contains("ignoreCategory"))
+        {
+            std::vector<std::string> categories;
+            em::utils::string::SplitString(options.at("ignoreCategory"), categories);
+            for (const std::string& category : categories) 
+                finalCondition.Add(Condition_IgnoreCategory::Create(category));
+        }
 
         db::Clause_OrderBy orderBy("date", db::Clause_OrderBy::DESCENDING);
         if (flags.contains("ascending"))
@@ -132,9 +139,9 @@ namespace em::action_handler::cli
         db::Condition& finalCondition, 
         const std::string& categoriesStr) const
     {
-        db::Condition* categoryConditions = new db::Condition(db::Condition::OR);
+        db::Condition* categoryConditions = new db::Condition(db::Condition::RelationshipType::OR);
         std::vector<std::string> categories;
-        em::utils::string::SplitString(categoriesStr, ',', categories);
+        em::utils::string::SplitString(categoriesStr, categories);
         for (const std::string category : categories)
         {
             // check if the category is valid.
