@@ -13,6 +13,9 @@ namespace em::action_handler::cli
 
 	class List : public em::action_handler::Interface
 	{
+	private:
+		em::action_handler::ResultSPtr AppendCategoryCondition(db::Condition& finalCondition, const std::string& categories) const;
+
 	protected:
 		/**
 		* Same as em::action_handler::Interface::Execute(...)

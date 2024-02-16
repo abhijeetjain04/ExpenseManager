@@ -75,23 +75,9 @@ namespace em::action_handler::cli
         // handle categories
         if (options.contains("category"))
         {
-            db::Condition* categoryConditions = new db::Condition(db::Condition::OR);
-            std::vector<std::string> categories;
-            em::utils::string::SplitString(options.at("category"), ',', categories);
-            for (const std::string category : categories)
-            {
-                // check if the category is valid.
-                if (!databaseMgr.GetTable<DBTable_Category>()->CheckIfExists("name", category))
-                {
-                    return em::action_handler::Result::Create(
-                        StatusCode::CategoryDoesNotExist,
-                        std::format(ERROR_CATEGORY_DOES_NOT_EXIST, category));
-                }
-
-                categoryConditions->Add(Condition_Category::Create(category));
-            }
-
-            finalCondition.Add(categoryConditions);
+            auto result = AppendCategoryCondition(finalCondition, options.at("category"));
+            if (result->statusCode != StatusCode::Success)
+                return result;
         }
 
         db::Clause_OrderBy orderBy("date", db::Clause_OrderBy::DESCENDING);
@@ -141,4 +127,29 @@ namespace em::action_handler::cli
 		return em::action_handler::Result::Create(StatusCode::Success);
 	}
 
+    // private
+    em::action_handler::ResultSPtr List::AppendCategoryCondition(
+        db::Condition& finalCondition, 
+        const std::string& categoriesStr) const
+    {
+        db::Condition* categoryConditions = new db::Condition(db::Condition::OR);
+        std::vector<std::string> categories;
+        em::utils::string::SplitString(categoriesStr, ',', categories);
+        for (const std::string category : categories)
+        {
+            // check if the category is valid.
+            if (!databaseMgr.GetTable<DBTable_Category>()->CheckIfExists("name", category))
+            {
+                return em::action_handler::Result::Create(
+                    StatusCode::CategoryDoesNotExist,
+                    std::format(ERROR_CATEGORY_DOES_NOT_EXIST, category));
+            }
+
+            categoryConditions->Add(Condition_Category::Create(category));
+        }
+
+        finalCondition.Add(categoryConditions);
+
+        return em::action_handler::Result::Create(StatusCode::Success);
+    }
 }
