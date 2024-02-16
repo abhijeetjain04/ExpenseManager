@@ -99,7 +99,7 @@ void InitializeCLI()
 
     cliParser.RegisterCommand(CmdString_List)
         .AddParameter("name",       { cli::OptionType::TEXT,                  "Filters by Regex for Name." })
-        .AddParameter("category",   { cli::OptionType::ALPHA_NUMERIC,     "Filters by Category." })
+        .AddParameter("category",   { cli::OptionType::TEXT,     "Filters by Category." })
         .AddParameter("date",       { cli::OptionType::DATE,                  "Filters by Specific Date." })
         .AddParameter("month",      { cli::OptionType::INTEGER,              "Filters by Month." })
         .AddParameter("year",       { cli::OptionType::INTEGER,               "Filters by Year." })

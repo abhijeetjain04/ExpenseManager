@@ -71,4 +71,43 @@ namespace em::utils
                 });
         }
     }
+
 }
+
+namespace em::utils::string
+{
+    void SplitString(const std::string& s, char del, std::vector<std::string>& splits, bool trimResultStrings)
+    {
+        std::stringstream ss(s);
+        std::string word;
+        while (!ss.eof())
+        {
+            getline(ss, word, del);
+            if (trimResultStrings)
+                Trim(word);
+            splits.emplace_back(word);
+        }
+    }
+
+    void LTrim(std::string& s)
+    {
+        s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
+            return !std::isspace(ch);
+            }));
+    }
+
+    void RTrim(std::string& s)
+    {
+        s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+            return !std::isspace(ch);
+            }).base(), s.end());
+    }
+
+    void Trim(std::string& s)
+    {
+        LTrim(s);
+        RTrim(s);
+    }
+
+}
+

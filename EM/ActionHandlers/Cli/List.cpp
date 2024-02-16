@@ -12,6 +12,7 @@
 namespace em::action_handler::cli
 {
 
+    // protected
 	em::action_handler::ResultSPtr List::Execute(
 		const std::string& commandName,
 		const std::unordered_set<std::string>& flags,
@@ -22,19 +23,19 @@ namespace em::action_handler::cli
 		if (flags.contains("categories"))
 			return ListCategories();
 
-        db::ConditionGroup condGroup;
+        db::Condition finalCondition;
 
         // handle dates
         if (flags.contains("thisMonth"))
-            condGroup.Add(Condition_Month(db::util::GetThisMonth()));
+            finalCondition.Add(Condition_Month::Create(db::util::GetThisMonth()));
         if (flags.contains("today"))
-            condGroup.Add(Condition_Date(db::util::GetCurrentDate()));
+            finalCondition.Add(Condition_Date::Create(db::util::GetCurrentDate()));
         if (flags.contains("thisYear"))
-            condGroup.Add(Condition_Year(db::util::GetThisYear()));
+            finalCondition.Add(Condition_Year::Create(db::util::GetThisYear()));
         if (options.contains("date"))
         {
             std::string date = options.at("date");
-            condGroup.Add(Condition_Date(date));
+            finalCondition.Add(Condition_Date::Create(date));
         }
 
         if (options.contains("month") && options.contains("year"))
@@ -43,63 +44,70 @@ namespace em::action_handler::cli
             utils::FixMonthName(month);
 
             std::string year = options.at("year");
-            condGroup.Add(Condition_Month(month, year));
+            finalCondition.Add(Condition_Month::Create(month, year));
         }
         else if (options.contains("month"))
         {
             std::string month = options.at("month");
             utils::FixMonthName(month);
-            condGroup.Add(Condition_Month(month));
+            finalCondition.Add(Condition_Month::Create(month));
         }
         else if (options.contains("year"))
         {
             std::string year = options.at("year");
-            condGroup.Add(Condition_Year(year));
-        }
-
-        // handle categories
-        if (options.contains("category"))
-        {
-            std::string category = options.at("category");
-            // check if the category is valid.
-            if (!databaseMgr.GetTable<DBTable_Category>()->CheckIfExists("name", category))
-            {
-                return em::action_handler::Result::Create(
-                    StatusCode::CategoryDoesNotExist, 
-                    std::format(ERROR_CATEGORY_DOES_NOT_EXIST, category));
-            }
-
-            condGroup.Add(Condition_Category(category));
+            finalCondition.Add(Condition_Year::Create(year));
         }
 
         // handle name
         if (options.contains("name"))
         {
             std::string name = options.at("name");
-            condGroup.Add(Condition_ListNameFilter(name));
+            finalCondition.Add(Condition_ListNameFilter::Create(name));
         }
 
         // handle location
         if (options.contains("location"))
         {
             std::string location = options.at("location");
-            condGroup.Add(Condition_LocationFilter(location));
+            finalCondition.Add(Condition_LocationFilter::Create(location));
         }
 
+        // handle categories
+        if (options.contains("category"))
+        {
+            db::Condition* categoryConditions = new db::Condition(db::Condition::OR);
+            std::vector<std::string> categories;
+            em::utils::string::SplitString(options.at("category"), ',', categories);
+            for (const std::string category : categories)
+            {
+                // check if the category is valid.
+                if (!databaseMgr.GetTable<DBTable_Category>()->CheckIfExists("name", category))
+                {
+                    return em::action_handler::Result::Create(
+                        StatusCode::CategoryDoesNotExist,
+                        std::format(ERROR_CATEGORY_DOES_NOT_EXIST, category));
+                }
+
+                categoryConditions->Add(Condition_Category::Create(category));
+            }
+
+            finalCondition.Add(categoryConditions);
+        }
 
         db::Clause_OrderBy orderBy("date", db::Clause_OrderBy::DESCENDING);
         if (flags.contains("ascending"))
             orderBy.SetType(db::Clause_OrderBy::ASCENDING);
 
-        return ProcessDBTable(condGroup, orderBy);
+        return ProcessDBTable(finalCondition, orderBy);
 	}
 
-    em::action_handler::ResultSPtr List::ProcessDBTable(const db::ConditionGroup& condGroup, const db::Clause_OrderBy& orderBy)
+    // protected
+    em::action_handler::ResultSPtr List::ProcessDBTable(const db::Condition& dbCondition, const db::Clause_OrderBy& orderBy)
     {
         std::vector<DBModel_Expense> rows;
 
         auto expenseTable = databaseMgr.GetTable<DBTable_Expense>();
-        if (!expenseTable->Select(rows, condGroup, orderBy))
+        if (!expenseTable->Select(rows, dbCondition, orderBy))
             return Result::Create(StatusCode::DBError, "Failed to retrieve from table!");
 
         // sort according to price, highest to lowest
@@ -111,12 +119,13 @@ namespace em::action_handler::cli
 
         const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
 
-        double totalExpense = expenseTable->SumOf("price", condGroup);
+        double totalExpense = expenseTable->SumOf("price", dbCondition);
         Renderer_ExpenseTable::Render(currentAccountName, rows, totalExpense);
 
         return Result::Create(StatusCode::Success);
     }
 
+    // protected
 	em::action_handler::ResultSPtr List::ListCategories()
 	{
 		std::vector<DBModel_Category> rows;

@@ -1,7 +1,7 @@
 #pragma once
 
 namespace db { class Database_SQLite; }
-namespace db { class ConditionGroup; }
+namespace db { class Condition; }
 
 namespace em
 {
@@ -32,7 +32,7 @@ namespace em
         int GetUnit() const { return m_Unit; }
 
     private:
-        void GetCondGroup(db::ConditionGroup& condGroup, Option option, const std::string& month, const std::string& year) const;
+        void GenerateCondition(db::Condition& cond, Option option, const std::string& month, const std::string& year) const;
 
         std::unordered_map<std::string, double>         m_Prices;
         Option                                          m_Option;

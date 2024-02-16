@@ -22,10 +22,10 @@ namespace em::action_handler::cli
 
         std::string rowID = options.at("row_id");
 
-        auto condition = Condition_DeleteRow(rowID);
+        auto condition = Condition_DeleteRow::Create(rowID);
 
         std::vector<DBModel_Expense> rows;
-        if (!table->Select(rows, condition))
+        if (!table->Select(rows, *condition))
         {
             ERROR_LOG(ERROR_DB_REMOVE_EXPENSE, rowID);
             return Result::Create(StatusCode::DBError, std::format(ERROR_DB_REMOVE_EXPENSE, rowID));
@@ -45,7 +45,7 @@ namespace em::action_handler::cli
             return Result::Create(StatusCode::Success);
         }
 
-        if (!table->Delete(condition))
+        if (!table->Delete(*condition))
         {
             ERROR_LOG(ERROR_DB_REMOVE_EXPENSE, rowID);
             return Result::Create(StatusCode::DBError, std::format(ERROR_DB_REMOVE_EXPENSE, rowID));

@@ -21,20 +21,4 @@ std::string SumOfQueryHandler::GenerateQuery(const std::string& columnName, cons
     return oss.str();
 }
 
-std::string SumOfQueryHandler::GenerateQuery(const std::string& columnName, const ConditionGroup& conditionGroup)
-{
-    std::ostringstream oss;
-    oss << "SELECT sum(" << columnName << ") ";
-    oss << "from " << GetTable().GetName();
-
-    if (conditionGroup.IsValid())
-    {
-        oss << " WHERE ";
-        oss << conditionGroup.ToString();
-    }
-    oss << ";";
-
-    return oss.str();
-}
-
 END_NAMESPACE_DB

@@ -11,7 +11,9 @@
 namespace em::action_handler::cli
 {
 
-    em::action_handler::ResultSPtr List_AllAccounts::ProcessDBTable(const db::ConditionGroup& condGroup, const db::Clause_OrderBy& orderBy)
+    em::action_handler::ResultSPtr List_AllAccounts::ProcessDBTable(
+        const db::Condition& dbCondition, 
+        const db::Clause_OrderBy& orderBy)
     {
         std::unordered_map<std::string, std::vector<DBModel_Expense>> rows;
 
@@ -22,7 +24,7 @@ namespace em::action_handler::cli
             const std::string& tableName = iter->first;
             const std::shared_ptr<DBTable_Expense> expenseTable = iter->second;
             std::vector<DBModel_Expense> tableRows;
-            if (!expenseTable->Select(tableRows, condGroup, orderBy))
+            if (!expenseTable->Select(tableRows, dbCondition, orderBy))
                 return Result::Create(StatusCode::DBError, std::format("Failed to retrieve from table!", tableName));
 
             // sort according to price, highest to lowest
@@ -35,7 +37,7 @@ namespace em::action_handler::cli
             const std::string& accountName = RetrieveMatchingAccountName(tableName);
             rows.insert(std::make_pair(accountName, std::move(tableRows)));
 
-            totalExpense += expenseTable->SumOf("price", condGroup);
+            totalExpense += expenseTable->SumOf("price", dbCondition);
         }
 
         Renderer_ExpenseTable::Render(rows, totalExpense);
@@ -51,6 +53,8 @@ namespace em::action_handler::cli
             if (tableName.starts_with(accountName))
                 return accountName;
         }
+
+        throw std::exception(std::format("Invalid Account Name: {}", tableName).c_str());
     }
 
 }

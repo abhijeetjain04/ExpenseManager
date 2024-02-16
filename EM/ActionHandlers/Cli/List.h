@@ -4,7 +4,7 @@
 
 namespace db
 {
-	class ConditionGroup;
+	class Condition;
 	class Clause_OrderBy;
 }
 
@@ -27,7 +27,7 @@ namespace em::action_handler::cli
 		/**
 		* This function retrieves the data from the Database Table, and renders it to the console.
 		* 
-		* @params [in] condGroup
+		* @params [in] cond
 		*		Conditions that will be used to filter the data.
 		* 
 		* @params [in] orderBy
@@ -37,7 +37,7 @@ namespace em::action_handler::cli
 		*		Object of ResultSPtr that contains the result details on execution of the function.
 		*
 		*/
-		virtual em::action_handler::ResultSPtr ProcessDBTable(const db::ConditionGroup& condGroup, const db::Clause_OrderBy& orderBy);
+		virtual em::action_handler::ResultSPtr ProcessDBTable(const db::Condition& cond, const db::Clause_OrderBy& orderBy);
 
 		/**
 		* This function handles the request of listing categories

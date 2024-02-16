@@ -79,11 +79,11 @@ public:
     /// <summary>
     /// 
     /// Generates the query for selecting rows from the DBTable.
-    /// Takes into consideration Condition/ConditionGroup and Order by clause while creating the query.
+    /// Takes into consideration Condition and Order by clause while creating the query.
     /// 
     /// </summary>
-    /// <typeparam name="ConditionType">    [in]    Condition/ConditionGroup </typeparam>
-    /// <param name="cond">                 [in]    Condition/ConditionGroup </param>
+    /// <typeparam name="ConditionType">    [in]    Condition </typeparam>
+    /// <param name="cond">                 [in]    Condition </param>
     /// <param name="orderBy">              [in]    OrderBy Clause </param>
     /// <returns>   Select Query    </returns>
     template<typename ConditionType>
@@ -122,7 +122,6 @@ public:
     }
 
     std::string GenerateQuery(const std::string& columnName, const Condition& condition = Condition());
-    std::string GenerateQuery(const std::string& columnName, const ConditionGroup& condition = ConditionGroup());
 };
 
 

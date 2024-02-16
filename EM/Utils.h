@@ -29,4 +29,30 @@ namespace em::utils
     * This function converts an unordered_map to vector<pair>
     */
     void ConvertToVector(const std::unordered_map<std::string, double>& map, std::vector<std::pair<std::string, double>>& vector, bool sortByValue = true);
+
 }
+
+namespace em::utils::string
+{
+    /**
+    * Splits the string with the 'del' delimiter
+    */
+    void SplitString(const std::string& s, char del, std::vector<std::string>& splits, bool trimResultStrings = true);
+
+    /**
+    * Removes spaces from the start of the string.
+    */
+    void LTrim(std::string& s);
+
+    /**
+    * Removes spaces from the end of the string.
+    */
+    void RTrim(std::string& s);
+
+    /**
+    * Removes spaces from the start and end of the string.
+    */
+    void Trim(std::string& s);
+
+}
+

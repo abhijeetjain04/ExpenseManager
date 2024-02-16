@@ -49,18 +49,6 @@ bool Table<template_args>::Insert(
 template<template_args>
 bool Table<template_args>::Select(
     std::vector<Model>& rows, 
-    const ConditionGroup& conditionGroup,
-    const Clause_OrderBy& orderBy)
-{
-    std::string query = m_SelectExecutor->GenerateQuery(conditionGroup, orderBy);
-    SQLITE_LOG_QUERY(query.c_str());
-    auto stmt = GetDatabase().Select(query);
-    return m_SelectExecutor->ParseResult(stmt, rows);
-}
-
-template<template_args>
-bool Table<template_args>::Select(
-    std::vector<Model>& rows, 
     const Condition& condition,
     const Clause_OrderBy& orderBy)
 {
@@ -93,13 +81,6 @@ template<template_args>
 double Table<template_args>::SumOf(const std::string& columnName, const Condition& condition)
 {
     std::string query = m_SumOfExecutor->GenerateQuery(columnName, condition);
-    return GetDatabase().ExecAndGet(query).getDouble();
-}
-
-template<template_args>
-double Table<template_args>::SumOf(const std::string& columnName, const ConditionGroup& conditionGroup)
-{
-    std::string query = m_SumOfExecutor->GenerateQuery(columnName, conditionGroup);
     return GetDatabase().ExecAndGet(query).getDouble();
 }
 

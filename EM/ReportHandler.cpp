@@ -20,8 +20,8 @@ namespace em
     {
         m_Unit = std::stoi(month);
 
-        db::ConditionGroup condGroup;
-        GetCondGroup(condGroup, option, month, year);
+        db::Condition cond;
+        GenerateCondition(cond, option, month, year);
 
         std::vector<DBModel_Category> categories;
         auto categoryTable = databaseMgr.GetTable<DBTable_Category>();
@@ -35,10 +35,10 @@ namespace em
 
             for (const DBModel_Category& category : categories)
             {
-                condGroup.Add(Condition_Category(category.Name));
+                cond.Add(Condition_Category::Create(category.Name));
 
                 std::vector<DBModel_Expense> expenses;
-                expenseTable->Select(expenses, condGroup);
+                expenseTable->Select(expenses, cond);
 
                 double total = 0.0;
                 for (const DBModel_Expense& expense : expenses)
@@ -47,7 +47,7 @@ namespace em
                 m_Prices[category.Name] += total;
 
                 // need to pop the last condition so that category can be changed
-                condGroup.PopBack();
+                cond.PopBack();
             }
         }
 
@@ -81,21 +81,21 @@ namespace em
     }
 
     // private
-    void ReportHandler::GetCondGroup(db::ConditionGroup& condGroup, Option option, const std::string& month, const std::string& year) const
+    void ReportHandler::GenerateCondition(db::Condition& cond, Option option, const std::string& month, const std::string& year) const
     {
         switch (option)
         {
         case Option::TODAY:
-            condGroup.Add(Condition_Date(db::util::GetCurrentDate()));
+            cond.Add(Condition_Date::Create(db::util::GetCurrentDate()));
             break;
         case Option::MONTH:
-            condGroup.Add(Condition_Month(month));
+            cond.Add(Condition_Month::Create(month));
             break;
         case Option::YEAR:
-            condGroup.Add(Condition_Year(year));
+            cond.Add(Condition_Year::Create(year));
             break;
         case Option::MONTH_AND_YEAR:
-            condGroup.Add(Condition_MonthAndYear(month, year));
+            cond.Add(Condition_MonthAndYear::Create(month, year));
             break;
         }
     }

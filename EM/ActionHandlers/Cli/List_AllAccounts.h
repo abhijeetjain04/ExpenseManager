@@ -4,7 +4,7 @@
 
 namespace db
 {
-	class ConditionGroup;
+	class Condition;
 	class Clause_OrderBy;
 }
 
@@ -20,7 +20,7 @@ namespace em::action_handler::cli
 		/**
 		* Same as em::action_handler::cli::List
 		*/
-		virtual em::action_handler::ResultSPtr ProcessDBTable(const db::ConditionGroup& condGroup, const db::Clause_OrderBy& orderBy) override;
+		virtual em::action_handler::ResultSPtr ProcessDBTable(const db::Condition& cond, const db::Clause_OrderBy& orderBy) override;
 
 	private:
 		/**

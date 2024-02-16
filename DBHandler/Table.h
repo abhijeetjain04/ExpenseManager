@@ -55,10 +55,8 @@ public:
 
     virtual void InitializeColumns() = 0;
 
-    double  SumOf(const std::string& columnName, const ConditionGroup& conditionGroup = ConditionGroup());
     double  SumOf(const std::string& columnName, const Condition& condition = Condition());
     bool    Insert(const Model& model);
-    bool    Select(std::vector<Model>& Rows, const ConditionGroup& condition, const Clause_OrderBy& orderBy = Clause_OrderBy());
     bool    Select(std::vector<Model>& Rows, const Condition& condition = Condition(), const Clause_OrderBy& orderBy = Clause_OrderBy());
     bool    Delete(const Condition& condition);
     bool    CheckIfExists(const std::string& columnName, const std::string& value);
