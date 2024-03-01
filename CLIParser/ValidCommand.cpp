@@ -48,6 +48,30 @@ ValidParamMap::const_iterator ValidCommand::GetParameterAtIndex(size_t index) co
         });
 }
 
+// static
+OptionType ValidCommand::ConvertStringToOptionType(const std::string& optionType)
+{
+    if (optionType == "text")
+        return OptionType::TEXT;
+    
+    if (optionType == "alphaNumeric")
+        return OptionType::ALPHA_NUMERIC;
+
+    if (optionType == "double")
+        return OptionType::DOUBLE;
+
+    if (optionType == "integer")
+        return OptionType::INTEGER;
+
+    if (optionType == "alphabetical")
+        return OptionType::ALPHABETICAL;
+
+    if (optionType == "date")
+        return OptionType::DATE;
+
+    return OptionType::INVALID;
+}
+
 /*******************************************/
 
 END_NAMESPACE_CLI

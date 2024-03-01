@@ -19,6 +19,21 @@ namespace em
 	}
 
 	// public
+	bool ConfigManager::HasDefaultAccount() const
+	{
+		return m_Data.DefaultAccountName.has_value();
+	}
+
+	// public
+	const std::string& ConfigManager::GetDefaultAccount() const
+	{
+		if (!HasDefaultAccount())
+			throw std::exception("Default account name not present in config.json");
+
+		return m_Data.DefaultAccountName.value();
+	}
+
+	// public
 	const std::string& ConfigManager::GetDefaultLocation() const
 	{
 		return m_Data.DefaultLocation;
@@ -47,6 +62,10 @@ namespace em
 
 			Json::Value root;
 			inputStream >> root;
+
+			// store default Account name
+			if (root["default"].isMember("account"))
+				m_Data.DefaultAccountName = root["default"]["account"].asString();
 
 			// store default location
 			m_Data.DefaultLocation = root["default"]["location"].asString();

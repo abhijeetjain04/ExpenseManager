@@ -1,9 +1,9 @@
 #pragma once
 
+#include <optional>
+
 namespace em
 {
-
-
 	typedef std::vector<std::string> ValidAccountNames;
 
 	/**
@@ -17,6 +17,7 @@ namespace em
 		*/
 		struct Data
 		{
+			std::optional<std::string> DefaultAccountName;
 			std::string DefaultLocation;
 			ValidAccountNames ValidAccountNames;
 		};
@@ -24,6 +25,8 @@ namespace em
 	public:
 		ConfigManager();
 
+		bool HasDefaultAccount() const;
+		const std::string& GetDefaultAccount() const;
 		const std::string& GetDefaultLocation() const;
 		bool IsValidAccountName(const std::string& dbName) const;
 		ValidAccountNames GetValidAccountNames() const;

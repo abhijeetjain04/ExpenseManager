@@ -21,6 +21,11 @@ namespace em::utils
     std::string GetConfigFilePath();
 
     /**
+    * This function returns the absolute file path of the cliConfig.json file.
+    */
+    std::string GetCliConfigFilePath();
+
+    /**
     * This function returns absolute directory file where the executable lies.
     */
     std::string GetExecutableDirPath();

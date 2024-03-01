@@ -1,6 +1,6 @@
 #include "../pch.h"
 #include "IActionHandler.h"
-#include "rapidjson/document.h"
+#include "EM/json.h"
 
 namespace em::action_handler
 {
@@ -10,28 +10,27 @@ namespace em::action_handler
 		std::unordered_set<std::string> flags;
 		std::map<std::string, std::string> options;
 
-        rapidjson::Document doc;
-        if (doc.Parse(json.c_str(), json.length()).HasParseError())
-            return Result::Create(StatusCode::JSONParsingError, "Failed to parse JSON.");
+        Json::Value root;
+        Json::Reader reader;
+        reader.parse(json, root);
 
-        // get the command name.
-        commandName = doc["command"].GetString();
+        // Set command name.
+        commandName = root["command"].asString();
 
-        // get the flags.
-        rapidjson::Value& jsonFlags = doc["flags"];
-        assert(jsonFlags.IsArray());
-        for (rapidjson::Value::ConstValueIterator iter = jsonFlags.Begin(); iter != jsonFlags.End(); iter++)
-            flags.insert(iter->GetString());
-
-        // get the options.
-        rapidjson::Value& jsonOptions = doc["options"];
-        assert(jsonOptions.IsArray());
-        for (rapidjson::Value::ConstValueIterator itr = jsonOptions.Begin(); itr != jsonOptions.End(); ++itr)
+        // Set Flags
+        const Json::Value& flagsJson = root["flags"];
+        for (const Json::Value& flagJson : flagsJson)
         {
-            const rapidjson::Value& option = *itr;
-            assert(option.IsObject()); // each attribute is an object
-            for (rapidjson::Value::ConstMemberIterator itr2 = option.MemberBegin(); itr2 != option.MemberEnd(); ++itr2)
-                options[itr2->name.GetString()] = itr2->value.GetString();
+            flags.insert(flagJson.asString());
+        }
+
+        // Set Options
+        const Json::Value& optionsJson = root["options"];
+        const std::vector<std::string>& memberNames = optionsJson.getMemberNames();
+        for (const std::string& key : memberNames)
+        {
+            std::string value = optionsJson[key].asString();
+            options.insert(std::make_pair(key, value));
         }
 
         return Execute(commandName, flags, options);

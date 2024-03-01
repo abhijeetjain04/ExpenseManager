@@ -25,8 +25,15 @@ enum OptionType
 
 struct ValidParameterProperties
 {
-    ValidParameterProperties(OptionType type = OptionType::INVALID, const std::string& helperMessage = "", bool mandatory = false, int index = -1)
-        : Type(type), HelperMessage(helperMessage), IsMandatory(mandatory), InOrderIndex(index) {}
+    ValidParameterProperties(
+        OptionType type = OptionType::INVALID, 
+        const std::string& helperMessage = "", 
+        bool mandatory = false, 
+        int index = -1)
+        : Type(type)
+        , HelperMessage(helperMessage)
+        , IsMandatory(mandatory)
+        , InOrderIndex(index) {}
     ValidParameterProperties(const ValidParameterProperties& rhs) = default;
 
     OptionType  Type;
@@ -51,6 +58,8 @@ public:
     ValidParamMap::const_iterator           GetParameterAtIndex(size_t index) const;
 
     const std::unordered_map<std::string, std::string>&  GetFlags() const { return m_Flags; }
+
+    static OptionType ConvertStringToOptionType(const std::string& optionType);
 
 private:
     std::string                                     m_CommandName;

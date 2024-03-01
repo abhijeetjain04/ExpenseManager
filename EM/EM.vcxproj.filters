@@ -232,5 +232,8 @@
     <ClInclude Include="ActionHandlers\Cli\ActionHandlers.h">
       <Filter>Source Files\ActionHandlers\CLI</Filter>
     </ClInclude>
+    <ClInclude Include="Exceptions\General.h">
+      <Filter>Source Files\Exceptions</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -198,6 +198,7 @@
     <ClInclude Include="DBTable_Expense.h" />
     <ClInclude Include="Exceptions\Database\Common.h" />
     <ClInclude Include="Exceptions\EnumStringConverter.h" />
+    <ClInclude Include="Exceptions\General.h" />
     <ClInclude Include="json-forwards.h" />
     <ClInclude Include="json.h" />
     <ClInclude Include="StatusCodes.h" />
