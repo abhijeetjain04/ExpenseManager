@@ -37,7 +37,7 @@ namespace em::utils
 
     std::string GetConfigFilePath()
     {
-        return GetExecutableDirPath() + "config.json";
+        return GetExecutableDirPath() + "Resources\\config.json";
     }
 
     std::string GetCliConfigFilePath()
