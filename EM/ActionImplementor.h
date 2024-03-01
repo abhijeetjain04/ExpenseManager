@@ -13,6 +13,7 @@
 #define CmdString_Report        "report"
 #define CmdString_CompareMonths "compareMonths"
 #define CmdString_SwitchAccount "switchAccount"
+#define CmdString_GitPush       "git-push"
 
 #define actionImpl (em::ActionImplementor::GetInstance())
 

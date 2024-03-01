@@ -32,7 +32,13 @@ namespace em::action_handler::cli
             finalCondition.Add(Condition_Date::Create(db::util::GetCurrentDate()));
         if (flags.contains("thisYear"))
             finalCondition.Add(Condition_Year::Create(db::util::GetThisYear()));
-        if (options.contains("date"))
+        
+        if (flags.contains("yesterday"))
+        {
+            std::string date = db::util::GetYesterdayDate();
+            finalCondition.Add(Condition_Date::Create(date));
+        }
+        else if (options.contains("date"))
         {
             std::string date = options.at("date");
             finalCondition.Add(Condition_Date::Create(date));

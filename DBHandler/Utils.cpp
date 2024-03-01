@@ -5,6 +5,15 @@
 
 BEGIN_NAMESPACE_DB_UTIL
 
+Time GetYesterday()
+{
+    std::time_t now = std::time(0);
+    std::time_t yesterday = now - (static_cast<long long>(60 * 60) * 24);
+    tm t;
+    localtime_s(&t, &yesterday);
+    return Time(t);
+}
+
 Time GetNow()
 {
     std::time_t now = std::time(0);
@@ -13,14 +22,23 @@ Time GetNow()
     return Time(t);
 }
 
+std::string FormatDateAsString(const Time& time)
+{
+    std::string date = std::format("{}-{}-{}"
+        , time.Year
+        , (time.Month < 10 ? "0" + std::to_string(time.Month) : std::to_string(time.Month))
+        , (time.Day < 10 ? "0" + std::to_string(time.Day) : std::to_string(time.Day)));
+    return date;
+}
+
+std::string GetYesterdayDate()
+{
+    return FormatDateAsString(GetYesterday());
+}
+
 std::string GetCurrentDate()
 {
-    auto t = GetNow();
-    std::string date = std::format("{}-{}-{}"
-        , t.Year
-        , (t.Month < 10 ? "0" + std::to_string(t.Month) : std::to_string(t.Month))
-        , (t.Day < 10 ? "0" + std::to_string(t.Day) : std::to_string(t.Day)));
-    return date;
+    return FormatDateAsString(GetNow());
 }
 
 std::string GetThisDay()

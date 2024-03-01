@@ -27,8 +27,12 @@ namespace em::action_handler::cli
 
         model.Name = options.at("name");
         model.Price = std::stod(options.at("price"));
-        model.Date = options.contains("date") ? options.at("date") : "";
         model.Location = options.contains("location") ? options.at("location") : "";
+
+        if (flags.contains("yesterday"))
+            model.Date = db::util::GetYesterdayDate();
+        else
+            model.Date = options.contains("date") ? options.at("date") : "";
 
         if (!expenseTable->Insert(model))
         {

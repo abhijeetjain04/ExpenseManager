@@ -17,6 +17,9 @@ namespace em
         SwitchAccount,
 
         ClearScreen,
+
+        GitPush,
+
         Invalid
     };
 

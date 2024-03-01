@@ -64,6 +64,9 @@ em::CmdType GetCmdType(const char* cmdString)
     if (strcmp(cmdString, CmdString_SwitchAccount) == 0)
         return em::CmdType::SwitchAccount;
 
+    if (strcmp(cmdString, CmdString_GitPush) == 0)
+        return em::CmdType::GitPush;
+
     return em::CmdType::Invalid;
 }
 
@@ -95,7 +98,8 @@ void InitializeCLI()
         .AddParameter("category", { cli::OptionType::ALPHA_NUMERIC, "Category of the Expense.",         true,   2 })
         .AddParameter("price", { cli::OptionType::DOUBLE,           "Price of the Expense.",            true,   3 })
         .AddParameter("date", { cli::OptionType::DATE,              "Custom Date to add the Expense." })
-        .AddParameter("location", { cli::OptionType::TEXT,          "Custom Location to add the Expense." });
+        .AddParameter("location", { cli::OptionType::TEXT,          "Custom Location to add the Expense." })
+        .AddFlag("yesterday",   "Add expense for the previous day.");
 
     cliParser.RegisterCommand(CmdString_List)
         .AddParameter("name",           { cli::OptionType::TEXT,     "Filters by Regex for Name." })
@@ -107,6 +111,7 @@ void InitializeCLI()
         .AddParameter("ignoreCategory", { cli::OptionType::TEXT,     "Ignores records of these categories(comma separated)." })
         .AddFlag("categories",  "Lists all the available categories.")
         .AddFlag("today",       "Lists today's Expenses.")
+        .AddFlag("yesterday",   "Lists yesterday's Expenses.")
         .AddFlag("thisMonth",   "Lists this Month's Expenses.")
         .AddFlag("thisYear",    "Lists this Year's Expenses.")
         .AddFlag("ascending",   "Lists in ascending order of date.");
@@ -127,6 +132,8 @@ void InitializeCLI()
 
     cliParser.RegisterCommand(CmdString_SwitchAccount)
         .AddParameter("accountName", { cli::OptionType::TEXT, "Name of the account to switch to.",   true,   1 });
+
+    cliParser.RegisterCommand(CmdString_GitPush);
 
     cliParser.RegisterCommand(CmdString_Cls);
 

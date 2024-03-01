@@ -84,32 +84,35 @@
     <ClCompile Include="Common\EnumAndStringConverter.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="ActionHandlers\Cli\AddCategory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionHandlers\Cli\List.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionHandlers\Cli\List_AllAccounts.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionHandlers\Cli\Remove.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionHandlers\Cli\Report.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionHandlers\Cli\SwitchAccount.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Account\Manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Account\Account.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ActionHandlers\Cli\List.cpp">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionHandlers\Cli\List_AllAccounts.cpp">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionHandlers\Cli\AddCategory.cpp">
+      <Filter>Source Files\ActionHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionHandlers\Cli\Remove.cpp">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionHandlers\Cli\Report.cpp">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionHandlers\Cli\SwitchAccount.cpp">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClCompile>
     <ClCompile Include="ActionHandlers\Cli\CompareMonths.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionHandlers\Cli\GitPush.cpp">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -193,27 +196,6 @@
     <ClInclude Include="ActionHandlers\Cli\Add.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ActionHandlers\Cli\AddCategory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionHandlers\Cli\List.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionHandlers\Cli\List_AllAccounts.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionHandlers\Cli\Remove.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionHandlers\Cli\Report.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionHandlers\Cli\ActionHandlers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionHandlers\Cli\SwitchAccount.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Account\Manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -223,8 +205,32 @@
     <ClInclude Include="Account\Exceptions\InvalidAccountName.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ActionHandlers\Cli\GitPush.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionHandlers\Cli\List.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionHandlers\Cli\List_AllAccounts.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionHandlers\Cli\Report.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionHandlers\Cli\Remove.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionHandlers\Cli\SwitchAccount.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClInclude>
     <ClInclude Include="ActionHandlers\Cli\CompareMonths.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionHandlers\Cli\AddCategory.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionHandlers\Cli\ActionHandlers.h">
+      <Filter>Source Files\ActionHandlers\CLI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

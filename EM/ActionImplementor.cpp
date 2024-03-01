@@ -54,6 +54,7 @@ namespace em
         RegisterHandler<em::action_handler::cli::SwitchAccount>(em::CmdType::SwitchAccount);
         RegisterHandler<em::action_handler::cli::AddCategory>(em::CmdType::AddCategory);
         RegisterHandler<em::action_handler::cli::CompareMonths>(em::CmdType::CompareMonths);
+        RegisterHandler<em::action_handler::cli::GitPush>(em::CmdType::GitPush);
     }
 
     // public
