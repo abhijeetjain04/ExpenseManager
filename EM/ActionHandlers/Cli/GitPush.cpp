@@ -1,5 +1,6 @@
 #include "EM/pch.h"
 #include "GitPush.h"
+#include "EM/Exceptions/General.h"
 #include "git2/git2.h"
 
 namespace em::action_handler::cli
@@ -12,7 +13,7 @@ namespace em::action_handler::cli
 		const std::map<std::string, std::string>& options)
 	{
 		assert(commandName == "git-push");
-		assert(!"Not Implemented!");
+		throw em::exception::General("git-push is Not Implemented yet!");
 
         return em::action_handler::Result::Create(StatusCode::Success);
 	}
