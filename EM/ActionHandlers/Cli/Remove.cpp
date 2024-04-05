@@ -6,8 +6,8 @@
 #include "EM/Renderer_TextTable.h"
 #include "EM/Account/Account.h"
 #include "EM/Account/Manager.h"
-
 #include "DBHandler/Util.h"
+#include "EM/Conditions.h"
 
 namespace em::action_handler::cli
 {
@@ -20,20 +20,24 @@ namespace em::action_handler::cli
         DBG_ASSERT(commandName == "remove");
         auto table = databaseMgr.GetTable<DBTable_Expense>();
 
-        std::string rowID = options.at("row_id");
+        std::string rowIdStr = options.at("row_id");
 
-        auto condition = Condition_DeleteRow::Create(rowID);
+        db::Condition* removeConditions = new db::Condition(db::Condition::RelationshipType::OR);
+        std::vector<std::string> rowIds;
+        em::utils::string::SplitString(rowIdStr, rowIds);
+        for (const std::string& rowId : rowIds)
+            removeConditions->Add(Condition_DeleteRow::Create(rowId));
 
         std::vector<DBModel_Expense> rows;
-        if (!table->Select(rows, *condition))
+        if (!table->Select(rows, *removeConditions))
         {
-            ERROR_LOG(ERROR_DB_REMOVE_EXPENSE, rowID);
-            return Result::Create(StatusCode::DBError, std::format(ERROR_DB_REMOVE_EXPENSE, rowID));
+            ERROR_LOG(ERROR_DB_REMOVE_EXPENSE, rowIdStr);
+            return Result::Create(StatusCode::DBError, std::format(ERROR_DB_REMOVE_EXPENSE, rowIdStr));
         }
 
         const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
 
-        printf("\nFollowing row will be deleted: ");
+        printf("\nFollowing rows will be deleted: ");
         Renderer_ExpenseTable::Render(currentAccountName, rows);
         printf("\nProceed? : ");
 
@@ -45,10 +49,10 @@ namespace em::action_handler::cli
             return Result::Create(StatusCode::Success);
         }
 
-        if (!table->Delete(*condition))
+        if (!table->Delete(*removeConditions))
         {
-            ERROR_LOG(ERROR_DB_REMOVE_EXPENSE, rowID);
-            return Result::Create(StatusCode::DBError, std::format(ERROR_DB_REMOVE_EXPENSE, rowID));
+            ERROR_LOG(ERROR_DB_REMOVE_EXPENSE, rowIdStr);
+            return Result::Create(StatusCode::DBError, std::format(ERROR_DB_REMOVE_EXPENSE, rowIdStr));
         }
 
         return Result::Create(StatusCode::Success);

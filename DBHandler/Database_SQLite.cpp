@@ -96,7 +96,7 @@ bool Database_SQLite::ExecQuery(const std::string& query)
     {
         SQLITE_LOG_QUERY(query.c_str());
         int numChanges = GetImpl()->exec(query);
-        return numChanges == 1;
+        return numChanges > 0;
     }
     catch (SQLite::Exception& e)
     {
