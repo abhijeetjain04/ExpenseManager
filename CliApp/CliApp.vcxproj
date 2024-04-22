@@ -115,9 +115,14 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>lib2git/git2.lib;DBHandler.lib;CLIParser.lib;EM-lib.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DBHandler.lib;CLIParser.lib;EM-lib.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>if not exist $(SolutionDir)$(Platform)\$(Configuration)\Resources mkdir $(SolutionDir)$(Platform)\$(Configuration)\Resources
+xcopy "$(SolutionDir)Resources" "$(SolutionDir)$(Platform)\$(Configuration)\Resources" /E /I /Y
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

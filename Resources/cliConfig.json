@@ -1,0 +1,205 @@
+{
+  "commands" : [
+	{
+		"name": "add",
+		"parameters": [
+			{
+				"name" : "name",
+				"optionType" : "text",
+				"helperMessage" : "Name of the Expense.",
+				"isMandatory" : true,
+				"inOrderIndex" : 1
+			},
+			{
+				"name" : "category",
+				"optionType" : "alphaNumeric",
+				"helperMessage" : "Name of the Category.",
+				"isMandatory" : true,
+				"inOrderIndex" : 2
+			},
+			{
+				"name" : "price",
+				"optionType" : "double",
+				"helperMessage" : "Price of the Expense.",
+				"isMandatory" : true,
+				"inOrderIndex" : 3
+			},
+			{
+				"name" : "date",
+				"optionType" : "date",
+				"helperMessage" : "Custom Date to add the Expense."
+			},
+			{
+				"name" : "location",
+				"optionType" : "text",
+				"helperMessage" : "Custom Location to add the Expense."
+			}
+		],
+		"flags": [
+			{
+				"name" : "yesterday",
+				"helperMessage" : "Add expense for the previous day."
+			}
+		]
+	},
+	{
+		"name": "addCategory",
+		"parameters": [
+			{
+				"name" : "name",
+				"optionType" : "alphaNumeric",
+				"helperMessage" : "Name of the Category.",
+				"isMandatory" : true,
+				"inOrderIndex" : 1
+			}
+		]
+	},
+	{
+		"name": "list",
+		"parameters": [
+			{
+				"name" : "name",
+				"optionType" : "text",
+				"helperMessage" : "Filters by Regex for Name."
+			},
+			{
+				"name" : "category",
+				"optionType" : "text",
+				"helperMessage" : "Filters by Category.(comma separated)"
+			},
+			{
+				"name" : "date",
+				"optionType" : "date",
+				"helperMessage" : "Filters by Specific Date."
+			},
+			{
+				"name" : "month",
+				"optionType" : "integer",
+				"helperMessage" : "Filters by Month."
+			},
+			{
+				"name" : "year",
+				"optionType" : "integer",
+				"helperMessage" : "Filters by Year."
+			},
+			{
+				"name" : "location",
+				"optionType" : "text",
+				"helperMessage" : "Filters by Location."
+			},
+			{
+				"name" : "ignoreCategory",
+				"optionType" : "text",
+				"helperMessage" : "Ignores records of these categories(comma separated)."
+			}
+		],
+		"flags": [
+			{
+				"name" : "categories",
+				"helperMessage" : "Lists all the available categories."
+			},
+			{
+				"name" : "today",
+				"helperMessage" : "Lists today's Expenses."
+			},
+			{
+				"name" : "yesterday",
+				"helperMessage" : "Lists yesterday's Expenses."
+			},
+			{
+				"name" : "thisMonth",
+				"helperMessage" : "Lists this Month's Expenses."
+			},
+			{
+				"name" : "thisYear",
+				"helperMessage" : "Lists this Year's Expenses."
+			},
+			{
+				"name" : "ascending",
+				"helperMessage" : "Lists in ascending order of date."
+			}
+		]
+	},
+	{
+		"name": "remove",
+		"parameters": [
+			{
+				"name" : "row_id",
+				"optionType" : "text",
+				"helperMessage" : "Id of the rows to be removed.",
+				"isMandatory" : true,
+				"inOrderIndex" : 1
+			}
+		]
+	},
+	{
+		"name": "report",
+		"parameters": [
+			{
+				"name" : "month",
+				"optionType" : "integer",
+				"helperMessage" : "Custom Month's Report."
+			},
+			{
+				"name" : "year",
+				"optionType" : "integer",
+				"helperMessage" : "Custom Year's Report."
+			}
+		],
+		"flags": [
+			{
+				"name" : "today",
+				"helperMessage" : "Today's Report."
+			},
+			{
+				"name" : "thisMonth",
+				"helperMessage" : "This Month's Report."
+			},
+			{
+				"name" : "thisYear",
+				"helperMessage" : "This Year's Report."
+			}
+		]
+	},
+	{
+		"name": "compareMonths",
+		"parameters": [
+			{
+				"name" : "month1",
+				"optionType" : "integer",
+				"helperMessage" : "First Month to compare",
+				"isMandatory" : true,
+				"inOrderIndex" : 1
+			},
+			{
+				"name" : "month2",
+				"optionType" : "integer",
+				"helperMessage" : "Second Month to compare",
+				"isMandatory" : true,
+				"inOrderIndex" : 2
+			}
+		]
+	},
+	{
+		"name": "switchAccount",
+		"parameters": [
+			{
+				"name" : "accountName",
+				"optionType" : "text",
+				"helperMessage" : "Name of the account to switch to.",
+				"isMandatory" : true,
+				"inOrderIndex" : 1
+			}
+		]
+	},
+	{
+		"name": "git-push"
+	},
+	{
+		"name": "cls"
+	},
+	{
+		"name": "help"
+	}
+  ]
+}

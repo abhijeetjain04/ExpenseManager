@@ -3,6 +3,7 @@
 #include "DBHandler/Database_SQLite.h"
 #include "DBTable_Expense.h"
 #include "Exceptions/Database/Common.h"
+#include <mutex>
 
 #define databaseMgr (em::DatabaseManager::GetInstance())
 
