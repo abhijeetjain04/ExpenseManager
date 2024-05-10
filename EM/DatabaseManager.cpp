@@ -36,7 +36,7 @@ namespace em
     {
         if (s_Instance == nullptr)
         {
-            s_Mutex.lock();
+            std::lock_guard<std::mutex> lk (s_Mutex);
 
             if (s_Instance == nullptr)
             {
@@ -44,7 +44,6 @@ namespace em
                 s_IsInitialized = true;
             }
 
-            s_Mutex.unlock();
         }
     }
 
