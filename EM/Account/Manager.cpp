@@ -13,6 +13,11 @@ namespace em::account
     {
     }
 
+    Manager::~Manager()
+    {
+        delete s_Instance;
+    }
+
     // public
     void Manager::Create()
     {
