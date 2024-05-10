@@ -52,6 +52,11 @@ namespace em
         * Getter for the Singleton Instance.
         */
         static ActionImplementor& GetInstance();
+
+		/**
+		* Destructor
+		*/
+        ~ActionImplementor();
     private:
         ActionImplementor();
         ActionImplementor(const ActionImplementor&) = default;
@@ -62,7 +67,7 @@ namespace em
         StatusCode DisplayHelp();
 
         /**
-        * Helper functon to get the corresponding ActionHandler.
+        * Helper function to get the corresponding ActionHandler.
         *
         * @params [in] type
         *       Type of command to get the action handler for.

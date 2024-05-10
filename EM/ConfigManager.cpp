@@ -18,6 +18,12 @@ namespace em
 		Initialize();
 	}
 
+	ConfigManager::~ConfigManager()
+	{
+		delete s_Instance;
+		s_Instance = nullptr;
+	}
+
 	// public
 	bool ConfigManager::HasDefaultAccount() const
 	{

@@ -20,8 +20,6 @@
 
 namespace em
 {
-
-
     /**
     * This class can be used to create a table for representing data on the CLI.
     */

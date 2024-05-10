@@ -19,7 +19,13 @@ namespace em
         return *s_Instance;
     }
 
-    // public
+	DatabaseManager::~DatabaseManager()
+	{
+        delete s_Instance;
+        s_Instance = nullptr;
+	}
+
+	// public
     DatabaseManager::DatabaseManager(const char* dbName, int openMode)
     {
         m_Database = std::make_unique<db::Database_SQLite>(dbName, openMode);

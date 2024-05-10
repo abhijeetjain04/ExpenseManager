@@ -69,6 +69,11 @@ namespace em::account
         */
         bool IsUsingAllAccounts() const;
 
+        /**
+        * Destructor 
+        */
+        ~Manager();
+
     private:
         Manager();
         Manager(const Manager&) = default;
