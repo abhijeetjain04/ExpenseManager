@@ -16,10 +16,9 @@ CLIParser* CLIParser::GetInstance()
 {
     if (s_Instance == nullptr)
     {
-        s_Mutex.lock();
+        std::lock_guard<std::mutex> lk(s_Mutex);
         if(s_Instance == nullptr)
             s_Instance = new CLIParser();
-        s_Mutex.unlock();
     }
     return s_Instance;
 }
