@@ -28,6 +28,7 @@ struct Time
 
 Time GetYesterday();
 Time GetNow();
+std::string FormatDateTimeAsString(const Time& time);
 std::string FormatDateAsString(const Time& time);
 std::string GetYesterdayDate();
 std::string GetCurrentDate();

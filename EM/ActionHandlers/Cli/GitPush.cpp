@@ -1,6 +1,7 @@
 #include "EM/pch.h"
 #include "GitPush.h"
 #include "EM/Exceptions/General.h"
+#include "DBHandler/Util.h"
 #include "git2/git2.h"
 
 namespace em::action_handler::cli
@@ -13,7 +14,28 @@ namespace em::action_handler::cli
 		const std::map<std::string, std::string>& options)
 	{
 		assert(commandName == "git-push");
-		throw em::exception::General("git-push is Not Implemented yet!");
+		system("git status");
+
+		bool hasChanges = system("git diff --quiet") != 0;
+		if (hasChanges)
+		{
+			std::cout << "Press 1 to push changes: ";
+			int input = 0;
+			std::cin >> input;
+			if (input == 1)
+			{
+				system("git add .");
+				std::string dateTimeStr = db::util::FormatDateTimeAsString(db::util::GetNow());
+				std::string commitMessage = std::format("Updated Database => {}", dateTimeStr);
+				std::string commitCommand = std::format("git commit -m \"{}\"", commitMessage);
+				system(commitCommand.c_str());
+				system("git push origin main");
+
+				std::cout << "Pushing Changes Done!" << std::endl;
+			}
+		}
+		else
+			std::cout << "No Changes in the repo";
 
         return em::action_handler::Result::Create(StatusCode::Success);
 	}

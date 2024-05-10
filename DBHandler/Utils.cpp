@@ -22,6 +22,20 @@ Time GetNow()
     return Time(t);
 }
 
+std::string FormatDateTimeAsString(const Time& time)
+{
+    std::string date = std::format("{}-{}-{}"
+        , time.Year
+        , (time.Month < 10 ? "0" + std::to_string(time.Month) : std::to_string(time.Month))
+        , (time.Day < 10 ? "0" + std::to_string(time.Day) : std::to_string(time.Day)));
+    
+    std::string timeStr = std::format("{}:{}"
+        , time.Hour
+        , (time.Minute < 10 ? "0" + std::to_string(time.Minute) : std::to_string(time.Minute)));
+
+    return std::format("{}, {}", date, timeStr);
+}
+
 std::string FormatDateAsString(const Time& time)
 {
     std::string date = std::format("{}-{}-{}"
