@@ -22,6 +22,7 @@ namespace em
 	DatabaseManager::~DatabaseManager()
 	{
         delete s_Instance;
+        s_Instance = nullptr;
 	}
 
 	// public

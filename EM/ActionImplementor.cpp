@@ -17,14 +17,23 @@
 
 namespace em
 {
-
-
     ActionImplementor* ActionImplementor::s_Instance = nullptr;
 
     // private
     ActionImplementor::ActionImplementor()
     {
     }
+
+	ActionImplementor::~ActionImplementor()
+	{
+        for (auto handler : m_ActionHandlers)
+        {
+            delete handler.second;
+            handler.second = nullptr;
+        }
+        delete s_Instance;
+        s_Instance = nullptr;
+	}
 
     // private
     void ActionImplementor::Initialize()
@@ -35,7 +44,7 @@ namespace em
     // private
     void ActionImplementor::InitializeActionHandlers()
     {
-        // clear the action handlers before assiging them again,
+        // clear the action handlers before assigning them again,
         // as the same command can have different action handlers for different accounts.
         m_ActionHandlers.clear();
 

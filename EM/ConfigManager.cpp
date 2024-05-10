@@ -21,6 +21,7 @@ namespace em
 	ConfigManager::~ConfigManager()
 	{
 		delete s_Instance;
+		s_Instance = nullptr;
 	}
 
 	// public
