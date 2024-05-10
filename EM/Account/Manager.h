@@ -69,9 +69,9 @@ namespace em::account
         */
         bool IsUsingAllAccounts() const;
 
-		/**
-		* Destructor 
-		*/
+        /**
+        * Destructor 
+        */
         ~Manager();
 
     private:
