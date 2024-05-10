@@ -103,6 +103,10 @@ namespace em
 		*/
 		static DatabaseManager& GetInstance();
 
+		/**
+		* Destructor
+		*/
+		~DatabaseManager();
 	private:
 		DatabaseManager(const char* dbName, int openMode);
 		DatabaseManager(const DatabaseManager&) = default;
