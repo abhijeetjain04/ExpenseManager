@@ -24,6 +24,7 @@ namespace em
 
 	public:
 		ConfigManager();
+		~ConfigManager();
 
 		bool HasDefaultAccount() const;
 		const std::string& GetDefaultAccount() const;
