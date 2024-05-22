@@ -17,9 +17,11 @@ namespace em::action_handler::cli
 
         printf("\n comparing %s, %s", month1.c_str(), month2.c_str());
         ReportHandler report1;
+        em::utils::FixMonthName(month1);
         report1.GenerateReport(ReportHandler::MONTH, month1);
 
         ReportHandler report2;
+        em::utils::FixMonthName(month2);
         report2.GenerateReport(ReportHandler::MONTH, month2);
 
         Renderer_CompareReport::Render(report1, report2);
