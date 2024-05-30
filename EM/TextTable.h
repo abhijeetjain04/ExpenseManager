@@ -191,6 +191,7 @@ namespace em
                     auto alignment = table.alignment(i) == TextTable::Alignment::LEFT
                         ? std::left
                         : std::right;
+
                     // std::setw( width ) works as follows: a string which goes in the stream
                     // with byte length (!) l is filled with n spaces so that l+n=width. For a
                     // utf8 encoded string the glyph length g might be smaller than l. We need
@@ -372,7 +373,7 @@ namespace em
         {
             add("Category");
             for (const ReportHandler& report : reports)
-                add(utils::GetMonthNameFromNumber(report.GetUnit()));
+                add(utils::date::GetMonthNameFromNumber(report.GetUnit()));
             endOfRow();
         }
     };

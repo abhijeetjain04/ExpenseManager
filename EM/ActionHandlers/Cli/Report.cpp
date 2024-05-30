@@ -64,7 +64,7 @@ namespace em::action_handler::cli
             year = db::util::GetThisYear();
         }
 
-        em::utils::FixMonthName(month);
+        em::utils::date::FixMonthName(month);
         report.GenerateReport(option, month, year);
         report.Print();
 

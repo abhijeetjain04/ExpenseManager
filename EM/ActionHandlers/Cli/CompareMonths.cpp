@@ -18,39 +18,33 @@ namespace em::action_handler::cli
     {
         assert(commandName == "compareMonths");
 
-        if (flags.contains("thisYear"))
-            return CompareAllMonths(db::util::GetThisYear());
+        int startMonth = 1;
+        int endMonth = 12;
+        std::string year = db::util::GetThisYear();
+        if (options.contains("range"))
+        {
+            bool isValid = ValidateRangeParameter(options.at("range"), startMonth, endMonth);
+            if (!isValid)
+                return Result::Create(StatusCode::InvalidParameterValue, "Wrong parameters for range!");
+        }
 
         if (options.contains("year"))
-            return CompareAllMonths(options.at("year"));
-        
-        if (!options.contains("month1") || !options.contains("month2"))
-            return Result::Create(StatusCode::DisplayHelp);
+        {
+            year = options.at("year");
+            if (!em::utils::date::IsValidYear(year))
+                return Result::Create(StatusCode::InvalidParameterValue, std::format("Invalid year: {}", year));
+        }
 
-        std::string month1 = options.at("month1");
-        std::string month2 = options.at("month2");
-
-        printf("\n Comparing %s, %s", month1.c_str(), month2.c_str());
-        ReportHandler report1;
-        em::utils::FixMonthName(month1);
-        report1.GenerateReport(ReportHandler::MONTH, month1);
-
-        ReportHandler report2;
-        em::utils::FixMonthName(month2);
-        report2.GenerateReport(ReportHandler::MONTH, month2, "-1", true);
-
-        Renderer_CompareReport::Render({ report1, report2 });
-
-        return Result::Create(StatusCode::Success);
+        return CompareAllMonths(year, startMonth, endMonth);
     }
 
-    em::action_handler::ResultSPtr CompareMonths::CompareAllMonths(const std::string& year)
+    em::action_handler::ResultSPtr CompareMonths::CompareAllMonths(const std::string& year, int startMonth, int endMonth)
     {
         std::vector<ReportHandler> reports;
-        for (int month = 1; month <= 12; ++month)
+        for (int month = startMonth; month <= endMonth; ++month)
         {
             std::string monthAsString = std::to_string(month);
-            em::utils::FixMonthName(monthAsString);
+            em::utils::date::FixMonthName(monthAsString);
 
             ReportHandler report;
             report.GenerateReport(ReportHandler::MONTH_AND_YEAR, monthAsString, year, true);
@@ -62,4 +56,44 @@ namespace em::action_handler::cli
 
         return Result::Create(StatusCode::Success);
     }
+
+    bool CompareMonths::ValidateRangeParameter(const std::string& rangeValueStr, int& startMonth, int& endMonth)
+    {
+        std::vector<std::string> months;
+        em::utils::string::SplitString(rangeValueStr, months, ':');
+
+        if (months.size() != 2)
+        {
+            printf("-range parameter must have value as 'startMonth:endMonth'");
+            return false;
+        }
+
+        if (!em::utils::IsInteger(months[0]) || !em::utils::IsInteger(months[1]))
+        {
+            printf("\n-range parameter must have integers");
+            return false;
+        }
+
+        startMonth = std::stoi(months[0]);
+        endMonth = std::stoi(months[1]);
+
+        if (startMonth < 1 || startMonth > 12)
+        {
+            printf("\nstartMonth must be between 1 to 12");
+            return false;
+        }
+
+        if (endMonth < 1 || endMonth > 12)
+        {
+            printf("\nendMonth must be between 1 to 12");
+            return false;
+        }
+
+        if (startMonth >= endMonth)
+        {
+            printf("\nstartMonth should be less than endMonth");
+            return false;
+        }
+    }
+
 }

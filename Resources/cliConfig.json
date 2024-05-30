@@ -165,25 +165,14 @@
 		"name": "compareMonths",
 		"parameters": [
 			{
-				"name" : "month1",
-				"optionType" : "integer",
-				"helperMessage" : "First Month to compare"
-			},
-			{
-				"name" : "month2",
-				"optionType" : "integer",
-				"helperMessage" : "Second Month to compare"
+				"name" : "range",
+				"optionType" : "text",
+				"helperMessage" : "Range of months to compare (eg. month1:month2)."
 			},
 			{
 				"name" : "year",
 				"optionType" : "integer",
 				"helperMessage" : "Show records of all months of the 'year'"
-			}
-		],
-		"flags" : [
-			{
-				"name" : "thisYear",
-				"helperMessage" : "Show records of all months for the current year"
 			}
 		]
 	},

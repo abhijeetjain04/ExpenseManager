@@ -47,7 +47,7 @@ namespace em::action_handler::cli
         if (options.contains("month") && options.contains("year"))
         {
             std::string month = options.at("month");
-            utils::FixMonthName(month);
+            utils::date::FixMonthName(month);
 
             std::string year = options.at("year");
             finalCondition.Add(Condition_Month::Create(month, year));
@@ -55,7 +55,7 @@ namespace em::action_handler::cli
         else if (options.contains("month"))
         {
             std::string month = options.at("month");
-            utils::FixMonthName(month);
+            utils::date::FixMonthName(month);
             finalCondition.Add(Condition_Month::Create(month));
         }
         else if (options.contains("year"))

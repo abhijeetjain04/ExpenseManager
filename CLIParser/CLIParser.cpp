@@ -132,7 +132,7 @@ void CLIParser::DisplayHelp(const std::string& commandName) const
 {
     for (const ValidCommand& cmd : m_ValidCommands)
     {
-        if(commandName.empty() || cmd.GetName() == commandName)
+        if(commandName.empty() || commandName.find(cmd.GetName()) != std::string::npos)
             GenerateErrorMessage(cmd.GetName());
     }
 }

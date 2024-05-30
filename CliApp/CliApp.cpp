@@ -225,7 +225,7 @@ int main(int argc, char** argv)
                 if (actionResult->statusCode == em::StatusCode::DisplayHelp)
                     cliParser.DisplayHelp(commandStr);
 
-                printf("%s", actionResult->message.c_str());
+                printf("\nERROR: %s", actionResult->message.c_str());
             }
 
             printf("\n=============================================================");
