@@ -16,6 +16,9 @@ namespace em::action_handler::cli
 			const std::unordered_set<std::string>& flags,
 			const std::map<std::string, std::string>& options) override;
 
+	private:
+		em::action_handler::ResultSPtr CompareAllMonths(const std::string& year);
+
 	};
 
 }

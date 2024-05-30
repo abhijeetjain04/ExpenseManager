@@ -16,7 +16,7 @@ namespace em
     }
 
     //public
-    StatusCode ReportHandler::GenerateReport(Option option, const std::string& month, const std::string& year)
+    StatusCode ReportHandler::GenerateReport(Option option, const std::string& month, const std::string& year, bool includeZeroExpense)
     {
         m_Unit = std::stoi(month);
 
@@ -44,7 +44,7 @@ namespace em
                 for (const DBModel_Expense& expense : expenses)
                     total += expense.Price;
 
-                if (total != 0.0)
+                if(includeZeroExpense || total != 0.0)
                     m_Prices[category.Name] += total;
 
                 // need to pop the last condition so that category can be changed

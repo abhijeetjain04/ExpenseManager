@@ -167,16 +167,23 @@
 			{
 				"name" : "month1",
 				"optionType" : "integer",
-				"helperMessage" : "First Month to compare",
-				"isMandatory" : true,
-				"inOrderIndex" : 1
+				"helperMessage" : "First Month to compare"
 			},
 			{
 				"name" : "month2",
 				"optionType" : "integer",
-				"helperMessage" : "Second Month to compare",
-				"isMandatory" : true,
-				"inOrderIndex" : 2
+				"helperMessage" : "Second Month to compare"
+			},
+			{
+				"name" : "year",
+				"optionType" : "integer",
+				"helperMessage" : "Show records of all months of the 'year'"
+			}
+		],
+		"flags" : [
+			{
+				"name" : "thisYear",
+				"helperMessage" : "Show records of all months for the current year"
 			}
 		]
 	},

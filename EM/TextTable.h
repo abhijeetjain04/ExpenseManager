@@ -332,52 +332,49 @@ namespace em
     {
     public:
 
-        TextTable_CompareReport(const ReportHandler& rh1, const ReportHandler& rh2)
-            : TextTable()
+        TextTable_CompareReport(const std::vector<ReportHandler>& reports)
         {
             // header
-            add("Category")
-                .add(utils::GetMonthNameFromNumber(rh1.GetUnit()))
-                .add(utils::GetMonthNameFromNumber(rh2.GetUnit()))
-                .endOfRow();
+            AddHeader(reports);
 
-            const auto& prices1 = rh1.GetPrices();
-            const auto& prices2 = rh2.GetPrices();
-
-            DBG_ASSERT(prices1.size() == prices2.size());
-
-            double total1 = 0.0;
-            double total2 = 0.0;
-
-            for (auto iter1 = prices1.begin(); iter1 != prices1.end(); ++iter1)
+            std::vector<double> totalPrices(reports.size(), 0.0);
+            const auto& prices = reports[0].GetPrices();
+            // iterate through each category
+            for (auto iter = prices.begin(); iter != prices.end(); iter++)
             {
-                const std::string& categoryName = iter1->first;
+                const std::string& categoryName = iter->first;
+                add(categoryName);
 
-                // category must be present in the second report.
-                DBG_ASSERT(prices2.find(categoryName) != prices2.end());
+                // iterate through each report and get the price for the current category
+                for (size_t i = 0; i < reports.size(); ++i)
+                {
+                    const ReportHandler& report = reports[i];
+                    const std::unordered_map<std::string, double>& reportPrices = report.GetPrices();
+                    double price = reportPrices.find(categoryName)->second;
+                    add(em::utils::FormatDoubleToString(price));
 
-                auto iter2 = prices2.find(categoryName);
-
-                double p1 = iter1->second;
-                double p2 = iter2->second;
-
-                total1 += p1;
-                total2 += p2;
-
-                add(categoryName)
-                    .add(std::to_string(p1))
-                    .add(std::to_string(p2))
-                    .endOfRow();
+                    totalPrices[i] += price;
+                }
+                endOfRow();
             }
 
+            // add an empty row before printing total
             add("").add("").add("").endOfRow();
-            add("TOTAL")
-                .add(std::to_string(total1))
-                .add(std::to_string(total2))
-                .endOfRow();
-            
+
+            // add the total row
+            add("TOTAL");
+            for (double total : totalPrices)
+                add(em::utils::FormatDoubleToString(total));
+            endOfRow();
         }
 
+        void AddHeader(const std::vector<ReportHandler>& reports)
+        {
+            add("Category");
+            for (const ReportHandler& report : reports)
+                add(utils::GetMonthNameFromNumber(report.GetUnit()));
+            endOfRow();
+        }
     };
 
 }

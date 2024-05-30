@@ -77,6 +77,10 @@ namespace em::utils
         }
     }
 
+    std::string FormatDoubleToString(double value, int precision)
+    {
+        return std::format("{:.{}f}", value, precision);
+    }
 }
 
 namespace em::utils::string

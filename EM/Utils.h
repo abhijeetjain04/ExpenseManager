@@ -35,6 +35,11 @@ namespace em::utils
     */
     void ConvertToVector(const std::unordered_map<std::string, double>& map, std::vector<std::pair<std::string, double>>& vector, bool sortByValue = true);
 
+    /**
+    * This function will convert a double value to string with the given precision.
+    */
+    std::string FormatDoubleToString(double value, int precision = 2);
+
 }
 
 namespace em::utils::string

@@ -10,6 +10,8 @@ namespace em
     {
         Success,
 
+        DisplayHelp,
+
         CommandDoesNotExist,
         InvalidNumMandatoryArgs,
         FlagDoesNotExist,

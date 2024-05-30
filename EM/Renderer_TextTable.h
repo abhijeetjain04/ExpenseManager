@@ -96,10 +96,9 @@ namespace em
     {
     public:
 
-        static void Render(const ReportHandler& rh1, const ReportHandler& rh2)
+        static void Render(const std::vector<ReportHandler>& reports)
         {
-            printf("\n Total Rows : %zd", rh1.GetPrices().size());
-            TextTable_CompareReport t(rh1, rh2);
+            TextTable_CompareReport t(reports);
             t.Print();
         }
 

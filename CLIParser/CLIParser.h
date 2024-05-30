@@ -132,7 +132,7 @@ public:
     /**
     * Generates the appropriate message on how to use the command for all the registered commands.
     */
-    void DisplayHelp() const;
+    void DisplayHelp(const std::string& commandName = "") const;
 
     /**
     * Returns all the cli command, options, flags as a json string.

@@ -128,10 +128,13 @@ void CLIParser::GenerateErrorMessage(const std::string& commandName) const
 }
 
 // public
-void CLIParser::DisplayHelp() const
+void CLIParser::DisplayHelp(const std::string& commandName) const
 {
     for (const ValidCommand& cmd : m_ValidCommands)
-        GenerateErrorMessage(cmd.GetName());
+    {
+        if(commandName.empty() || cmd.GetName() == commandName)
+            GenerateErrorMessage(cmd.GetName());
+    }
 }
 
 // public

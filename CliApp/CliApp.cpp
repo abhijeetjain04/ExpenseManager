@@ -221,7 +221,12 @@ int main(int argc, char** argv)
 
             em::action_handler::ResultSPtr actionResult = actionImpl.PerformAction(cmdType);
             if (actionResult->statusCode != em::StatusCode::Success)
+            {
+                if (actionResult->statusCode == em::StatusCode::DisplayHelp)
+                    cliParser.DisplayHelp(commandStr);
+
                 printf("%s", actionResult->message.c_str());
+            }
 
             printf("\n=============================================================");
         }

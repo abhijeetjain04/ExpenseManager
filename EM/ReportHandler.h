@@ -24,7 +24,7 @@ namespace em
 
         ReportHandler();
 
-        StatusCode GenerateReport(Option option = Option::ALL, const std::string& month = "-1", const std::string& year = "-1");
+        StatusCode GenerateReport(Option option = Option::ALL, const std::string& month = "-1", const std::string& year = "-1", bool includeZeroExpense = false);
         void Print(bool sort = true);
 
         const std::unordered_map<std::string, double>& GetPrices() const { return m_Prices; }
