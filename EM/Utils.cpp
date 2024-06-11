@@ -6,18 +6,7 @@
 
 namespace em::utils
 {
-
-    std::string GetConfigFilePath()
-    {
-        return GetExecutableDirPath() + "Resources\\config.json";
-    }
-
-    std::string GetCliConfigFilePath()
-    {
-        return GetExecutableDirPath() + "Resources\\cliConfig.json";
-    }
-
-    std::string GetExecutableDirPath()
+    std::filesystem::path GetExecutableDirPath()
     {
         TCHAR buffer[MAX_PATH] = { 0 };
         GetModuleFileName(NULL, buffer, MAX_PATH);
@@ -27,7 +16,33 @@ namespace em::utils
         std::transform(wideString.begin(), wideString.end(), std::back_inserter(result), [](wchar_t c) {
             return (char)c;
             });
-        return result + "\\";
+
+        return std::filesystem::path(result);
+    }
+
+    std::filesystem::path GetResourcesFolderPath()
+    {
+        return GetExecutableDirPath() / "Resources";
+    }
+
+    std::filesystem::path GetConfigFilePath()
+    {
+        return GetResourcesFolderPath() / "config.json";
+    }
+
+    std::filesystem::path GetCliConfigFilePath()
+    {
+        return GetResourcesFolderPath() / "cliConfig.json";
+    }
+
+    std::filesystem::path GetDatabaseTableFolderPath()
+    {
+        return GetResourcesFolderPath() / "Database" / "Tables";
+    }
+
+    std::filesystem::path GetDatabaseConfigFilePath()
+    {
+        return GetResourcesFolderPath() / "Database" / "config.json";
     }
 
     void ConvertToVector(const std::unordered_map<std::string, double>& map, std::vector<std::pair<std::string, double>>& vector, bool sortByValue)

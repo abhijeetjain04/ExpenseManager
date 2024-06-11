@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ConfigManager.h"
 #include "Utils.h"
-#include "json.h"
+#include "JsonHelper/json.h"
 #include "Exceptions/Config.h"
 
 #include <fstream>
@@ -63,7 +63,7 @@ namespace em
 	{
 		try
 		{
-			std::string configFilePath = utils::GetConfigFilePath();
+			std::filesystem::path configFilePath = utils::GetConfigFilePath();
 			std::ifstream inputStream(configFilePath);
 
 			Json::Value root;

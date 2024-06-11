@@ -2,8 +2,6 @@
 #include "EM/ActionImplementor.h"
 #include "CLIParser/CLIParser.h"
 #include "CLIParser/ValidCommand.h"
-#include "EM/DBTable_Category.h"
-#include "EM/DBTable_Expense.h"
 #include "CLIParser/Utils.h"
 #include "EM/ActionHandlers/Cli/ActionHandlers.h"
 #include "EM/DatabaseManager.h"
@@ -14,7 +12,9 @@
 #include "EM/Account/Account.h"
 #include "EM/Account/Manager.h"
 #include "EM/Utils.h"
-#include "EM/json.h"
+#include "JsonHelper/json.h"
+
+#include "DBHandler/Table.h"
 
 #include <fstream>
 #include <filesystem>
@@ -98,9 +98,9 @@ void InitializeCLI()
 {
     try
     {
-        std::string cliConfigFilePath = em::utils::GetCliConfigFilePath();
+        std::filesystem::path cliConfigFilePath = em::utils::GetCliConfigFilePath();
         if (!std::filesystem::exists(cliConfigFilePath))
-            throw em::exception::General(std::format("File does not exist: {}", cliConfigFilePath));
+            throw em::exception::General(std::format("File does not exist: {}", cliConfigFilePath.string()));
 
         std::ifstream inputStream(cliConfigFilePath);
 
@@ -161,7 +161,16 @@ void InitializeActionImplementor()
 
 void InitializeDatabase()
 {
-    em::DatabaseManager::Create(DATABASE_FILE_NAME);
+    std::filesystem::path configPath = em::utils::GetDatabaseConfigFilePath();
+
+    Json::Value root;
+    std::ifstream ifs(configPath);
+
+    ifs >> root;
+
+    std::string databaseName = root["name"].asString();
+
+    em::DatabaseManager::Create(databaseName.c_str());
     em::DatabaseManager::GetInstance().RegisterExpenseTables();
 }
 

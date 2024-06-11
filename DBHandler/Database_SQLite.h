@@ -11,8 +11,8 @@ const int OPEN_READWRITE = SQLite::OPEN_READWRITE;
 const int OPEN_CREATE = SQLite::OPEN_CREATE;
 
 struct ColumnProperty;
-class TableBase;
-typedef std::shared_ptr<TableBase> TableSPtr;
+class Table;
+typedef std::shared_ptr<Table> TableSPtr;
 
 
 class Database_SQLite
@@ -32,10 +32,9 @@ public:
         ptr = nullptr;
     }
 
-    template<typename T>
-    std::shared_ptr<T> CreateTable();
-    template<typename T>
-    bool DropTable();
+    std::shared_ptr<db::Table> CreateTableFromJson(const std::filesystem::path& filepath);
+
+    std::shared_ptr<db::Table> GetTable(const std::string& tableName);
 
     // queries
     SQLite::Column ExecAndGet(const std::string& query);
@@ -47,16 +46,15 @@ public:
     int GetOpenMode() const { return m_OpenMode; }
 
 private:
-    std::string CreateTableQuery(const std::shared_ptr<TableBase> table);
+    std::string CreateTableQuery(const std::string& tableName, const std::vector<ColumnProperty>& columns);
 
     SQLite::Database* GetImpl() { return m_DBImpl; }
 
 private:
     int                                             m_OpenMode;
     SQLite::Database*                               m_DBImpl;
+    std::unordered_map<std::string, std::shared_ptr<db::Table>> m_Tables;
 };
 
 
 END_NAMESPACE_DB
-
-#include "Database_SQLite.hpp"

@@ -1,13 +1,13 @@
 #include "EM/pch.h"
 #include "List.h"
 #include "EM/DatabaseManager.h"
-#include "EM/DBTables.h"
 #include "EM/Conditions.h"
 #include "EM/Renderer_TextTable.h"
 #include "EM/Account/Account.h"
 #include "EM/Account/Manager.h"
 
 #include "DBHandler/Util.h"
+#include "DBHandler/Table.h"
 
 namespace em::action_handler::cli
 {
@@ -103,17 +103,18 @@ namespace em::action_handler::cli
     // protected
     em::action_handler::ResultSPtr List::ProcessDBTable(const db::Condition& dbCondition, const db::Clause_OrderBy& orderBy)
     {
-        std::vector<DBModel_Expense> rows;
+        std::vector<db::Model> rows;
 
-        auto expenseTable = databaseMgr.GetTable<DBTable_Expense>();
+        const std::string tableName = databaseMgr.GetCurrentExpenseTableName();
+        auto expenseTable = databaseMgr.GetTable(tableName);
         if (!expenseTable->Select(rows, dbCondition, orderBy))
             return Result::Create(StatusCode::DBError, "Failed to retrieve from table!");
 
         // sort according to price, highest to lowest
         std::sort(rows.begin(), rows.end(),
-            [](const DBModel_Expense& e1, const DBModel_Expense& e2)
+            [](db::Model& e1, db::Model& e2)
             {
-                return e1.Price > e2.Price;
+                return e1["price"].asDouble() > e2["price"].asDouble();
             });
 
         const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
@@ -127,9 +128,9 @@ namespace em::action_handler::cli
     // protected
 	em::action_handler::ResultSPtr List::ListCategories()
 	{
-		std::vector<DBModel_Category> rows;
+		std::vector<db::Model> rows;
 
-		auto table = DatabaseManager::GetInstance().GetTable<DBTable_Category>();
+		auto table = databaseMgr.GetTable("categories");
 		if (!table->Select(rows))
 		{
 			ERROR_LOG(ERROR_DB_SELECT_CATEGORY);
@@ -148,10 +149,12 @@ namespace em::action_handler::cli
         db::Condition* categoryConditions = new db::Condition(db::Condition::RelationshipType::OR);
         std::vector<std::string> categories;
         em::utils::string::SplitString(categoriesStr, categories);
+
+        auto table = databaseMgr.GetTable("categories");
         for (const std::string category : categories)
         {
             // check if the category is valid.
-            if (!databaseMgr.GetTable<DBTable_Category>()->CheckIfExists("name", category))
+            if (!table->CheckIfExists("name", category))
             {
                 return em::action_handler::Result::Create(
                     StatusCode::CategoryDoesNotExist,

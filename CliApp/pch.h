@@ -15,6 +15,7 @@
 #include <memory>
 #include <format>
 #include <iomanip>
+#include <any>
 
 #include "EM/Assertion.h"
 #include "EM/StatusCodes.h"

@@ -7,9 +7,9 @@
 #include <string>
 #include <vector>
 
-#include "DBTable_Expense.h"
 #include "ReportHandler.h"
 #include "Utils.h"
+#include "DBHandler/Table.h"
 
 #ifdef TEXTTABLE_ENCODE_MULTIBYTE_STRINGS
 #include <clocale>
@@ -234,7 +234,7 @@ namespace em
         * @params [in] records
         *       Vector of records for the given account.
         */
-        TextTable_Expense(const std::string& accountName, const std::vector<DBModel_Expense>& records)
+        TextTable_Expense(const std::string& accountName, const std::vector<db::Model>& records)
             : TextTable()
         {
             AppendHeader();
@@ -245,14 +245,14 @@ namespace em
         * @params [in] rows
         *       A map with key as the accountName that the expenses belong to, and value as the actual expense records for the given account.
         */
-        TextTable_Expense(const std::unordered_map<std::string, std::vector<DBModel_Expense>>& rows)
+        TextTable_Expense(const std::unordered_map<std::string, std::vector<db::Model>>& rows)
             : TextTable()
         {
             AppendHeader();
             for (auto iter = rows.begin(); iter != rows.end(); iter++)
             {
                 const std::string& accountName = iter->first;
-                const std::vector<DBModel_Expense> records = iter->second;
+                const std::vector<db::Model> records = iter->second;
 
                 AppendRows(records, accountName);
             }
@@ -265,19 +265,19 @@ namespace em
             add("ROW_ID").add("NAME").add("CATEGORY").add("PRICE").add("DATE").add("LOCATION").add("ACCOUNT").endOfRow();
         }
 
-        void AppendRows(const std::vector<DBModel_Expense>& rows, const std::string& accountName)
+        void AppendRows(const std::vector<db::Model>& rows, const std::string& accountName)
         {
             if (rows.size() < 1)
                 return;
 
-            for (const auto& row : rows)
+            for (const db::Model& row : rows)
             {
-                add(std::to_string(row.RowID))
-                    .add((row.Name))
-                    .add((row.Category))
-                    .add(std::to_string(row.Price))
-                    .add(row.Date)
-                    .add(row.Location)
+                add(std::to_string(row["row_id"].asInt()))
+                    .add(row["name"].asString())
+                    .add(row["category"].asString())
+                    .add(std::to_string(row["price"].asDouble()))
+                    .add(row["date"].asString())
+                    .add(row["location"].asString())
                     .add(accountName)
                     .endOfRow();
             }
@@ -288,21 +288,21 @@ namespace em
     class TextTable_Category : public TextTable
     {
     public:
-        TextTable_Category(const std::vector<DBModel_Category>& rows)
+        TextTable_Category(const std::vector<db::Model>& rows)
             : TextTable()
             , m_Rows(rows)
         {
             add("ROW_ID").add("NAME").endOfRow();
-            for (const DBModel_Category& row : m_Rows)
+            for (const db::Model& row : m_Rows)
             {
-                add(std::to_string(row.RowID))
-                    .add((row.Name))
+                add(std::to_string(row["row_id"].asInt()))
+                    .add(row["name"].asString())
                     .endOfRow();
             }
         }
 
     private:
-        const std::vector<DBModel_Category>& m_Rows;
+        const std::vector<db::Model>& m_Rows;
     };
 
 

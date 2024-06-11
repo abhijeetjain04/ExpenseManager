@@ -1,7 +1,6 @@
 #pragma once
 
-#include "DBTable_Expense.h"
-#include "DBTable_Category.h"
+#include "DBHandler/Table.h"
 #include "TextTable.h"
 #include "ReportHandler.h"
 #include <unordered_map>
@@ -26,7 +25,7 @@ namespace em
         * @params [in] total
         *       This arg is used to display the 'price' parameter's total.
         */
-        static void Render(const std::string& accountName, const std::vector<DBModel_Expense>& rows, double total = 0.0)
+        static void Render(const std::string& accountName, const std::vector<db::Model>& rows, double total = 0.0)
         {
             printf("\n Total Rows : %zd", rows.size());
             TextTable_Expense t(accountName, rows);
@@ -48,7 +47,7 @@ namespace em
         * @params [in] total
         *       This arg is used to display the 'price' parameter's total.
         */
-        static void Render(const std::unordered_map<std::string, std::vector<DBModel_Expense>>& rows, double total = 0.0)
+        static void Render(const std::unordered_map<std::string, std::vector<db::Model>>& rows, double total = 0.0)
         {
             size_t totalRows = 0;
             std::for_each(rows.begin(), rows.end(),
@@ -83,7 +82,7 @@ namespace em
         * @params [in] rows
         *       Rows representing the rows from DBTable_Category that needs to be displayed in the table.
         */
-        static void Render(const std::vector<DBModel_Category>& rows)
+        static void Render(const std::vector<db::Model>& rows)
         {
             printf("\n Total Rows : %zd", rows.size());
             TextTable_Category t(rows);

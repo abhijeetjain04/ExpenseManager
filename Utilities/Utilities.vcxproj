@@ -18,23 +18,35 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FileUtils.h" />
+    <ClInclude Include="FolderUtils.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="StringUtils.h" />
+    <ClInclude Include="Utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FileUtils.cpp" />
+    <ClCompile Include="FolderUtils.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="StringUtils.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{341c5e70-91be-47b0-9a32-8fdb8b255c38}</ProjectGuid>
-    <RootNamespace>EM</RootNamespace>
+    <ProjectGuid>{a47b6381-0b19-428e-9839-c9861bce4327}</ProjectGuid>
+    <RootNamespace>Utilities</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>EM</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -47,7 +59,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -71,21 +83,19 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <GenerateManifest>false</GenerateManifest>
-    <TargetName>$(ProjectName)-lib</TargetName>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ModuleDefinitionFile>Scope.txt</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -94,40 +104,34 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ModuleDefinitionFile>Scope.txt</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)includes;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ModuleDefinitionFile>
-      </ModuleDefinitionFile>
-      <AdditionalDependencies>CLIParser.lib;DBHandler.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)x64\Debug</AdditionalLibraryDirectories>
     </Link>
-    <Lib>
-      <AdditionalDependencies>JsonHelper.lib;Utilities.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -135,77 +139,19 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ModuleDefinitionFile>Scope.txt</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Account\Account.cpp" />
-    <ClCompile Include="Account\Manager.cpp" />
-    <ClCompile Include="ActionHandlers\Cli\AddCategory.cpp" />
-    <ClCompile Include="ActionHandlers\Cli\CompareMonths.cpp" />
-    <ClCompile Include="ActionHandlers\Cli\GitPush.cpp" />
-    <ClCompile Include="ActionHandlers\Cli\List.cpp" />
-    <ClCompile Include="ActionHandlers\Cli\List_AllAccounts.cpp" />
-    <ClCompile Include="ActionHandlers\Cli\Remove.cpp" />
-    <ClCompile Include="ActionHandlers\Cli\Report.cpp" />
-    <ClCompile Include="ActionHandlers\Cli\SwitchAccount.cpp" />
-    <ClCompile Include="ActionImplementor.cpp" />
-    <ClCompile Include="ActionHandlers\Cli\Add.cpp" />
-    <ClCompile Include="Common\EnumAndStringConverter.cpp">
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../pch.h</PrecompiledHeaderFile>
-    </ClCompile>
-    <ClCompile Include="ConfigManager.cpp" />
-    <ClCompile Include="DatabaseManager.cpp" />
-    <ClCompile Include="ActionHandlers\IActionHandler.cpp" />
-    <ClCompile Include="ReportHandler.cpp" />
-    <ClCompile Include="Utils.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Scope.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Account\Account.h" />
-    <ClInclude Include="Account\Exceptions\InvalidAccountName.h" />
-    <ClInclude Include="Account\Manager.h" />
-    <ClInclude Include="ActionHandlers\Cli\ActionHandlers.h" />
-    <ClInclude Include="ActionHandlers\Cli\Add.h" />
-    <ClInclude Include="ActionHandlers\Cli\AddCategory.h" />
-    <ClInclude Include="ActionHandlers\Cli\CompareMonths.h" />
-    <ClInclude Include="ActionHandlers\Cli\GitPush.h" />
-    <ClInclude Include="ActionHandlers\Cli\List.h" />
-    <ClInclude Include="ActionHandlers\Cli\List_AllAccounts.h" />
-    <ClInclude Include="ActionHandlers\Cli\Remove.h" />
-    <ClInclude Include="ActionHandlers\Cli\Report.h" />
-    <ClInclude Include="ActionHandlers\Cli\SwitchAccount.h" />
-    <ClInclude Include="ActionImplementor.h" />
-    <ClInclude Include="Assertion.h" />
-    <ClInclude Include="Common\CommonEnums.h" />
-    <ClInclude Include="Common\EnumAndStringConverter.h" />
-    <ClInclude Include="Conditions.h" />
-    <ClInclude Include="Exceptions\Base.h" />
-    <ClInclude Include="Exceptions\Config.h" />
-    <ClInclude Include="ConfigManager.h" />
-    <ClInclude Include="DatabaseManager.h" />
-    <ClInclude Include="Exceptions\Database\Common.h" />
-    <ClInclude Include="Exceptions\EnumStringConverter.h" />
-    <ClInclude Include="Exceptions\General.h" />
-    <ClInclude Include="StatusCodes.h" />
-    <ClInclude Include="ErrorMessages.h" />
-    <ClInclude Include="ActionHandlers\IActionHandler.h" />
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="Renderer_TextTable.h" />
-    <ClInclude Include="ReportHandler.h" />
-    <ClInclude Include="TextTable.h" />
-    <ClInclude Include="Utils.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

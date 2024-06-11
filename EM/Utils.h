@@ -1,21 +1,39 @@
 #pragma once
 
+#include <filesystem>
+
 namespace em::utils
 {
-    /**
-    * This function returns the absolute file path of the config.json file.
-    */
-    std::string GetConfigFilePath();
-
-    /**
-    * This function returns the absolute file path of the cliConfig.json file.
-    */
-    std::string GetCliConfigFilePath();
 
     /**
     * This function returns absolute directory file where the executable lies.
     */
-    std::string GetExecutableDirPath();
+    std::filesystem::path GetExecutableDirPath();
+
+    /**
+    * This function returns the absolute path of the Resources folder
+    */
+    std::filesystem::path GetResourcesFolderPath();
+
+    /**
+    * This function returns the absolute file path of the config.json file.
+    */
+    std::filesystem::path GetConfigFilePath();
+
+    /**
+    * This function returns the absolute file path of the cliConfig.json file.
+    */
+    std::filesystem::path GetCliConfigFilePath();
+
+    /**
+    * This function returns the absolute path of the Database table folder.
+    */
+    std::filesystem::path GetDatabaseTableFolderPath();
+
+    /**
+    * This function returns the absolute path of the Database table folder.
+    */
+    std::filesystem::path GetDatabaseConfigFilePath();
 
     /**
     * This function converts an unordered_map to vector<pair>

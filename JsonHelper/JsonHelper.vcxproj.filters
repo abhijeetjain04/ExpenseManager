@@ -15,33 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="json.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="CLIParser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Common.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ValidCommand.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="json-forwards.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CLIParser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ValidCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils.cpp">
+    <ClCompile Include="jsoncpp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -106,13 +106,19 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <AdditionalIncludeDirectories>$(ProjectDir)sqlite\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)sqlite\include;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>JsonHelper.lib;Utilities.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -136,10 +142,8 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="Condition.h" />
     <ClInclude Include="Database_SQLite.h" />
-    <ClInclude Include="QueryHandler.h" />
-    <ClInclude Include="QueryHandler.hpp" />
+    <ClInclude Include="QueryGenerator.h" />
     <ClInclude Include="Table.h" />
-    <ClInclude Include="Database_SQLite.hpp" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SQLiteCpp.h" />
     <ClInclude Include="sqlite\include\sqlite3.h" />
@@ -155,14 +159,13 @@
     <ClInclude Include="SQLite_Transaction.h" />
     <ClInclude Include="SQLite_Utils.h" />
     <ClInclude Include="SQLite_VariadicBind.h" />
-    <ClInclude Include="Table.hpp" />
     <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Clause.cpp" />
     <ClCompile Include="Condition.cpp" />
     <ClCompile Include="Database_SQLite.cpp" />
-    <ClCompile Include="QueryHandler.cpp" />
+    <ClCompile Include="QueryGenerator.cpp" />
     <ClCompile Include="Table.cpp" />
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SQLite_Backup.cpp" />

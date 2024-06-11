@@ -15,33 +15,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CLIParser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Common.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Utils.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="ValidCommand.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="FileUtils.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FolderUtils.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StringUtils.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FileUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CLIParser.cpp">
+    <ClCompile Include="FolderUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ValidCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils.cpp">
+    <ClCompile Include="StringUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

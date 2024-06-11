@@ -1,11 +1,11 @@
 #include "EM/pch.h"
 #include "Report.h"
 #include "EM/DatabaseManager.h"
-#include "EM/DBTables.h"
 #include "EM/Conditions.h"
 #include "EM/Renderer_TextTable.h"
 
 #include "DBHandler/Util.h"
+#include "DBHandler/Table.h"
 
 namespace em::action_handler::cli
 {

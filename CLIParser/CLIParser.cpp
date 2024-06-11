@@ -2,7 +2,7 @@
 #include "CLIParser.h"
 #include "ValidCommand.h"
 #include "Utils.h"
-#include "json.h"
+#include "JsonHelper/json.h"
 
 BEGIN_NAMESPACE_CLI
 

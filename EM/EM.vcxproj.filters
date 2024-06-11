@@ -63,20 +63,11 @@
     <ClCompile Include="ActionHandlers\IActionHandler.cpp">
       <Filter>Source Files\ActionHandlers</Filter>
     </ClCompile>
-    <ClCompile Include="DBTable_Category.cpp">
-      <Filter>Source Files\Database\DBTables</Filter>
-    </ClCompile>
-    <ClCompile Include="DBTable_Expense.cpp">
-      <Filter>Source Files\Database\DBTables</Filter>
-    </ClCompile>
     <ClCompile Include="DatabaseManager.cpp">
       <Filter>Source Files\Database\DatabaseManager</Filter>
     </ClCompile>
     <ClCompile Include="ActionHandlers\Cli\Add.cpp">
       <Filter>Source Files\ActionHandlers\CLI</Filter>
-    </ClCompile>
-    <ClCompile Include="jsoncpp.cpp">
-      <Filter>Source Files\Json</Filter>
     </ClCompile>
     <ClCompile Include="ConfigManager.cpp">
       <Filter>Source Files\ConfigManager</Filter>
@@ -154,23 +145,8 @@
     <ClInclude Include="ActionHandlers\IActionHandler.h">
       <Filter>Source Files\ActionHandlers</Filter>
     </ClInclude>
-    <ClInclude Include="DBTable_Category.h">
-      <Filter>Source Files\Database\DBTables</Filter>
-    </ClInclude>
-    <ClInclude Include="DBTable_Expense.h">
-      <Filter>Source Files\Database\DBTables</Filter>
-    </ClInclude>
     <ClInclude Include="DatabaseManager.h">
       <Filter>Source Files\Database\DatabaseManager</Filter>
-    </ClInclude>
-    <ClInclude Include="DBTables.h">
-      <Filter>Source Files\Database\DBTables</Filter>
-    </ClInclude>
-    <ClInclude Include="json.h">
-      <Filter>Source Files\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="json-forwards.h">
-      <Filter>Source Files\Json</Filter>
     </ClInclude>
     <ClInclude Include="ConfigManager.h">
       <Filter>Source Files\ConfigManager</Filter>

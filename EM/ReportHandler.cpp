@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "Account/Manager.h"
 #include "ReportHandler.h"
-#include "DBHandler/Util.h"
 #include "DatabaseManager.h"
-#include "DBTable_Category.h"
-#include "DBTable_Expense.h"
 #include "Conditions.h"
 #include "TextTable.h"
+
+#include "DBHandler/Util.h"
+#include "DBHandler/Table.h"
 
 namespace em
 {
@@ -23,33 +23,30 @@ namespace em
         db::Condition cond;
         GenerateCondition(cond, option, month, year);
 
-        std::vector<DBModel_Category> categories;
-        auto categoryTable = databaseMgr.GetTable<DBTable_Category>();
+        std::vector<db::Model> categories;
+        auto categoryTable = databaseMgr.GetTable("categories");
         categoryTable->Select(categories);
 
         // for each expense table, go through each category, and store the expenses.
-        const Map_DBTables& expenseTables = em::DatabaseManager::GetInstance().GetExpenseTables();
-        for (const auto& iter : expenseTables)
+        const std::string& expenseTableName = databaseMgr.GetCurrentExpenseTableName();
+        auto expenseTable = databaseMgr.GetTable(expenseTableName);
+
+        for (const db::Model& category : categories)
         {
-            std::shared_ptr<DBTable_Expense> expenseTable = iter.second;
+            cond.Add(Condition_Category::Create(category["name"].asString()));
 
-            for (const DBModel_Category& category : categories)
-            {
-                cond.Add(Condition_Category::Create(category.Name));
+            std::vector<db::Model> expenses;
+            expenseTable->Select(expenses, cond);
 
-                std::vector<DBModel_Expense> expenses;
-                expenseTable->Select(expenses, cond);
+            double total = 0.0;
+            for (const db::Model& expense : expenses)
+                total += expense["price"].asDouble();
 
-                double total = 0.0;
-                for (const DBModel_Expense& expense : expenses)
-                    total += expense.Price;
+            if(includeZeroExpense || total != 0.0)
+                m_Prices[category["name"].asString()] += total;
 
-                if(includeZeroExpense || total != 0.0)
-                    m_Prices[category.Name] += total;
-
-                // need to pop the last condition so that category can be changed
-                cond.PopBack();
-            }
+            // need to pop the last condition so that category can be changed
+            cond.PopBack();
         }
 
         return StatusCode::Success;

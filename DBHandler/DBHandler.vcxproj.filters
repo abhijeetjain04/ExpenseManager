@@ -69,25 +69,16 @@
     <ClInclude Include="sqlite\include\sqlite3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Database_SQLite.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Table.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="QueryHandler.h">
+    <ClInclude Include="QueryGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Condition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ColumnProperty.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="QueryHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Clause.h">
@@ -134,7 +125,7 @@
     <ClCompile Include="Clause.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QueryHandler.cpp">
+    <ClCompile Include="QueryGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

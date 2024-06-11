@@ -1,10 +1,11 @@
 #include "EM/pch.h"
 #include "Add.h"
 #include "EM/DatabaseManager.h"
-#include "EM/DBTables.h"
 #include "EM/Conditions.h"
+#include "EM/ConfigManager.h"
 
 #include "DBHandler/Util.h"
+#include "DBHandler/Table.h"
 
 namespace em::action_handler::cli
 {
@@ -16,28 +17,29 @@ namespace em::action_handler::cli
     {
         assert(commandName == "add");
 
-        auto categoryTable = databaseMgr.GetTable<DBTable_Category>();
-        auto expenseTable = databaseMgr.GetTable<DBTable_Expense>();
+        auto categoryTable = databaseMgr.GetTable("categories");
+        auto expenseTable = databaseMgr.GetTable("household_expense");
 
-        DBModel_Expense model;
+        db::Model model;
         // validate if the category exists
-        model.Category = options.at("category");
-        if (!categoryTable->CheckIfExists("name", model.Category))
-            return Result::Create(StatusCode::CategoryDoesNotExist, std::format(ERROR_CATEGORY_DOES_NOT_EXIST, model.Category));
+        model["category"] = options.at("category");
+        if (!categoryTable->CheckIfExists("name", model["category"]))
+            return Result::Create(StatusCode::CategoryDoesNotExist, std::format(ERROR_CATEGORY_DOES_NOT_EXIST, model["category"].asString()));
 
-        model.Name = options.at("name");
-        model.Price = std::stod(options.at("price"));
-        model.Location = options.contains("location") ? options.at("location") : "";
+        model["name"] = options.at("name");
+        model["price"] = std::stod(options.at("price"));
+
+        model["location"] = options.contains("location") ? options.at("location") : ConfigManager::GetInstance().GetDefaultLocation();
 
         if (flags.contains("yesterday"))
-            model.Date = db::util::GetYesterdayDate();
+            model["date"] = db::util::GetYesterdayDate();
         else
-            model.Date = options.contains("date") ? options.at("date") : "";
+            model["date"] = options.contains("date") ? options.at("date") : db::util::GetCurrentDate();
 
         if (!expenseTable->Insert(model))
         {
-            ERROR_LOG(ERROR_DB_INSERT_EXPENSE, model.Name);
-            return Result::Create(StatusCode::DBError, std::format(ERROR_DB_INSERT_EXPENSE, model.Name));
+            ERROR_LOG(ERROR_DB_INSERT_EXPENSE, model["name"].asString());
+            return Result::Create(StatusCode::DBError, std::format(ERROR_DB_INSERT_EXPENSE, model["name"].asString()));
         }
 
         return Result::Create(StatusCode::Success);

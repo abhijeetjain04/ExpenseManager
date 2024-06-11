@@ -36,4 +36,9 @@ std::string GetThisDay();
 std::string GetThisMonth();
 std::string GetThisYear();
 
+namespace string
+{
+    void ToLower(std::string& str);
+}
+
 END_NAMESPACE_DB_UTIL

@@ -1,10 +1,10 @@
 #include "../../pch.h"
 #include "AddCategory.h"
 #include "EM/DatabaseManager.h"
-#include "EM/DBTables.h"
 #include "EM/Conditions.h"
 
 #include "DBHandler/Util.h"
+#include "DBHandler/Table.h"
 
 namespace em::action_handler::cli
 {
@@ -16,14 +16,14 @@ namespace em::action_handler::cli
     {
         assert(commandName == "addCategory");
         
-        DBModel_Category model;
-        model.Name = options.at("name");
+        db::Model model;
+        model["name"] = options.at("name");
 
-        auto table = databaseMgr.GetTable<DBTable_Category>();
+        auto table = databaseMgr.GetTable("categories");
         if (!table->Insert(model))
         {
-            ERROR_LOG(ERROR_DB_INSERT_CATEGORY, model.Name);
-            return Result::Create(StatusCode::DBError, std::format(ERROR_DB_INSERT_CATEGORY, model.Name));
+            ERROR_LOG(ERROR_DB_INSERT_CATEGORY, model["name"].asString());
+            return Result::Create(StatusCode::DBError, std::format(ERROR_DB_INSERT_CATEGORY, model["name"].asString()));
         }
 
         return Result::Create(StatusCode::Success);

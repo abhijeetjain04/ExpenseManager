@@ -71,8 +71,6 @@ license you like.
 
 
 
-#include "pch.h"
-
 #include "json.h"
 
 #ifndef JSON_IS_AMALGAMATION

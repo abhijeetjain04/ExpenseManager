@@ -1,12 +1,12 @@
 #include "EM/pch.h"
 #include "List_AllAccounts.h"
 #include "EM/DatabaseManager.h"
-#include "EM/DBTables.h"
 #include "EM/Conditions.h"
 #include "EM/Renderer_TextTable.h"
 #include "EM/ConfigManager.h"
 
 #include "DBHandler/Util.h"
+#include "DBHandler/Table.h"
 
 namespace em::action_handler::cli
 {
@@ -15,6 +15,7 @@ namespace em::action_handler::cli
         const db::Condition& dbCondition, 
         const db::Clause_OrderBy& orderBy)
     {
+#if 0
         std::unordered_map<std::string, std::vector<DBModel_Expense>> rows;
 
         double totalExpense = 0.0; // store the total expense from all tables.
@@ -41,7 +42,7 @@ namespace em::action_handler::cli
         }
 
         Renderer_ExpenseTable::Render(rows, totalExpense);
-
+#endif
         return Result::Create(StatusCode::Success);
     }
 

@@ -1,12 +1,10 @@
 #include "Database_SQLite.h"
 #include "Table.h"
 #include "SQLite_Database.h"
+#include "JsonHelper/json.h"
+#include "Util.h"
 
-
-#define COLUMN_NAME(prop)   prop.Name
-#define COLUMN_VALUETYPE(prop)  switch(prop.ValueType) \
-                                { \
-                                }
+#include <fstream>
 
 BEGIN_NAMESPACE_DB
 
@@ -38,25 +36,22 @@ Database_SQLite::~Database_SQLite()
 
 
 // private
-std::string Database_SQLite::CreateTableQuery(std::shared_ptr<TableBase> table)
+std::string Database_SQLite::CreateTableQuery(const std::string& tableName, const std::vector<ColumnProperty>& columns)
 {
-
-    const std::string& tablename = table->GetName();
-    const std::vector<ColumnProperty>& columns = table->GetColumnProperties();
-
-    auto getValueTypeString = [](ColumnProperty::eValueType type)
+    auto getValueTypeString = [](std::string type)
     {
-        switch (type)
-        {
-        case ColumnProperty::INTEGER:
+        util::string::ToLower(type);
+        if (type == "integer")
             return "INTEGER";
-        case ColumnProperty::DOUBLE:
+
+        if (type == "double")
             return "REAL";
-        case ColumnProperty::TEXT:
+
+        if (type == "text")
             return "TEXT";
-        case ColumnProperty::DATE: // dates are stored as text in SQLITE
+
+        if (type == "date") // dates are stored as text in SQLITE
             return "TEXT";
-        }
 
         assert(false);
         return "";
@@ -74,12 +69,13 @@ std::string Database_SQLite::CreateTableQuery(std::shared_ptr<TableBase> table)
     };
 
     std::ostringstream oss;
-    oss << "CREATE TABLE IF NOT EXISTS " << tablename << "(";
+    oss << "CREATE TABLE IF NOT EXISTS " << tableName << "(";
 
     for(size_t i=0; i<columns.size(); ++i)
     {
         const auto& prop = columns[i];
-        oss << formatColumn(prop);
+        std::string propStr = formatColumn(prop);
+        oss << propStr;
         if (i != columns.size() - 1)
             oss << ", ";
     }
@@ -125,6 +121,67 @@ std::shared_ptr<SQLite::Statement> Database_SQLite::Select(const std::string& qu
 SQLite::Column Database_SQLite::ExecAndGet(const std::string& query)
 {
     return GetImpl()->execAndGet(query);
+}
+
+std::shared_ptr<db::Table> Database_SQLite::CreateTableFromJson(const std::filesystem::path& filepath)
+{
+    try
+    {
+        Json::Value root;
+
+        std::ifstream inputStream(filepath);
+        inputStream >> root;
+
+        const std::string& tableName = root["name"].asString();
+
+        const Json::Value& columnPropsJson = root["columns"];
+        std::vector<ColumnProperty> columnProps;
+
+        for (const Json::Value& colJson : columnPropsJson)
+        {
+            const std::string& name = colJson["name"].asString();
+            const std::string& valueType = colJson["valueType"].asString();
+            bool isPrimaryKey = colJson.isMember("isPrimaryKey") ? colJson["isPrimaryKey"].asBool() : false;
+            bool isNotNull = colJson.isMember("isNotNull") ? colJson["isNotNull"].asBool() : false;
+            bool isUnique = colJson.isMember("isUnique") ? colJson["isUnique"].asBool() : false;
+            bool autoIncrement = colJson.isMember("autoIncrement") ? colJson["autoIncrement"].asBool() : false;
+
+            columnProps.push_back(ColumnProperty(name, valueType, isPrimaryKey, isNotNull, isUnique, autoIncrement));
+        }
+
+        std::string query = CreateTableQuery(tableName, columnProps);
+        GetImpl()->exec(query);
+
+        std::shared_ptr<db::Table> table = std::make_shared<db::Table>(*this, tableName, columnProps);
+        m_Tables.insert(std::make_pair(tableName, table));
+        return table;
+    }
+    catch (std::exception& ex)
+    {
+        printf("\nEXCEPTION: CreateTableFromJson: %s", ex.what());
+        return nullptr;
+    }
+
+    return nullptr;
+}
+
+std::shared_ptr<db::Table> Database_SQLite::GetTable(const std::string& tableName)
+{
+    try
+    {
+        if (GetImpl()->tableExists(tableName) && m_Tables.find(tableName) != m_Tables.end())
+            return m_Tables[tableName];
+        else
+        {
+            printf("\nERROR: Table does not exist : %s", tableName.c_str());
+            return nullptr;
+        }
+    }
+    catch (std::exception& ex) 
+    {
+        printf("\nEXCEPTION: GetTable() - %s", ex.what());
+        return nullptr;
+    }
 }
 
 END_NAMESPACE_DB

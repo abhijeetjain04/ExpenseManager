@@ -94,6 +94,8 @@ namespace em::action_handler::cli
             printf("\nstartMonth should be less than endMonth");
             return false;
         }
+
+        return true;
     }
 
 }

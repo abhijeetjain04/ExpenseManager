@@ -1,0 +1,49 @@
+{
+	"name" : "personal_expense",
+	"columns" : 
+	[
+		{
+			"name" : "row_id",
+			"valueType" : "integer",
+			"isPrimaryKey" : true,
+			"isNotNull" : false,
+			"isUnique" : true,
+			"autoIncrement" : false
+		},
+		{
+			"name" : "name",
+			"valueType" : "text",
+			"isPrimaryKey" : false,
+			"isNotNull" : true,
+			"isUnique" : false
+		},
+		{
+			"name" : "category",
+			"valueType" : "text",
+			"isPrimaryKey" : false,
+			"isNotNull" : true,
+			"isUnique" : false
+		},
+		{
+			"name" : "price",
+			"valueType" : "double",
+			"isPrimaryKey" : false,
+			"isNotNull" : true,
+			"isUnique" : false
+		},
+		{
+			"name" : "date",
+			"valueType" : "date",
+			"isPrimaryKey" : false,
+			"isNotNull" : false,
+			"isUnique" : false
+		},
+		{
+			"name" : "location",
+			"valueType" : "text",
+			"isPrimaryKey" : false,
+			"isNotNull" : true,
+			"isUnique" : false
+		}
+	]
+}

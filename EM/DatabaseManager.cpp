@@ -2,6 +2,9 @@
 #include "DatabaseManager.h"
 #include "Account/Account.h"
 #include "Account/Manager.h"
+#include "Utilities/Utils.h"
+#include "ConfigManager.h"
+#include "EM/Utils.h"
 
 namespace em
 {
@@ -19,6 +22,7 @@ namespace em
         return *s_Instance;
     }
 
+    // public
 	DatabaseManager::~DatabaseManager()
 	{
         delete s_Instance;
@@ -50,48 +54,30 @@ namespace em
     // public
     void DatabaseManager::RegisterExpenseTables()
     {
-        // get the account that is currently in use.
-        const std::shared_ptr<em::account::Account>& account = em::account::Manager::GetInstance().GetCurrentAccount();
-        const std::string& accountName = account->GetName();
-
-        m_ExpenseTables.clear();
-        if (accountName == "all")
-        {
-            RegisterExpenseTable<em::DBTable_PersonalExpense>("personal_expense");
-            RegisterExpenseTable<em::DBTable_HouseholdExpense>("household_expense");
-            RegisterExpenseTable<em::DBTable_MarriageExpense>("marriage_expenses");
-            return;
-        }
-
-        // expeses for different accounts are stored as different tables in the database.
-        const std::string& tableName = accountName;
-        std::string fullTableName = tableName + "_expense";
-        if (fullTableName == "personal_expense")
-        {
-            RegisterExpenseTable<em::DBTable_PersonalExpense>(tableName);
-            return;
-        }
-
-        if (fullTableName == "household_expense")
-        {
-            RegisterExpenseTable<em::DBTable_HouseholdExpense>(tableName);
-            return;
-        }
-
-        if (fullTableName == "marriage_expense")
-        {
-            RegisterExpenseTable<em::DBTable_MarriageExpense>(tableName);
-            return;
-        }
-
-        DBG_ASSERT(!"Invalid Table Name");
+        const std::filesystem::path& tableFolderPath = em::utils::GetDatabaseTableFolderPath();
+        std::vector<std::filesystem::path> filePaths = ::utils::folder::GetFiles(tableFolderPath);
+        for (const std::filesystem::path& path : filePaths)
+            m_Database->CreateTableFromJson(path);
     }
 
+    std::string DatabaseManager::GetCurrentExpenseTableName() const
+    {
+        std::shared_ptr<account::Account> account = em::account::Manager::GetInstance().GetCurrentAccount();
+        const std::string& accountName = account->GetName();
+        const std::string& tableName = accountName + "_expense";
+        return tableName;
+    }
 
     // public
     void DatabaseManager::OnSwitchAccount()
     {
         RegisterExpenseTables();
+    }
+
+    // public
+    std::shared_ptr<db::Table> DatabaseManager::GetTable(const std::string& tableName) const
+    {
+        return m_Database->GetTable(tableName);
     }
 
 }
