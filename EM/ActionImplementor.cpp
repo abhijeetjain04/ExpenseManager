@@ -6,8 +6,6 @@
 #include "Common/EnumAndStringConverter.h"
 #include "CLIParser/CLIParser.h"
 #include "DBHandler/Util.h"
-#include "DBTable_Expense.h"
-#include "DBTable_Category.h"
 #include "ActionHandlers/Cli/ActionHandlers.h"
 #include "TextTable.h"
 #include "Conditions.h"
@@ -64,6 +62,7 @@ namespace em
         RegisterHandler<em::action_handler::cli::AddCategory>(em::CmdType::AddCategory);
         RegisterHandler<em::action_handler::cli::CompareMonths>(em::CmdType::CompareMonths);
         RegisterHandler<em::action_handler::cli::GitPush>(em::CmdType::GitPush);
+        RegisterHandler<em::action_handler::cli::AddTags>(em::CmdType::AddTags);
     }
 
     // public

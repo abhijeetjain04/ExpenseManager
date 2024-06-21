@@ -2,7 +2,7 @@
 
 namespace utils::string
 {
-    std::vector<std::string> SplitString(const std::string& input, char separator);
+    std::vector<std::string> SplitString(const std::string& input, char separator, bool trim = true);
 
     void LTrim(std::string& s);
 

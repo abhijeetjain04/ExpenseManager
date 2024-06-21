@@ -120,4 +120,16 @@ namespace em
         }
     };
 
+    /**
+    * This class represents the condition used to handle the filteration on 'list' and ignore the mentioned category.
+    */
+    class Condition_Tag : public db::Condition
+    {
+    public:
+        static db::Condition* Create(const std::string& tagName)
+        {
+            return new db::Condition("tags", tagName, db::Condition::Type::EQUALS);
+        }
+    };
+
 }

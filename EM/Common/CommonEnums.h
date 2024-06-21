@@ -15,6 +15,7 @@ namespace em
         Report,
         CompareMonths,
         SwitchAccount,
+        AddTags,
 
         ClearScreen,
 

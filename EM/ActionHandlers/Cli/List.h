@@ -14,7 +14,8 @@ namespace em::action_handler::cli
 	class List : public em::action_handler::Interface
 	{
 	private:
-		em::action_handler::ResultSPtr AppendCategoryCondition(db::Condition& finalCondition, const std::string& categories) const;
+		em::action_handler::ResultSPtr AppendCategoryCondition(db::Condition& finalCondition, const std::string& commaSeparatedCategories) const;
+		em::action_handler::ResultSPtr AppendTagsCondition(db::Condition& finalCondition, const std::string& commaSeparatedTags) const;
 
 	protected:
 		/**
@@ -49,6 +50,14 @@ namespace em::action_handler::cli
 		*		Object of ResultSPtr that contains the result details on execution of the function.
 		*/
 		em::action_handler::ResultSPtr ListCategories();
+
+		/**
+		* This function handles the request of listing all the tags available in the database
+		*
+		* @return
+		*		Object of ResultSPtr that contains the result details on execution of the function.
+		*/
+		em::action_handler::ResultSPtr ListTags();
 
 	};
 

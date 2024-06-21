@@ -75,6 +75,9 @@ em::CmdType GetCmdType(const char* cmdString)
     if (strcmp(cmdString, CmdString_GitPush) == 0)
         return em::CmdType::GitPush;
 
+    if (strcmp(cmdString, CmdString_AddTags) == 0)
+        return em::CmdType::AddTags;
+
     return em::CmdType::Invalid;
 }
 

@@ -33,17 +33,17 @@ namespace em
 
         for (const db::Model& category : categories)
         {
-            cond.Add(Condition_Category::Create(category["name"].asString()));
+            cond.Add(Condition_Category::Create(category.at("name").asString()));
 
             std::vector<db::Model> expenses;
             expenseTable->Select(expenses, cond);
 
             double total = 0.0;
             for (const db::Model& expense : expenses)
-                total += expense["price"].asDouble();
+                total += expense.at("price").asDouble();
 
             if(includeZeroExpense || total != 0.0)
-                m_Prices[category["name"].asString()] += total;
+                m_Prices[category.at("name").asString()] += total;
 
             // need to pop the last condition so that category can be changed
             cond.PopBack();

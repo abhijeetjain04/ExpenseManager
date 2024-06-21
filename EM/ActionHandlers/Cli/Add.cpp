@@ -3,9 +3,11 @@
 #include "EM/DatabaseManager.h"
 #include "EM/Conditions.h"
 #include "EM/ConfigManager.h"
+#include "EM/Exceptions/General.h"
 
 #include "DBHandler/Util.h"
 #include "DBHandler/Table.h"
+#include "Utilities/StringUtils.h"
 
 namespace em::action_handler::cli
 {
@@ -36,6 +38,15 @@ namespace em::action_handler::cli
         else
             model["date"] = options.contains("date") ? options.at("date") : db::util::GetCurrentDate();
 
+        if (options.contains("tags"))
+        {
+            std::string tag;
+            if(!GenerateTags(options.at("tags"), tag))
+                return Result::Create(StatusCode::DBError, std::format(ERROR_TAG_DOES_NOT_EXIST, options.at("tags")));
+
+            model["tags"] = tag;
+        }
+
         if (!expenseTable->Insert(model))
         {
             ERROR_LOG(ERROR_DB_INSERT_EXPENSE, model["name"].asString());
@@ -43,6 +54,29 @@ namespace em::action_handler::cli
         }
 
         return Result::Create(StatusCode::Success);
+    }
+
+    bool Add::GenerateTags(const std::string& commaSeparatedTags, std::string& tagToInsert)
+    {
+        auto tagsTable = databaseMgr.GetTable("tags");
+
+        // check if all tags exist in the database.
+        std::vector<std::string> tags = utils::string::SplitString(commaSeparatedTags, ',');
+        std::unordered_set<std::string> uniqueTags;
+        for (const std::string& tag : tags)
+        {
+            if (!tagsTable->CheckIfExists("name", tag))
+                return false;
+
+            uniqueTags.insert(tag);
+        }
+
+        for (const std::string& tag : uniqueTags)
+            tagToInsert += tag + ",";
+
+        // remove last ','
+        tagToInsert = tagToInsert.substr(0, tagToInsert.size() - 1);
+        return true;
     }
 
 }

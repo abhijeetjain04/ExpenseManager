@@ -105,6 +105,9 @@
     <ClCompile Include="ActionHandlers\Cli\GitPush.cpp">
       <Filter>Source Files\ActionHandlers\CLI</Filter>
     </ClCompile>
+    <ClCompile Include="ActionHandlers\Cli\AddTags.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Scope.txt">
@@ -210,6 +213,9 @@
     </ClInclude>
     <ClInclude Include="Exceptions\General.h">
       <Filter>Source Files\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionHandlers\Cli\AddTags.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

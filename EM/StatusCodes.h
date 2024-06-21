@@ -19,6 +19,7 @@ namespace em
         InvalidParameterValue,
 
         CategoryDoesNotExist,
+        TagDoesNotExist,
 
         DBError,
 

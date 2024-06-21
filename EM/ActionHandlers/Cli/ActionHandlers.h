@@ -9,3 +9,4 @@
 #include "CompareMonths.h"
 #include "SwitchAccount.h"
 #include "GitPush.h"
+#include "AddTags.h"

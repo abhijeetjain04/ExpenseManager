@@ -22,7 +22,9 @@ namespace em::common
 			MAP_ENTRY(em::CmdType, Report),
 			MAP_ENTRY(em::CmdType, CompareMonths),
 			MAP_ENTRY(em::CmdType, SwitchAccount),
+			MAP_ENTRY(em::CmdType, AddTags),
 			MAP_ENTRY(em::CmdType, ClearScreen),
+			MAP_ENTRY(em::CmdType, GitPush),
 			MAP_ENTRY(em::CmdType, Invalid)
 		};
 	};

@@ -8,20 +8,24 @@
 
 #include "DBHandler/Util.h"
 #include "DBHandler/Table.h"
+#include "Utilities/StringUtils.h"
 
 namespace em::action_handler::cli
 {
 
     // protected
-	em::action_handler::ResultSPtr List::Execute(
-		const std::string& commandName,
-		const std::unordered_set<std::string>& flags,
-		const std::map<std::string, std::string>& options)
-	{
-		assert(commandName == "list");
+    em::action_handler::ResultSPtr List::Execute(
+        const std::string& commandName,
+        const std::unordered_set<std::string>& flags,
+        const std::map<std::string, std::string>& options)
+    {
+        assert(commandName == "list");
 
-		if (flags.contains("categories"))
-			return ListCategories();
+        if (flags.contains("categories"))
+            return ListCategories();
+
+        if (flags.contains("tags"))
+            return ListTags();
 
         db::Condition finalCondition;
 
@@ -32,7 +36,7 @@ namespace em::action_handler::cli
             finalCondition.Add(Condition_Date::Create(db::util::GetCurrentDate()));
         if (flags.contains("thisYear"))
             finalCondition.Add(Condition_Year::Create(db::util::GetThisYear()));
-        
+
         if (flags.contains("yesterday"))
         {
             std::string date = db::util::GetYesterdayDate();
@@ -89,7 +93,7 @@ namespace em::action_handler::cli
         {
             std::vector<std::string> categories;
             em::utils::string::SplitString(options.at("ignoreCategory"), categories);
-            for (const std::string& category : categories) 
+            for (const std::string& category : categories)
                 finalCondition.Add(Condition_IgnoreCategory::Create(category));
         }
 
@@ -97,8 +101,15 @@ namespace em::action_handler::cli
         if (flags.contains("ascending"))
             orderBy.SetType(db::Clause_OrderBy::ASCENDING);
 
+        if (options.contains("tags"))
+        {
+            auto result = AppendTagsCondition(finalCondition, options.at("tags"));
+            if (result->statusCode != StatusCode::Success)
+                return result;
+        }
+
         return ProcessDBTable(finalCondition, orderBy);
-	}
+    }
 
     // protected
     em::action_handler::ResultSPtr List::ProcessDBTable(const db::Condition& dbCondition, const db::Clause_OrderBy& orderBy)
@@ -126,32 +137,49 @@ namespace em::action_handler::cli
     }
 
     // protected
-	em::action_handler::ResultSPtr List::ListCategories()
-	{
-		std::vector<db::Model> rows;
+    em::action_handler::ResultSPtr List::ListCategories()
+    {
+        std::vector<db::Model> rows;
 
-		auto table = databaseMgr.GetTable("categories");
-		if (!table->Select(rows))
-		{
-			ERROR_LOG(ERROR_DB_SELECT_CATEGORY);
-			return em::action_handler::Result::Create(StatusCode::DBError, ERROR_DB_SELECT_CATEGORY);
-		}
+        auto table = databaseMgr.GetTable("categories");
+        if (!table->Select(rows))
+        {
+            ERROR_LOG(ERROR_DB_SELECT_CATEGORY);
+            return em::action_handler::Result::Create(StatusCode::DBError, ERROR_DB_SELECT_CATEGORY);
+        }
 
-		Renderer_CategoryTable::Render(rows);
-		return em::action_handler::Result::Create(StatusCode::Success);
-	}
+        Renderer_CategoryTable::Render(rows);
+        return em::action_handler::Result::Create(StatusCode::Success);
+    }
+
+    // protected
+    em::action_handler::ResultSPtr List::ListTags()
+    {
+        std::vector<db::Model> rows;
+
+        auto table = databaseMgr.GetTable("tags");
+        if (!table->Select(rows))
+        {
+            ERROR_LOG(ERROR_DB_SELECT_TAG);
+            return em::action_handler::Result::Create(StatusCode::DBError, ERROR_DB_SELECT_TAG);
+        }
+
+        Renderer_CategoryTable::Render(rows);
+        return em::action_handler::Result::Create(StatusCode::Success);
+    }
+
 
     // private
     em::action_handler::ResultSPtr List::AppendCategoryCondition(
-        db::Condition& finalCondition, 
-        const std::string& categoriesStr) const
+        db::Condition& finalCondition,
+        const std::string& commaSeparatedCategtories) const
     {
         db::Condition* categoryConditions = new db::Condition(db::Condition::RelationshipType::OR);
         std::vector<std::string> categories;
-        em::utils::string::SplitString(categoriesStr, categories);
+        em::utils::string::SplitString(commaSeparatedCategtories, categories);
 
         auto table = databaseMgr.GetTable("categories");
-        for (const std::string category : categories)
+        for (const std::string& category : categories)
         {
             // check if the category is valid.
             if (!table->CheckIfExists("name", category))
@@ -165,6 +193,31 @@ namespace em::action_handler::cli
         }
 
         finalCondition.Add(categoryConditions);
+
+        return em::action_handler::Result::Create(StatusCode::Success);
+    }
+
+    // private
+    em::action_handler::ResultSPtr List::AppendTagsCondition(db::Condition& finalCondition, const std::string& commaSeparatedTags) const
+    {
+        db::Condition* tagConditions = new db::Condition(db::Condition::RelationshipType::OR);
+        std::vector<std::string> tags = ::utils::string::SplitString(commaSeparatedTags, ',');
+
+        auto table = databaseMgr.GetTable("tags");
+        for (const std::string& tag : tags)
+        {
+            // check if the tag is valid.
+            if (!table->CheckIfExists("name", tag))
+            {
+                return em::action_handler::Result::Create(
+                    StatusCode::CategoryDoesNotExist,
+                    std::format(ERROR_TAG_DOES_NOT_EXIST, tag));
+            }
+
+            tagConditions->Add(Condition_Tag::Create(tag));
+        }
+
+        finalCondition.Add(tagConditions);
 
         return em::action_handler::Result::Create(StatusCode::Success);
     }

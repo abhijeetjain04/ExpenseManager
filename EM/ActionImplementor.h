@@ -3,6 +3,7 @@
 #include "DBHandler/Database_SQLite.h"
 #include "ActionHandlers/IActionHandler.h"
 #include "Common/CommonEnums.h"
+#include "Exceptions/General.h"
 
 #define CmdString_Cls           "cls"
 #define CmdString_Help          "help"
@@ -14,6 +15,7 @@
 #define CmdString_CompareMonths "compareMonths"
 #define CmdString_SwitchAccount "switchAccount"
 #define CmdString_GitPush       "git-push"
+#define CmdString_AddTags       "addTags"
 
 #define actionImpl (em::ActionImplementor::GetInstance())
 
@@ -107,6 +109,9 @@ namespace em
     template<typename Handler>
     ActionImplementor& ActionImplementor::RegisterHandler(CmdType cmdType)
     {
+        if (m_ActionHandlers.find(cmdType) != m_ActionHandlers.end())
+            throw em::exception::General("Cannot re-register action handler!");
+
         m_ActionHandlers[cmdType] = new Handler();
         return *this;
     }

@@ -33,6 +33,11 @@
 				"name" : "location",
 				"optionType" : "text",
 				"helperMessage" : "Custom Location to add the Expense."
+			},
+			{
+				"name" : "tags",
+				"optionType" : "text",
+				"helperMessage" : "Custom tags to add the Expense."
 			}
 		],
 		"flags": [
@@ -91,6 +96,11 @@
 				"name" : "ignoreCategory",
 				"optionType" : "text",
 				"helperMessage" : "Ignores records of these categories(comma separated)."
+			},
+			{
+				"name" : "tags",
+				"optionType" : "text",
+				"helperMessage" : "Filter by Tags."
 			}
 		],
 		"flags": [
@@ -117,6 +127,14 @@
 			{
 				"name" : "ascending",
 				"helperMessage" : "Lists in ascending order of date."
+			},
+			{
+				"name" : "showTags",
+				"helperMessage" : "Lists the expenses with the tags column."
+			},
+			{
+				"name" : "tags",
+				"helperMessage" : "Lists all the available tags."
 			}
 		]
 	},
@@ -183,6 +201,18 @@
 				"name" : "accountName",
 				"optionType" : "text",
 				"helperMessage" : "Name of the account to switch to.",
+				"isMandatory" : true,
+				"inOrderIndex" : 1
+			}
+		]
+	},
+	{
+		"name": "addTags",
+		"parameters": [
+			{
+				"name" : "names",
+				"optionType" : "text",
+				"helperMessage" : "Comma separated names of the to be added.",
 				"isMandatory" : true,
 				"inOrderIndex" : 1
 			}

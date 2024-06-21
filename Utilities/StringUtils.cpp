@@ -3,7 +3,7 @@
 
 namespace utils::string
 {
-    std::vector<std::string> SplitString(const std::string& input, char separator)
+    std::vector<std::string> SplitString(const std::string& input, char separator, bool trim)
     {
         std::vector<std::string> result;
         std::stringstream ss(input);
@@ -11,6 +11,8 @@ namespace utils::string
         while (!ss.eof())
         {
             getline(ss, word, separator);
+            if (trim)
+                Trim(word);
             result.emplace_back(word);
         }
 

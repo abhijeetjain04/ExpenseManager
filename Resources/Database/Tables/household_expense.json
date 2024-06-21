@@ -44,6 +44,13 @@
 			"isPrimaryKey" : false,
 			"isNotNull" : true,
 			"isUnique" : false
+		},
+		{
+			"name" : "tags",
+			"valueType" : "text",
+			"isPrimaryKey" : false,
+			"isNotNull" : false,
+			"isUnique" : false
 		}
 	]
 }

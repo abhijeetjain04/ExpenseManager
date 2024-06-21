@@ -60,21 +60,8 @@ private:
     std::any m_Value;
 };
 
-class Model
+class Model : public std::unordered_map<std::string, DBValue>
 {
-public:
-    DBValue& operator[](const std::string& name)
-    {
-        return m_Model[name];
-    }
-
-    const DBValue& operator[](const std::string& name) const
-    {
-        return m_Model.at(name);
-    }
-
-private:
-    std::unordered_map<std::string, DBValue> m_Model;
 };
 
 class Table

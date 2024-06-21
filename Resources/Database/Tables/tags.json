@@ -1,0 +1,21 @@
+{
+	"name" : "tags",
+	"columns" : 
+	[
+		{
+			"name" : "row_id",
+			"valueType" : "integer",
+			"isPrimaryKey" : true,
+			"isNotNull" : false,
+			"isUnique" : true,
+			"autoIncrement" : false
+		},
+		{
+			"name" : "name",
+			"valueType" : "text",
+			"isPrimaryKey" : false,
+			"isNotNull" : true,
+			"isUnique" : true
+		}
+	]
+}

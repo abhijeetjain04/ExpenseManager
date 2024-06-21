@@ -80,7 +80,8 @@ bool Table::Select(std::vector<Model>& rows, const Condition& condition, const C
             {
                 SQLite::Column column = stmt->getColumn(index);
 
-                switch (column.getType())
+                int colType = column.getType();
+                switch (colType)
                 {
                 case SQLITE_INTEGER:
                     row[column.getName()] = std::any(column.getInt());
@@ -91,6 +92,11 @@ bool Table::Select(std::vector<Model>& rows, const Condition& condition, const C
                 case SQLITE_TEXT:
                     row[column.getName()] = std::any(column.getString());
                     break;
+                case SQLITE_NULL:
+                    row[column.getName()] = std::any("");
+                    break;
+                default:
+                    assert(false);
                 }
 
                 ++index;

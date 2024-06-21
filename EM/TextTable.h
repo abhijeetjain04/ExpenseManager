@@ -262,7 +262,7 @@ namespace em
 
         void AppendHeader()
         {
-            add("ROW_ID").add("NAME").add("CATEGORY").add("PRICE").add("DATE").add("LOCATION").add("ACCOUNT").endOfRow();
+            add("ROW_ID").add("NAME").add("CATEGORY").add("PRICE").add("DATE").add("LOCATION").add("TAGS").add("ACCOUNT").endOfRow();
         }
 
         void AppendRows(const std::vector<db::Model>& rows, const std::string& accountName)
@@ -272,12 +272,13 @@ namespace em
 
             for (const db::Model& row : rows)
             {
-                add(std::to_string(row["row_id"].asInt()))
-                    .add(row["name"].asString())
-                    .add(row["category"].asString())
-                    .add(std::to_string(row["price"].asDouble()))
-                    .add(row["date"].asString())
-                    .add(row["location"].asString())
+                add(std::to_string(row.at("row_id").asInt()))
+                    .add(row.at("name").asString())
+                    .add(row.at("category").asString())
+                    .add(std::to_string(row.at("price").asDouble()))
+                    .add(row.at("date").asString())
+                    .add(row.at("location").asString())
+                    .add(row.at("tags").asString())
                     .add(accountName)
                     .endOfRow();
             }
@@ -295,8 +296,8 @@ namespace em
             add("ROW_ID").add("NAME").endOfRow();
             for (const db::Model& row : m_Rows)
             {
-                add(std::to_string(row["row_id"].asInt()))
-                    .add(row["name"].asString())
+                add(std::to_string(row.at("row_id").asInt()))
+                    .add(row.at("name").asString())
                     .endOfRow();
             }
         }

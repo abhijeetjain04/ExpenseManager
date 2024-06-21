@@ -32,7 +32,8 @@ std::string QueryGenerator::InsertQuery(const Table& table, const Model& model)
     {
         const ColumnProperty& colProp = columns[i];
         oss << "'";
-        oss << model[colProp.Name];
+        if (model.contains(colProp.Name)) // if the column value is not provided, enter empty value.
+            oss << model.at(colProp.Name);
         oss << "'";
         if (i != numColumns - 1)
             oss << ", ";
