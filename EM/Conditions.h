@@ -121,14 +121,29 @@ namespace em
     };
 
     /**
-    * This class represents the condition used to handle the filteration on 'list' and ignore the mentioned category.
+    * This class represents the condition used to handle the filteration on 'list' command based on tags.
+    */
+    class Condition_ListTagFilter : public db::Condition
+    {
+    public:
+        static db::Condition* Create(const std::string& tagName)
+        {
+            std::string value = "";
+            if (!tagName.empty())
+                value = std::format("%{}%", tagName);
+            return new db::Condition("tags", value, db::Condition::Type::LIKE);
+        }
+    };
+
+    /**
+    * This class represents the condition used to check if a tag exists in the Database.
     */
     class Condition_Tag : public db::Condition
     {
     public:
         static db::Condition* Create(const std::string& tagName)
         {
-            return new db::Condition("tags", tagName, db::Condition::Type::EQUALS);
+            return new db::Condition("name", std::format("%{}%", tagName), db::Condition::Type::LIKE);
         }
     };
 

@@ -75,7 +75,8 @@ public:
     bool ExecQuery(const std::string& query);
 
     double SumOf(const std::string& columnName, const Condition& condition = Condition());
-    bool CheckIfExists(const std::string& columnName, const std::string& value);
+    bool CheckIfExists(const std::string& columnName, const std::string& value, Condition::Type compareType = Condition::Type::EQUALS);
+    bool CheckIfExists(const Condition& condition);
     bool Select(std::vector<Model>& rows, const Condition& condition = Condition(), const Clause_OrderBy& orderBy = Clause_OrderBy());
     bool Insert(const Model& model);
     bool Delete(const Condition& condition);

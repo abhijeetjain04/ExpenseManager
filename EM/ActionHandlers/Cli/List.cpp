@@ -107,6 +107,10 @@ namespace em::action_handler::cli
             if (result->statusCode != StatusCode::Success)
                 return result;
         }
+        else if (flags.contains("excludeTags"))
+        {
+            finalCondition.Add(Condition_ListTagFilter::Create(""));
+        }
 
         return ProcessDBTable(finalCondition, orderBy);
     }
@@ -206,15 +210,18 @@ namespace em::action_handler::cli
         auto table = databaseMgr.GetTable("tags");
         for (const std::string& tag : tags)
         {
+            db::Condition* tagExistsCondition = Condition_Tag::Create(tag);
             // check if the tag is valid.
-            if (!table->CheckIfExists("name", tag))
+            if (!table->CheckIfExists(*tagExistsCondition))
             {
+                delete tagExistsCondition;
                 return em::action_handler::Result::Create(
                     StatusCode::CategoryDoesNotExist,
                     std::format(ERROR_TAG_DOES_NOT_EXIST, tag));
             }
+            delete tagExistsCondition;
 
-            tagConditions->Add(Condition_Tag::Create(tag));
+            tagConditions->Add(Condition_ListTagFilter::Create(tag));
         }
 
         finalCondition.Add(tagConditions);

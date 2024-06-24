@@ -123,13 +123,20 @@ bool Table::Delete(const Condition& condition)
     return ExecQuery(QueryGenerator::DeleteQuery(*this, condition));
 }
 
-bool Table::CheckIfExists(const std::string& columnName, const std::string& value)
+bool Table::CheckIfExists(const std::string& columnName, const std::string& value, Condition::Type compareType)
 {
     if (columnName.empty())
         return false;
 
     std::vector<Model> rows;
-    Select(rows, Condition(columnName, value, Condition::Type::EQUALS));
+    Select(rows, Condition(columnName, value, compareType));
+    return rows.size() >= 1;
+}
+
+bool Table::CheckIfExists(const Condition& condition)
+{
+    std::vector<Model> rows;
+    Select(rows, condition);
     return rows.size() >= 1;
 }
 

@@ -135,6 +135,10 @@
 			{
 				"name" : "tags",
 				"helperMessage" : "Lists all the available tags."
+			},
+			{
+				"name" : "excludeTags",
+				"helperMessage" : "Lists all expenses with no tags."
 			}
 		]
 	},

@@ -20,7 +20,7 @@ namespace em::action_handler::cli
         assert(commandName == "add");
 
         auto categoryTable = databaseMgr.GetTable("categories");
-        auto expenseTable = databaseMgr.GetTable("household_expense");
+        auto expenseTable = databaseMgr.GetTable(databaseMgr.GetCurrentExpenseTableName());
 
         db::Model model;
         // validate if the category exists
