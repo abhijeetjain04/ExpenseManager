@@ -16,6 +16,9 @@ namespace em::action_handler::cli
 			const std::unordered_set<std::string>& flags,
 			const std::map<std::string, std::string>& options) override;
 
+	private:
+		ResultSPtr Validate(const std::string& attributeName, const std::string& attributeValue);
+
 	};
 
 }

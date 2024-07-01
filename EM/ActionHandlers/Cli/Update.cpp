@@ -24,7 +24,30 @@ namespace em::action_handler::cli
         std::string attributeName = options.at("attributeName");
         std::string attributeValue = options.at("attributeValue");
 
-        // if category is getting update, validate if its a valid category
+        ResultSPtr validationResult = Validate(attributeName, attributeValue);
+        if (validationResult->statusCode != StatusCode::Success)
+            return validationResult;
+
+        auto expenseTable = databaseMgr.GetTable(databaseMgr.GetCurrentExpenseTableName());
+
+        db::Model origModel;
+        expenseTable->SelectById(origModel, rowId);
+
+        db::Model newModel = origModel;
+        newModel[attributeName] = attributeValue;
+
+        if (!expenseTable->Update(origModel, newModel))
+        {
+            ERROR_LOG(ERROR_DB_UPDATE_EXPENSE, newModel["name"].asString());
+            return Result::Create(StatusCode::DBError, std::format(ERROR_DB_UPDATE_EXPENSE, newModel["name"].asString()));
+        }
+
+        return Result::Create(StatusCode::Success);
+    }
+
+    ResultSPtr Update::Validate(const std::string& attributeName, const std::string& attributeValue)
+    {
+        // check Category, must exist in the database
         if (attributeName == "category")
         {
             auto categoryTable = databaseMgr.GetTable("categories");
@@ -45,18 +68,21 @@ namespace em::action_handler::cli
             }
         }
 
-        auto expenseTable = databaseMgr.GetTable(databaseMgr.GetCurrentExpenseTableName());
-
-        db::Model origModel;
-        expenseTable->SelectById(origModel, rowId);
-
-        db::Model newModel = origModel;
-        newModel[attributeName] = attributeValue;
-
-        if (!expenseTable->Update(origModel, newModel))
+        // check tags, must exist in the database
+        
+        if (attributeName == "tags")
         {
-            ERROR_LOG(ERROR_DB_UPDATE_EXPENSE, newModel["name"].asString());
-            return Result::Create(StatusCode::DBError, std::format(ERROR_DB_UPDATE_EXPENSE, newModel["name"].asString()));
+            auto tagsTable = databaseMgr.GetTable("tags");
+            std::vector<std::string> tags = utils::string::SplitString(attributeValue, ',');
+            std::unordered_set<std::string> uniqueTags;
+            for (const std::string& tag : tags)
+            {
+                if (!tagsTable->CheckIfExists("name", tag))
+                {
+                    ERROR_LOG(ERROR_TAG_DOES_NOT_EXIST, tag);
+                    return Result::Create(StatusCode::DBError, std::format(ERROR_TAG_DOES_NOT_EXIST, tag));
+                }
+            }
         }
 
         return Result::Create(StatusCode::Success);
