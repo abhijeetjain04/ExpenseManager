@@ -9,6 +9,7 @@
 #define CmdString_Help          "help"
 #define CmdString_AddCategory   "addCategory"
 #define CmdString_Add           "add"
+#define CmdString_Update        "update"
 #define CmdString_Remove        "remove"
 #define CmdString_List          "list"
 #define CmdString_Report        "report"

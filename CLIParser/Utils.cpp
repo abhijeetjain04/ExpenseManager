@@ -26,7 +26,7 @@ bool IsInteger(const std::string& str)
 
 bool IsAlphaNumeric(const std::string& str)
 {
-    return std::find_if(str.begin(), str.end(),
+    return IsDouble(str) || std::find_if(str.begin(), str.end(),
         [](char c) { return !(isalnum(c) || (c == ' ')); }) == str.end();
 }
 

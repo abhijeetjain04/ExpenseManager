@@ -44,6 +44,27 @@ std::string QueryGenerator::InsertQuery(const Table& table, const Model& model)
     return oss.str();
 }
 
+std::string QueryGenerator::UpdateQuery(const Table& table, const Model& origModel, const Model& newModel)
+{
+    std::ostringstream oss;
+    oss << "UPDATE " << table.GetName() << " ";
+
+    const std::vector<ColumnProperty>& columns = table.GetColumnProperties();
+    size_t numColumns = columns.size();
+
+    for (const ColumnProperty& column : columns)
+    {
+        if (origModel.at(column.Name) != newModel.at(column.Name))
+        {
+            oss << "SET " << column.Name << " = " << "'" << newModel.at(column.Name).asString() << "'" << " ";
+            break;
+        }
+    }
+
+    oss << "WHERE row_id = '" << origModel.at("row_id").asInt() << "'" << ";";
+    return oss.str();
+}
+
 std::string QueryGenerator::SelectQuery(const Table& table, const Condition& condition, const Clause_OrderBy& orderBy)
 {
     std::ostringstream oss;

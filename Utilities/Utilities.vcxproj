@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="FileUtils.h" />
     <ClInclude Include="FolderUtils.h" />
+    <ClInclude Include="GeneralUtils.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="StringUtils.h" />
     <ClInclude Include="Utils.h" />
@@ -28,6 +29,7 @@
   <ItemGroup>
     <ClCompile Include="FileUtils.cpp" />
     <ClCompile Include="FolderUtils.cpp" />
+    <ClCompile Include="GeneralUtils.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="StringUtils.cpp" />
   </ItemGroup>

@@ -158,6 +158,7 @@
     <ClCompile Include="ActionHandlers\Cli\Remove.cpp" />
     <ClCompile Include="ActionHandlers\Cli\Report.cpp" />
     <ClCompile Include="ActionHandlers\Cli\SwitchAccount.cpp" />
+    <ClCompile Include="ActionHandlers\Cli\Update.cpp" />
     <ClCompile Include="ActionImplementor.cpp" />
     <ClCompile Include="ActionHandlers\Cli\Add.cpp" />
     <ClCompile Include="Common\EnumAndStringConverter.cpp">
@@ -187,6 +188,7 @@
     <ClInclude Include="ActionHandlers\Cli\Remove.h" />
     <ClInclude Include="ActionHandlers\Cli\Report.h" />
     <ClInclude Include="ActionHandlers\Cli\SwitchAccount.h" />
+    <ClInclude Include="ActionHandlers\Cli\Update.h" />
     <ClInclude Include="ActionImplementor.h" />
     <ClInclude Include="Assertion.h" />
     <ClInclude Include="Common\CommonEnums.h" />

@@ -57,6 +57,9 @@ em::CmdType GetCmdType(const char* cmdString)
     if (strcmp(cmdString, CmdString_Add) == 0)
         return em::CmdType::Add;
 
+    if (strcmp(cmdString, CmdString_Update) == 0)
+        return em::CmdType::Update;
+
     if (strcmp(cmdString, CmdString_Remove) == 0)
         return em::CmdType::Remove;
 

@@ -10,6 +10,7 @@ namespace em
         Help,
         AddCategory,
         Add,
+        Update,
         Remove,
         List,
         Report,

@@ -37,6 +37,37 @@ struct DBValue
         m_Value = std::any(value);
     }
 
+    bool operator == (const DBValue& otherValue) const
+    {
+        if (m_Value.type() != otherValue.m_Value.type())
+            return false;
+
+        if (m_Value.type() == typeid(int))
+        {
+            return std::any_cast<int>(m_Value) == std::any_cast<int>(otherValue.m_Value);
+        }
+        else if (m_Value.type() == typeid(double))
+        {
+            return std::any_cast<double>(m_Value) == std::any_cast<double>(otherValue.m_Value);
+        }
+        else if (m_Value.type() == typeid(std::string))
+        {
+            return std::any_cast<std::string>(m_Value) == std::any_cast<std::string>(otherValue.m_Value);
+        }
+        else if (m_Value.type() == typeid(bool))
+        {
+            return std::any_cast<bool>(m_Value) == std::any_cast<bool>(otherValue.m_Value);
+        }
+
+        assert(false);
+        return false;
+    }
+
+    bool operator != (const DBValue& otherValue) const
+    {
+        return !(*this == otherValue);
+    }
+
     bool IsEmpty() const
     {
         return !m_Value.has_value();
@@ -78,7 +109,9 @@ public:
     bool CheckIfExists(const std::string& columnName, const std::string& value, Condition::Type compareType = Condition::Type::EQUALS);
     bool CheckIfExists(const Condition& condition);
     bool Select(std::vector<Model>& rows, const Condition& condition = Condition(), const Clause_OrderBy& orderBy = Clause_OrderBy());
+    bool SelectById(Model& model, int id);
     bool Insert(const Model& model);
+    bool Update(const Model& origModel, const Model& model);
     bool Delete(const Condition& condition);
 
     void SetColumnProperties(const std::vector<ColumnProperty>& columns) { m_ColumnProperties = columns; }

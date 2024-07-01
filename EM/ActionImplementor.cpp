@@ -54,6 +54,7 @@ namespace em
         {
             RegisterHandler<em::action_handler::cli::List>(em::CmdType::List);
             RegisterHandler<em::action_handler::cli::Add>(em::CmdType::Add);
+            RegisterHandler<em::action_handler::cli::Update>(em::CmdType::Update);
             RegisterHandler<em::action_handler::cli::Remove>(em::CmdType::Remove);
         }
 

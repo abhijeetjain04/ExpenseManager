@@ -108,6 +108,9 @@
     <ClCompile Include="ActionHandlers\Cli\AddTags.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ActionHandlers\Cli\Update.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Scope.txt">
@@ -215,6 +218,9 @@
       <Filter>Source Files\Exceptions</Filter>
     </ClInclude>
     <ClInclude Include="ActionHandlers\Cli\AddTags.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionHandlers\Cli\Update.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

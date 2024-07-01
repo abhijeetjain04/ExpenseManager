@@ -3,6 +3,7 @@
 #include "List.h"
 #include "List_AllAccounts.h"
 #include "Add.h"
+#include "Update.h"
 #include "Remove.h"
 #include "AddCategory.h"
 #include "Report.h"

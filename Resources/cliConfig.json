@@ -48,6 +48,32 @@
 		]
 	},
 	{
+		"name": "update",
+		"parameters": [
+			{
+				"name" : "row_id",
+				"optionType" : "integer",
+				"helperMessage" : "Id of the expense.",
+				"isMandatory" : true,
+				"inOrderIndex" : 1
+			},
+			{
+				"name" : "attributeName",
+				"optionType" : "alphaNumeric",
+				"helperMessage" : "Name of the Attribute to update.",
+				"isMandatory" : true,
+				"inOrderIndex" : 2
+			},
+			{
+				"name" : "attributeValue",
+				"optionType" : "alphaNumeric",
+				"helperMessage" : "Value of the Attribute to update.",
+				"isMandatory" : true,
+				"inOrderIndex" : 3
+			}
+		]
+	},
+	{
 		"name": "addCategory",
 		"parameters": [
 			{

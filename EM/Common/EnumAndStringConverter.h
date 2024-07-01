@@ -17,6 +17,7 @@ namespace em::common
 			MAP_ENTRY(em::CmdType, Help),
 			MAP_ENTRY(em::CmdType, AddCategory),
 			MAP_ENTRY(em::CmdType, Add),
+			MAP_ENTRY(em::CmdType, Update),
 			MAP_ENTRY(em::CmdType, Remove),
 			MAP_ENTRY(em::CmdType, List),
 			MAP_ENTRY(em::CmdType, Report),

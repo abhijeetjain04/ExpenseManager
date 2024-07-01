@@ -112,15 +112,35 @@ bool Table::Select(std::vector<Model>& rows, const Condition& condition, const C
     }
 }
 
+bool Table::SelectById(Model& model, int id)
+{
+    std::vector<Model> rows;
+    if (!Select(rows, Condition("row_id", std::to_string(id), Condition::Type::EQUALS)))
+    {
+        printf("\nERROR: Entity with rows_id - %d does not exist!", id);
+        return false;
+    }
+
+    model = rows[0];
+    return true;
+}
+
 bool Table::Insert(const Model& model)
 {
     const std::string& query = QueryGenerator::InsertQuery(*this, model);
     return ExecQuery(query);
 }
 
+bool Table::Update(const Model& origModel, const Model& newModel)
+{
+    const std::string& query = QueryGenerator::UpdateQuery(*this, origModel, newModel);
+    return ExecQuery(query);
+}
+
 bool Table::Delete(const Condition& condition)
 {
-    return ExecQuery(QueryGenerator::DeleteQuery(*this, condition));
+    const std::string& query = QueryGenerator::DeleteQuery(*this, condition);
+    return ExecQuery(query);
 }
 
 bool Table::CheckIfExists(const std::string& columnName, const std::string& value, Condition::Type compareType)
