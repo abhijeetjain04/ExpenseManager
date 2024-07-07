@@ -59,14 +59,14 @@
 			},
 			{
 				"name" : "attributeName",
-				"optionType" : "alphaNumeric",
+				"optionType" : "text",
 				"helperMessage" : "Name of the Attribute to update.",
 				"isMandatory" : true,
 				"inOrderIndex" : 2
 			},
 			{
 				"name" : "attributeValue",
-				"optionType" : "alphaNumeric",
+				"optionType" : "text",
 				"helperMessage" : "Value of the Attribute to update.",
 				"isMandatory" : true,
 				"inOrderIndex" : 3
