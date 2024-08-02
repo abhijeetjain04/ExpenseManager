@@ -120,6 +120,13 @@ namespace em::utils::date
 
 namespace em::utils::string
 {
+    std::vector<std::string> SplitString(const std::string& s, char del, bool trimResultStrings)
+    {
+        std::vector<std::string> result;
+        SplitString(s, result, del, trimResultStrings);
+        return result;
+    }
+
     void SplitString(const std::string& s, std::vector<std::string>& splits, char del, bool trimResultStrings)
     {
         std::stringstream ss(s);

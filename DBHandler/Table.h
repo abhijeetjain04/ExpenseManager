@@ -37,6 +37,15 @@ struct DBValue
         m_Value = std::any(value);
     }
 
+    template<typename T>
+    bool operator == (const T& otherValue)
+    {
+        if (m_Value.type() != typeid(T))
+            assert(false);
+
+        return std::any_cast<T>(m_Value) == otherValue;
+    }
+
     bool operator == (const DBValue& otherValue) const
     {
         if (m_Value.type() != otherValue.m_Value.type())

@@ -59,6 +59,14 @@ namespace em::action_handler::cli
 		*/
 		em::action_handler::ResultSPtr ListTags();
 
+		/**
+		* This function handles the creation of the database condition to ignore tags from the records.
+		* 
+		* @returns
+		*		Pointer to the new db::Condition object
+		*/
+		db::Condition* CreateIgnoreTagsCondition(const std::string& commaSeparatedTagsToIgnore);
+
 	};
 
 }

@@ -127,6 +127,11 @@
 				"name" : "tags",
 				"optionType" : "text",
 				"helperMessage" : "Filter by Tags."
+			},
+			{
+				"name" : "ignoreTags",
+				"optionType" : "text",
+				"helperMessage" : "Ignores records with the give Tags."
 			}
 		],
 		"flags": [
@@ -242,7 +247,19 @@
 			{
 				"name" : "names",
 				"optionType" : "text",
-				"helperMessage" : "Comma separated names of the to be added.",
+				"helperMessage" : "Comma separated names of the tags to be added.",
+				"isMandatory" : true,
+				"inOrderIndex" : 1
+			}
+		]
+	},
+	{
+		"name": "removeTags",
+		"parameters": [
+			{
+				"name" : "ids",
+				"optionType" : "text",
+				"helperMessage" : "Comma separated ids of the tags to be removed.",
 				"isMandatory" : true,
 				"inOrderIndex" : 1
 			}

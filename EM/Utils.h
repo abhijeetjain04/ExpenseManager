@@ -76,6 +76,11 @@ namespace em::utils::string
     /**
     * Splits the string with the 'del' delimiter
     */
+    std::vector<std::string> SplitString(const std::string& s, char del = ',', bool trimResultStrings = true);
+
+    /**
+    * Splits the string with the 'del' delimiter
+    */
     void SplitString(const std::string& s, std::vector<std::string>& splits, char del= ',', bool trimResultStrings = true);
 
     /**

@@ -33,6 +33,10 @@ namespace em::action_handler::cli
         db::Model origModel;
         expenseTable->SelectById(origModel, rowId);
 
+        // if the same value is being updated, we can skip
+        if(origModel[attributeName] == attributeValue)
+            return Result::Create(StatusCode::Success);
+
         db::Model newModel = origModel;
         newModel[attributeName] = attributeValue;
 

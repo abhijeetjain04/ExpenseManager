@@ -107,6 +107,12 @@ namespace em::action_handler::cli
             if (result->statusCode != StatusCode::Success)
                 return result;
         }
+        else if (options.contains("ignoreTags"))
+        {
+            const std::string& commaSeparatedTagsToIgnore = options.at("ignoreTags");
+            db::Condition* ignoreTagsCond = CreateIgnoreTagsCondition(commaSeparatedTagsToIgnore);
+            finalCondition.Add(ignoreTagsCond);
+        }
         else if (flags.contains("excludeTags"))
         {
             finalCondition.Add(Condition_ListTagFilter::Create(""));
@@ -129,7 +135,8 @@ namespace em::action_handler::cli
         std::sort(rows.begin(), rows.end(),
             [](db::Model& e1, db::Model& e2)
             {
-                return e1["price"].asDouble() > e2["price"].asDouble();
+                //return e1["price"].asDouble() > e2["price"].asDouble();
+                return std::strcmp(e1["category"].asString().c_str(), e2["category"].asString().c_str()) < 0;
             });
 
         const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
@@ -228,4 +235,17 @@ namespace em::action_handler::cli
 
         return em::action_handler::Result::Create(StatusCode::Success);
     }
+
+    db::Condition* List::CreateIgnoreTagsCondition(const std::string& commaSeparatedTagsToIgnore)
+    {
+        std::vector<std::string> tags = utils::string::SplitString(commaSeparatedTagsToIgnore);
+
+        // no need to check if a tag exists in the database
+        db::Condition* finalCondition = new db::Condition(db::Condition::RelationshipType::AND);
+        for (const std::string& tag : tags)
+            finalCondition->Add(Condition_IgnoreTags::Create(tag));
+
+        return finalCondition;
+    }
+
 }
