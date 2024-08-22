@@ -13,7 +13,10 @@ namespace em::action_handler::cli
 
     em::action_handler::ResultSPtr List_AllAccounts::ProcessDBTable(
         const db::Condition& dbCondition, 
-        const db::Clause_OrderBy& orderBy)
+        const db::Clause_OrderBy& orderBy,
+        bool showTags,
+        bool showAccount,
+        bool showLocation)
     {
 #if 0
         std::unordered_map<std::string, std::vector<DBModel_Expense>> rows;

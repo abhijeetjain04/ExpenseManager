@@ -234,8 +234,16 @@ namespace em
         * @params [in] records
         *       Vector of records for the given account.
         */
-        TextTable_Expense(const std::string& accountName, const std::vector<db::Model>& records)
+        TextTable_Expense(
+            const std::string& accountName, 
+            const std::vector<db::Model>& records, 
+            bool showTags = false, 
+            bool showAccount = false,
+            bool showLocation = false)
             : TextTable()
+            , m_ShowTags(showTags)
+            , m_ShowAccount(showAccount)
+            , m_ShowLocation(showLocation)
         {
             AppendHeader();
             AppendRows(records, accountName);
@@ -259,10 +267,25 @@ namespace em
         }
 
     private:
+        bool m_ShowTags;
+        bool m_ShowAccount;
+        bool m_ShowLocation;
 
+    private:
         void AppendHeader()
         {
-            add("ROW_ID").add("NAME").add("CATEGORY").add("PRICE").add("DATE").add("LOCATION").add("TAGS").add("ACCOUNT").endOfRow();
+            add("ROW_ID").add("NAME").add("CATEGORY").add("PRICE").add("DATE");
+            
+            if(m_ShowLocation)
+                add("LOCATION");
+
+            if (m_ShowTags)
+                add("TAGS");
+
+            if (m_ShowAccount)
+                add("ACCOUNT");
+
+            endOfRow();
         }
 
         void AppendRows(const std::vector<db::Model>& rows, const std::string& accountName)
@@ -277,11 +300,18 @@ namespace em
                 add(row.at("category").asString());
                 add(std::to_string(row.at("price").asDouble()));
                 add(row.at("date").asString());
-                add(row.at("location").asString());
 
-                auto temp = row.at("tags");
-                add(row.at("tags").asString());
-                add(accountName);
+                if(m_ShowLocation)
+                    add(row.at("location").asString());
+
+                if (m_ShowTags)
+                {
+                    auto temp = row.at("tags");
+                    add(row.at("tags").asString());
+                }
+                if(m_ShowAccount)
+                    add(accountName);
+
                 endOfRow();
             }
         }

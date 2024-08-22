@@ -20,7 +20,12 @@ namespace em::action_handler::cli
 		/**
 		* Same as em::action_handler::cli::List
 		*/
-		virtual em::action_handler::ResultSPtr ProcessDBTable(const db::Condition& cond, const db::Clause_OrderBy& orderBy) override;
+		virtual em::action_handler::ResultSPtr ProcessDBTable(
+			const db::Condition& cond, 
+			const db::Clause_OrderBy& orderBy, 
+			bool showTags = false, 
+			bool showAccount = false,
+			bool showLocation = false) override;
 
 	private:
 		/**

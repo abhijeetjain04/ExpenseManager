@@ -36,12 +36,23 @@ namespace em::action_handler::cli
 		* 
 		* @params [in] orderBy
 		*		Determines ordering or the rows.
-		* 
+		*
+		* @params [in] showTags
+		*		Set true, to show the tags column.
+		*
+		* @params [in] showAccount
+		*		Set true, to show the account column.
+		*
 		* @return
 		*		Object of ResultSPtr that contains the result details on execution of the function.
 		*
 		*/
-		virtual em::action_handler::ResultSPtr ProcessDBTable(const db::Condition& cond, const db::Clause_OrderBy& orderBy);
+		virtual em::action_handler::ResultSPtr ProcessDBTable(
+			const db::Condition& cond, 
+			const db::Clause_OrderBy& orderBy,
+			bool showTags = false,
+			bool showAccount = false,
+			bool showLocation = false);
 
 		/**
 		* This function handles the request of listing categories

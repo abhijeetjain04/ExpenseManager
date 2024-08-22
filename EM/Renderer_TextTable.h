@@ -25,10 +25,16 @@ namespace em
         * @params [in] total
         *       This arg is used to display the 'price' parameter's total.
         */
-        static void Render(const std::string& accountName, const std::vector<db::Model>& rows, double total = 0.0)
+        static void Render(
+            const std::string& accountName, 
+            const std::vector<db::Model>& rows, 
+            double total = 0.0, 
+            bool showTags = false, 
+            bool showAccount = false,
+            bool showLocation = false)
         {
             printf("\n Total Rows : %zd", rows.size());
-            TextTable_Expense t(accountName, rows);
+            TextTable_Expense t(accountName, rows, showTags, showAccount, showLocation);
             t.Print();
 
             if (total != 0.0)

@@ -160,6 +160,14 @@
 				"helperMessage" : "Lists in ascending order of date."
 			},
 			{
+				"name" : "showLocation",
+				"helperMessage" : "Lists the expenses with the location column."
+			},
+			{
+				"name" : "showAccount",
+				"helperMessage" : "Lists the expenses with the account column."
+			},
+			{
 				"name" : "showTags",
 				"helperMessage" : "Lists the expenses with the tags column."
 			},

@@ -101,11 +101,14 @@ namespace em::action_handler::cli
         if (flags.contains("ascending"))
             orderBy.SetType(db::Clause_OrderBy::ASCENDING);
 
+        bool showTags = flags.contains("showTags");
         if (options.contains("tags"))
         {
             auto result = AppendTagsCondition(finalCondition, options.at("tags"));
             if (result->statusCode != StatusCode::Success)
                 return result;
+
+            showTags = true;
         }
         else if (options.contains("ignoreTags"))
         {
@@ -118,11 +121,19 @@ namespace em::action_handler::cli
             finalCondition.Add(Condition_ListTagFilter::Create(""));
         }
 
-        return ProcessDBTable(finalCondition, orderBy);
+        bool showAccount = flags.contains("showAccount");
+        bool showLocation = flags.contains("showLocation");
+
+        return ProcessDBTable(finalCondition, orderBy, showTags, showAccount, showLocation);
     }
 
     // protected
-    em::action_handler::ResultSPtr List::ProcessDBTable(const db::Condition& dbCondition, const db::Clause_OrderBy& orderBy)
+    em::action_handler::ResultSPtr List::ProcessDBTable(
+        const db::Condition& dbCondition, 
+        const db::Clause_OrderBy& orderBy,
+        bool showTags,
+        bool showAccount,
+        bool showLocation)
     {
         std::vector<db::Model> rows;
 
@@ -135,14 +146,14 @@ namespace em::action_handler::cli
         std::sort(rows.begin(), rows.end(),
             [](db::Model& e1, db::Model& e2)
             {
-                //return e1["price"].asDouble() > e2["price"].asDouble();
-                return std::strcmp(e1["category"].asString().c_str(), e2["category"].asString().c_str()) < 0;
+                return e1["price"].asDouble() > e2["price"].asDouble();
+                //return std::strcmp(e1["category"].asString().c_str(), e2["category"].asString().c_str()) < 0;
             });
 
         const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
 
         double totalExpense = expenseTable->SumOf("price", dbCondition);
-        Renderer_ExpenseTable::Render(currentAccountName, rows, totalExpense);
+        Renderer_ExpenseTable::Render(currentAccountName, rows, totalExpense, showTags, showAccount, showLocation);
 
         return Result::Create(StatusCode::Success);
     }
