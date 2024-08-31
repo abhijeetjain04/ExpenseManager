@@ -6,6 +6,7 @@
 #include "Exceptions/General.h"
 
 #define CmdString_Cls           "cls"
+#define CmdString_ClearScreen   "clear-screen"
 #define CmdString_Help          "help"
 #define CmdString_AddCategory   "addCategory"
 #define CmdString_Add           "add"

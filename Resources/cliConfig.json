@@ -280,6 +280,9 @@
 		"name": "cls"
 	},
 	{
+		"name": "clear-screen"
+	},
+	{
 		"name": "help"
 	}
   ]

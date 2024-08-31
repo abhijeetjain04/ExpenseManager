@@ -48,6 +48,9 @@ em::CmdType GetCmdType(const char* cmdString)
     if (strcmp(cmdString, CmdString_Cls) == 0)
         return em::CmdType::ClearScreen;
 
+    if (strcmp(cmdString, CmdString_ClearScreen) == 0)
+        return em::CmdType::ClearScreen;
+
     if (strcmp(cmdString, CmdString_Help) == 0)
         return em::CmdType::Help;
 
