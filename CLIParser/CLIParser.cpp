@@ -235,8 +235,6 @@ bool CLIParser::Validate(
     const ValidCommand& validCommand)
 {
     size_t numMandatoryOptions = validCommand.GetNumMandatoryParameters();
-    if (numMandatoryOptions > (args.size() - 1)) // size - 1, because 1st arg is the command name
-        return false;
 
     size_t argIndex = 1;
     size_t mandatoryOptionIndex = 1;
@@ -314,6 +312,26 @@ bool CLIParser::Validate(
         }
 
         ++argIndex;
+    }
+
+    // check if all mandatory arguments were passed
+    // as 'mandatoryOptionIndex' starts with 1, need to check mandatoryOptionIndex - 1 for the count of mandatory options passed by user.
+    if (mandatoryOptionIndex - 1 < numMandatoryOptions)
+    {
+        // log the missing parameter
+        for (size_t i = 1; i < numMandatoryOptions + 1; ++i)
+        {
+            const auto iter = validCommand.GetParameterAtIndex(i);
+            const std::string& paramName = iter->first;
+
+            if (!m_CommandParams.contains(paramName))
+            {
+                printf("\nMissing Parameter : %s", paramName.c_str());
+                break;
+            }
+        }
+
+        return false;
     }
 
     return isValid;
