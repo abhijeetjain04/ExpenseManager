@@ -78,7 +78,7 @@ namespace em
         if (cmdType == CmdType::ClearScreen)
         {
             system("cls");
-            return action_handler::Result::Create(StatusCode::Success);
+            return action_handler::Result::Success();
         }
 
         if (cmdType == CmdType::Help)

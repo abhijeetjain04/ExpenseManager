@@ -155,7 +155,7 @@ namespace em::action_handler::cli
         double totalExpense = expenseTable->SumOf("price", dbCondition);
         Renderer_ExpenseTable::Render(currentAccountName, rows, totalExpense, showTags, showAccount, showLocation);
 
-        return Result::Create(StatusCode::Success);
+        return Result::Success();
     }
 
     // protected
@@ -171,7 +171,7 @@ namespace em::action_handler::cli
         }
 
         Renderer_CategoryTable::Render(rows);
-        return em::action_handler::Result::Create(StatusCode::Success);
+        return em::action_handler::Result::Success();
     }
 
     // protected
@@ -187,7 +187,7 @@ namespace em::action_handler::cli
         }
 
         Renderer_CategoryTable::Render(rows);
-        return em::action_handler::Result::Create(StatusCode::Success);
+        return em::action_handler::Result::Success();
     }
 
 
@@ -216,7 +216,7 @@ namespace em::action_handler::cli
 
         finalCondition.Add(categoryConditions);
 
-        return em::action_handler::Result::Create(StatusCode::Success);
+        return em::action_handler::Result::Success();
     }
 
     // private
@@ -244,7 +244,7 @@ namespace em::action_handler::cli
 
         finalCondition.Add(tagConditions);
 
-        return em::action_handler::Result::Create(StatusCode::Success);
+        return em::action_handler::Result::Success();
     }
 
     db::Condition* List::CreateIgnoreTagsCondition(const std::string& commaSeparatedTagsToIgnore)

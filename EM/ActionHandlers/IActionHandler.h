@@ -11,6 +11,13 @@ namespace em::action_handler
 		StatusCode	statusCode;
 		std::string message;
 
+		bool IsSuccess() const { return statusCode == StatusCode::Success; }
+
+		static ResultSPtr Success()
+		{
+			return std::make_shared<Result>(StatusCode::Success);
+		}
+
 		static ResultSPtr Create(StatusCode statusCode, const std::string& message = "")
 		{
 			return std::make_shared<Result>(statusCode, message);
@@ -54,6 +61,26 @@ namespace em::action_handler
 			const std::map<std::string, std::string>& options)
 		{
 			return em::action_handler::Result::Create(StatusCode::Invalid);
+		}
+
+
+		/**
+		* This function can be inherited to check if all the mandatory arguments are present in the user input
+		* 
+		* @params [in] flags
+		*		Flags passed in by user.
+		* 
+		* @params [in] options
+		*		Options passed in by user.
+		* 
+		* @return
+		*		True, if all the mandatory arguments are present, else False.
+		*/
+		virtual ResultSPtr ValidateMandatoryArguments(
+			const std::unordered_set<std::string>& flags,
+			const std::map<std::string, std::string>& options) const
+		{
+			return Result::Success();
 		}
 
 	};

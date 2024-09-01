@@ -19,6 +19,10 @@ namespace em::action_handler::cli
     {
         assert(commandName == "add");
 
+        auto validationResult = ValidateMandatoryArguments(flags, options);
+        if (!validationResult->IsSuccess())
+            return validationResult;
+
         auto categoryTable = databaseMgr.GetTable("categories");
         auto expenseTable = databaseMgr.GetTable(databaseMgr.GetCurrentExpenseTableName());
 
@@ -53,9 +57,27 @@ namespace em::action_handler::cli
             return Result::Create(StatusCode::DBError, std::format(ERROR_DB_INSERT_EXPENSE, model["name"].asString()));
         }
 
-        return Result::Create(StatusCode::Success);
+        return Result::Success();
     }
 
+    ResultSPtr Add::ValidateMandatoryArguments(
+        const std::unordered_set<std::string>& flags,
+        const std::map<std::string, std::string>& options) const
+    {
+        // name, category, price must be present
+        if (!options.contains("name"))
+            return Result::Create(StatusCode::MandatoryArgNotPresent, std::format(ERROR_MANDATORY_ARG_NOT_PRESENT, "name"));
+
+        if (!options.contains("category"))
+            return Result::Create(StatusCode::MandatoryArgNotPresent, std::format(ERROR_MANDATORY_ARG_NOT_PRESENT, "category"));
+
+        if (!options.contains("price"))
+            return Result::Create(StatusCode::MandatoryArgNotPresent, std::format(ERROR_MANDATORY_ARG_NOT_PRESENT, "price"));
+
+        return Result::Success();
+    }
+
+    // private
     bool Add::GenerateTags(const std::string& commaSeparatedTags, std::string& tagToInsert)
     {
         auto tagsTable = databaseMgr.GetTable("tags");

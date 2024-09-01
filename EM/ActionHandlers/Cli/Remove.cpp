@@ -40,7 +40,7 @@ namespace em::action_handler::cli
         if (rows.size() < 1)
         {
             printf("\nNo records found for row_ids : %s", rowIdStr.c_str());
-            return Result::Create(StatusCode::Success);
+            return Result::Success();
         }
 
         const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
@@ -54,7 +54,7 @@ namespace em::action_handler::cli
         if (userInput == 0)
         {
             printf("\nSkipped deletion.");
-            return Result::Create(StatusCode::Success);
+            return Result::Success();
         }
 
         if (!table->Delete(*removeConditions))
@@ -63,7 +63,7 @@ namespace em::action_handler::cli
             return Result::Create(StatusCode::DBError, std::format(ERROR_DB_REMOVE_EXPENSE, rowIdStr));
         }
 
-        return Result::Create(StatusCode::Success);
+        return Result::Success();
     }
 
 }

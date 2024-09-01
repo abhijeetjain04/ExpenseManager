@@ -35,7 +35,7 @@ namespace em::action_handler::cli
             return Result::Create(StatusCode::CategoryAlreayExists, std::format(ERROR_CATEGORY_ALREADY_EXIST, model["name"].asString()));
         }
 
-        return Result::Create(StatusCode::Success);
+        return Result::Success();
     }
 
 }

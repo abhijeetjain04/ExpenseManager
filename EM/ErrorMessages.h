@@ -1,5 +1,6 @@
 #pragma once
 
+// Database
 constexpr auto ERROR_DB_SELECT_CATEGORY             = "Failed to retrieve Categories.";
 constexpr auto ERROR_DB_SELECT_TAG                  = "Failed to retrieve Tags.";
 constexpr auto ERROR_DB_INSERT_CATEGORY             = "Failed to add Category: '{}'";
@@ -8,10 +9,12 @@ constexpr auto ERROR_DB_UPDATE_EXPENSE              = "Failed to update Expense:
 constexpr auto ERROR_DB_REMOVE_EXPENSE              = "Failed to remove Expense: '{}'";
 constexpr auto ERROR_DB_INSERT_TAG                  = "Failed to add Tag: '{}'";
 
+// Functional
 constexpr auto ERROR_CATEGORY_DOES_NOT_EXIST        = "Category does not exist: '{}'";
 constexpr auto ERROR_CATEGORY_ALREADY_EXIST         = "Category already exist: '{}'";
 constexpr auto ERROR_TAG_DOES_NOT_EXIST             = "Tag does not exist: '{}'";
 constexpr auto ERROR_INVALID_ATTRIBUTE_TYPE         = "Invalid Attribute Type: '{}'";
+constexpr auto ERROR_MANDATORY_ARG_NOT_PRESENT      = "Mandatory Argument Not Present: '{}'";
 
 // Account
 constexpr auto ERROR_ACCOUNT_DOES_NOT_EXIST         = "Account does not exist: '{}'.";

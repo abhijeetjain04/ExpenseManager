@@ -30,7 +30,7 @@ namespace em::action_handler::cli
             }
         }
 
-        return Result::Create(StatusCode::Success);
+        return Result::Success();
     }
 
 }

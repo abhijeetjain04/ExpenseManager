@@ -37,6 +37,6 @@ namespace em::action_handler::cli
 		else
 			std::cout << "No Changes in the repo";
 
-        return em::action_handler::Result::Create(StatusCode::Success);
+        return em::action_handler::Result::Success();
 	}
 }

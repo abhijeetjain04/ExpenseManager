@@ -54,7 +54,7 @@ namespace em::action_handler::cli
 
         Renderer_CompareReport::Render(reports);
 
-        return Result::Create(StatusCode::Success);
+        return Result::Success();
     }
 
     bool CompareMonths::ValidateRangeParameter(const std::string& rangeValueStr, int& startMonth, int& endMonth)

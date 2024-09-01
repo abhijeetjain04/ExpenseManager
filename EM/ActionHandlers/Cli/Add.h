@@ -17,6 +17,14 @@ namespace em::action_handler::cli
 			const std::map<std::string, std::string>& options) override;
 
 		/**
+		* Same as em::action_handler::Interface::ValidateMandatoryArguments(...)
+		*/
+		virtual ResultSPtr ValidateMandatoryArguments(
+			const std::unordered_set<std::string>& flags,
+			const std::map<std::string, std::string>& options) const override;
+
+	private:
+		/**
 		* Generate Tags from the input provided in the input
 		*/
 		bool GenerateTags(const std::string& commaSeparatedTags, std::string& tagToInsert);

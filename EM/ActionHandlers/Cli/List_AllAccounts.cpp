@@ -46,7 +46,7 @@ namespace em::action_handler::cli
 
         Renderer_ExpenseTable::Render(rows, totalExpense);
 #endif
-        return Result::Create(StatusCode::Success);
+        return Result::Success();
     }
 
     std::string List_AllAccounts::RetrieveMatchingAccountName(const std::string& tableName) const

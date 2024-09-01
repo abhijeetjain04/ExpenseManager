@@ -35,7 +35,7 @@ namespace em::action_handler::cli
 
         // if the same value is being updated, we can skip
         if(origModel[attributeName] == attributeValue)
-            return Result::Create(StatusCode::Success);
+            return Result::Success();
 
         db::Model newModel = origModel;
         newModel[attributeName] = attributeValue;
@@ -46,7 +46,7 @@ namespace em::action_handler::cli
             return Result::Create(StatusCode::DBError, std::format(ERROR_DB_UPDATE_EXPENSE, newModel["name"].asString()));
         }
 
-        return Result::Create(StatusCode::Success);
+        return Result::Success();
     }
 
     ResultSPtr Update::Validate(const std::string& attributeName, const std::string& attributeValue)
@@ -89,7 +89,7 @@ namespace em::action_handler::cli
             }
         }
 
-        return Result::Create(StatusCode::Success);
+        return Result::Success();
     }
 
 }

@@ -28,7 +28,7 @@ namespace em::action_handler::cli
 		em::ActionImplementor::GetInstance().OnAccountSwitched();
 
 		printf("\nAccount Switched to : %s", newAccountName.c_str());
-		return em::action_handler::Result::Create(StatusCode::Success);
+		return em::action_handler::Result::Success();
 	}
 
 	const std::string SwitchAccount::GetErrorMessage(StatusCode statusCode, const std::string& newAccountName) const

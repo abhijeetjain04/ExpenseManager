@@ -22,7 +22,7 @@ namespace em::action_handler::cli
         {
             report.GenerateReport(ReportHandler::TODAY);
             report.Print();
-            return Result::Create(StatusCode::Success);
+            return Result::Success();
         }
 
         std::string month = "-1";
@@ -68,7 +68,7 @@ namespace em::action_handler::cli
         report.GenerateReport(option, month, year);
         report.Print();
 
-        return Result::Create(StatusCode::Success);
+        return Result::Success();
     }
 
 }

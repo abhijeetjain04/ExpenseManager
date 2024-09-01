@@ -20,12 +20,11 @@ namespace em
 
         CategoryDoesNotExist,
         TagDoesNotExist,
+        MandatoryArgNotPresent,
 
         DBError,
 
         JSONParsingError,
-
-        NotImplementedYet,
 
         // Account Related
         AccountAlreadySelected,
@@ -33,6 +32,7 @@ namespace em
 
         CategoryAlreayExists,
 
+        NotImplementedYet,
         Invalid
     };
 
