@@ -19,15 +19,8 @@ namespace em::action_handler::cli
 		// handle if account not switched.
 		if (switchStatus != StatusCode::Success)
 		{
-			switch (switchStatus)
-			{
-			case StatusCode::AccountDoesNotExist:
-				printf("\nAccount does not exist: %s", newAccountName.c_str());
-			case StatusCode::AccountAlreadySelected:
-				printf("\nAccount %s is already selected.", newAccountName.c_str());
-			}
-
-			return em::action_handler::Result::Create(switchStatus);
+			const std::string& errorMessage = GetErrorMessage(switchStatus, newAccountName);
+			return em::action_handler::Result::Create(switchStatus, errorMessage);
 		}
 
 		em::DatabaseManager::GetInstance().OnSwitchAccount();
@@ -36,5 +29,19 @@ namespace em::action_handler::cli
 
 		printf("\nAccount Switched to : %s", newAccountName.c_str());
 		return em::action_handler::Result::Create(StatusCode::Success);
+	}
+
+	const std::string SwitchAccount::GetErrorMessage(StatusCode statusCode, const std::string& newAccountName) const
+	{
+		switch (statusCode)
+		{
+		case StatusCode::AccountDoesNotExist:
+			return std::format(ERROR_ACCOUNT_DOES_NOT_EXIST, newAccountName);
+		case StatusCode::AccountAlreadySelected:
+			return std::format(ERROR_ACCOUNT_ALREADY_SELECTED, newAccountName);
+		}
+
+		assert(false);
+		return "";
 	}
 }

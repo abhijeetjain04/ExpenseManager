@@ -16,6 +16,10 @@ namespace em::action_handler::cli
 			const std::string& commandName,
 			const std::unordered_set<std::string>& flags,
 			const std::map<std::string, std::string>& options) override;
+
+	private:
+		const std::string GetErrorMessage(StatusCode statusCode, const std::string& newAccountName) const;
+
 	};
 
 }
