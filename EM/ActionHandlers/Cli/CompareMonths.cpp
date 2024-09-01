@@ -64,13 +64,13 @@ namespace em::action_handler::cli
 
         if (months.size() != 2)
         {
-            logger::Error("-range parameter must have value as 'startMonth:endMonth'");
+            printf("-range parameter must have value as 'startMonth:endMonth'");
             return false;
         }
 
         if (!em::utils::IsInteger(months[0]) || !em::utils::IsInteger(months[1]))
         {
-            logger::Error("\n-range parameter must have integers");
+            printf("\n-range parameter must have integers");
             return false;
         }
 
@@ -79,19 +79,19 @@ namespace em::action_handler::cli
 
         if (startMonth < 1 || startMonth > 12)
         {
-            logger::Error("\nstartMonth must be between 1 to 12");
+            printf("\nstartMonth must be between 1 to 12");
             return false;
         }
 
         if (endMonth < 1 || endMonth > 12)
         {
-            logger::Error("\nendMonth must be between 1 to 12");
+            printf("\nendMonth must be between 1 to 12");
             return false;
         }
 
         if (startMonth >= endMonth)
         {
-            logger::Error("\nstartMonth should be less than endMonth");
+            printf("\nstartMonth should be less than endMonth");
             return false;
         }
 

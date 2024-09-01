@@ -33,7 +33,7 @@ namespace em
             bool showAccount = false,
             bool showLocation = false)
         {
-            logger::Info("\n Total Rows : %zd", rows.size());
+            printf("\n Total Rows : %zd", rows.size());
             TextTable_Expense t(accountName, rows, showTags, showAccount, showLocation);
             t.Print();
 
@@ -62,7 +62,7 @@ namespace em
                     totalRows += iter.second.size();
                 });
 
-            logger::Info("\n Total Rows : %zd", totalRows);
+            printf("\n Total Rows : %zd", totalRows);
             TextTable_Expense t(rows);
             t.Print();
 
@@ -90,7 +90,7 @@ namespace em
         */
         static void Render(const std::vector<db::Model>& rows)
         {
-            logger::Info("\n Total Rows : %zd", rows.size());
+            printf("\n Total Rows : %zd", rows.size());
             TextTable_Category t(rows);
             t.Print();
         }

@@ -7,7 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EM", "EM\EM.vcxproj", "{341
 	ProjectSection(ProjectDependencies) = postProject
 		{19F89034-8046-4D79-81E3-EC41025C3B5C} = {19F89034-8046-4D79-81E3-EC41025C3B5C}
 		{972408E7-1F13-40E0-B59C-148996943DCB} = {972408E7-1F13-40E0-B59C-148996943DCB}
-		{C58205AA-ACF4-410B-8238-A154A32B256D} = {C58205AA-ACF4-410B-8238-A154A32B256D}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DBHandler", "DBHandler\DBHandler.vcxproj", "{972408E7-1F13-40E0-B59C-148996943DCB}"
@@ -30,8 +29,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JsonHelper", "JsonHelper\JsonHelper.vcxproj", "{F92BE31C-077F-4970-931E-ECAE3A5D523E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utilities", "Utilities\Utilities.vcxproj", "{A47B6381-0B19-428E-9839-C9861BCE4327}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Logger", "Logger\Logger.vcxproj", "{C58205AA-ACF4-410B-8238-A154A32B256D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,14 +86,6 @@ Global
 		{A47B6381-0B19-428E-9839-C9861BCE4327}.Release|x64.Build.0 = Release|x64
 		{A47B6381-0B19-428E-9839-C9861BCE4327}.Release|x86.ActiveCfg = Release|Win32
 		{A47B6381-0B19-428E-9839-C9861BCE4327}.Release|x86.Build.0 = Release|Win32
-		{C58205AA-ACF4-410B-8238-A154A32B256D}.Debug|x64.ActiveCfg = Debug|x64
-		{C58205AA-ACF4-410B-8238-A154A32B256D}.Debug|x64.Build.0 = Debug|x64
-		{C58205AA-ACF4-410B-8238-A154A32B256D}.Debug|x86.ActiveCfg = Debug|Win32
-		{C58205AA-ACF4-410B-8238-A154A32B256D}.Debug|x86.Build.0 = Debug|Win32
-		{C58205AA-ACF4-410B-8238-A154A32B256D}.Release|x64.ActiveCfg = Release|x64
-		{C58205AA-ACF4-410B-8238-A154A32B256D}.Release|x64.Build.0 = Release|x64
-		{C58205AA-ACF4-410B-8238-A154A32B256D}.Release|x86.ActiveCfg = Release|Win32
-		{C58205AA-ACF4-410B-8238-A154A32B256D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

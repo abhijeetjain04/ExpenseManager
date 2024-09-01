@@ -71,11 +71,11 @@ namespace em
             totalExpense += price;
         }
 
-        logger::Info("\n%s", t.toString().c_str());
+        printf("\n%s", t.toString().c_str());
 
         TextTable expenseTable;
         expenseTable.add("TOTAL").add(std::to_string(totalExpense)).endOfRow();
-        logger::Info("\n%s", expenseTable.toString().c_str());
+        printf("\n%s", expenseTable.toString().c_str());
     }
 
     // private

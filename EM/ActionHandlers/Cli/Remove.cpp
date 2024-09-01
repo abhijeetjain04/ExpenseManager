@@ -39,21 +39,21 @@ namespace em::action_handler::cli
 
         if (rows.size() < 1)
         {
-            logger::Error("\nNo records found for row_ids : %s", rowIdStr.c_str());
+            printf("\nNo records found for row_ids : %s", rowIdStr.c_str());
             return Result::Success();
         }
 
         const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
 
-        logger::Info("\nFollowing rows will be deleted: ");
+        printf("\nFollowing rows will be deleted: ");
         Renderer_ExpenseTable::Render(currentAccountName, rows);
-        logger::Info("\nProceed? : ");
+        printf("\nProceed? : ");
 
         int userInput = 0;
         std::cin >> userInput;
         if (userInput == 0)
         {
-            logger::Error("\nSkipped deletion.");
+            printf("\nSkipped deletion.");
             return Result::Success();
         }
 
