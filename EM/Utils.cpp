@@ -109,7 +109,7 @@ namespace em::utils::date
     {
         if (!utils::IsInteger(year))
         {
-            printf("\nInvalid Value for year: %s", year.c_str());
+            logger::Info("\nInvalid Value for year: %s", year.c_str());
             return false;
         }
 

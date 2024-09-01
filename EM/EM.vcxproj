@@ -126,7 +126,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)x64\Debug</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>JsonHelper.lib;Utilities.lib</AdditionalDependencies>
+      <AdditionalDependencies>JsonHelper.lib;Utilities.lib;Logger.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>

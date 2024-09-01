@@ -71,7 +71,7 @@ void CLIParser::GenerateErrorMessage(const std::string& commandName) const
     ValidCommand validCommand;
     if (!GetValidCommand(commandName, validCommand))
     {
-        printf("\nInvalid Command : %s", commandName.c_str());
+        logger::Error("\nInvalid Command : %s", commandName.c_str());
         DisplayHelp();
         return;
     }
@@ -124,7 +124,7 @@ void CLIParser::GenerateErrorMessage(const std::string& commandName) const
     }
 
     oss << "\n--------------------------------------------------------------------";
-    printf("\n%s", oss.str().c_str());
+    logger::Custom(logger::Color::YELLOW, "\n%s", oss.str().c_str());
 }
 
 // public
@@ -326,7 +326,7 @@ bool CLIParser::Validate(
 
             if (!m_CommandParams.contains(paramName))
             {
-                printf("\nMissing Parameter : %s", paramName.c_str());
+                logger::Error("\nMissing Parameter : %s", paramName.c_str());
                 break;
             }
         }

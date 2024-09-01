@@ -20,6 +20,7 @@
 #include "EM/Assertion.h"
 #include "EM/StatusCodes.h"
 #include "EM/ErrorMessages.h"
+#include "Logger/Logger.h"
 
 
 //#define SQLITE_LOGS_ENABLED

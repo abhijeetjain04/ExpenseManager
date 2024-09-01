@@ -16,6 +16,8 @@
 
 #include "DBHandler/Table.h"
 
+#include "Logger/Logger.h"
+
 #include <fstream>
 #include <filesystem>
 
@@ -24,7 +26,7 @@
 
 void GetCommandString(std::string& commandStr, std::vector<std::string>& args)
 {
-    printf("\n\n>> ");
+    logger::Info("\n\n>> ");
     if(commandStr.empty())
         std::getline(std::cin, commandStr);
 
@@ -159,7 +161,7 @@ void InitializeCLI()
     }
     catch (std::exception& e)
     {
-        printf("\nFailed to read cliConfig.json: %s", e.what());
+        logger::Error("\nFailed to read cliConfig.json: %s", e.what());
     }
 }
 
@@ -196,7 +198,7 @@ void InitializeAccountManager()
     if (!em::account::Manager::GetInstance().AccountExists(accountName))
         throw em::exception::Config(std::format("Invalid account : {}", accountName));
 
-    printf("\nActive Account: %s", accountName.c_str());
+    logger::Info("\nActive Account: %s", accountName.c_str());
     em::account::Manager::GetInstance().SetCurrentAccountName(accountName);
 }
 
@@ -233,7 +235,7 @@ int main(int argc, char** argv)
             em::CmdType cmdType = GetCmdType(args);
             if (cmdType == em::CmdType::Invalid)
             {
-                printf("\nInvalid Command: %s", args[0].c_str());
+                logger::Error("\nInvalid Command: %s", args[0].c_str());
                 continue;
             }
 
@@ -243,18 +245,18 @@ int main(int argc, char** argv)
                 if (actionResult->statusCode == em::StatusCode::DisplayHelp)
                     cliParser.DisplayHelp(commandStr);
 
-                printf("\nERROR: %s", actionResult->message.c_str());
+                logger::Error("\nERROR: %s", actionResult->message.c_str());
             }
 
-            printf("\n=============================================================");
+            logger::Info("\n=============================================================");
         }
     }
     catch (std::exception& e)
     {
-        printf("\n%s", e.what());
+        logger::Error("\n%s", e.what());
     }
 
-    printf("\n\n");
+    logger::Info("\n\n");
     std::system("pause");
 
     return 0;

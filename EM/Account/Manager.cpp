@@ -53,7 +53,7 @@ namespace em::account
     void Manager::AddAccount(const std::string& accountName)
     {
         if (AccountExists(accountName))
-            printf("\nAccount Already Added: %s", accountName.c_str());
+            logger::Error("\nAccount Already Added: %s", accountName.c_str());
 
         m_Accounts[accountName] = std::shared_ptr<Account>(new Account(accountName));
     }
@@ -63,7 +63,7 @@ namespace em::account
     {
         if (!AccountExists(accountName))
         {
-            printf("\nAccount does not exist: %s", accountName.c_str());
+            logger::Error("\nAccount does not exist: %s", accountName.c_str());
             return nullptr;
         }
 

@@ -17,5 +17,6 @@
 #include "StatusCodes.h"
 #include "ErrorMessages.h"
 
+#include "Logger/Logger.h"
 
 //#define SQLITE_LOGS_ENABLED

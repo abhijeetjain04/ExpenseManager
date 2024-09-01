@@ -27,7 +27,7 @@ namespace em::action_handler::cli
 
 		em::ActionImplementor::GetInstance().OnAccountSwitched();
 
-		printf("\nAccount Switched to : %s", newAccountName.c_str());
+		logger::Info("\nAccount Switched to : %s", newAccountName.c_str());
 		return em::action_handler::Result::Success();
 	}
 

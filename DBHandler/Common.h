@@ -24,9 +24,9 @@
 #define USING_NAMESPACE_DB_UTIL                     using namespace NAMESPACE_DB::NAMESPACE_UTIL
 
 #if defined SQLITE_LOGS_ENABLED
-    #define SQLITE_EXCEPTION(e) printf("\nSQLite::Exception : %s\n", e.what()); \
+    #define SQLITE_EXCEPTION(e) logger::Error("\nSQLite::Exception : %s\n", e.what()); \
                                 assert(false);
-    #define SQLITE_LOG_QUERY(query) printf("\n--- SQLITE QUERY --- : %s\n", query);
+    #define SQLITE_LOG_QUERY(query) logger::Info("\n--- SQLITE QUERY --- : %s\n", query);
 #else
     #define SQLITE_EXCEPTION(e)     (void)(e); assert(false);
     #define SQLITE_LOG_QUERY(query) void(query);

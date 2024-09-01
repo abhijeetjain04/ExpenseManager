@@ -5,6 +5,7 @@
 #include "QueryGenerator.h"
 #include "sqlite3.h"
 #include <iostream>
+#include "Logger/Logger.h"
 
 BEGIN_NAMESPACE_DB
 
@@ -107,7 +108,7 @@ bool Table::Select(std::vector<Model>& rows, const Condition& condition, const C
     }
     catch (std::exception& ex)
     {
-        printf("\nEXCEPTION: TableBase::Select - %s", ex.what());
+        logger::Error("\nEXCEPTION: TableBase::Select - %s", ex.what());
         return false;
     }
 }
@@ -117,7 +118,7 @@ bool Table::SelectById(Model& model, int id)
     std::vector<Model> rows;
     if (!Select(rows, Condition("row_id", std::to_string(id), Condition::Type::EQUALS)))
     {
-        printf("\nERROR: Entity with rows_id - %d does not exist!", id);
+        logger::Error("\nERROR: Entity with rows_id - %d does not exist!", id);
         return false;
     }
 

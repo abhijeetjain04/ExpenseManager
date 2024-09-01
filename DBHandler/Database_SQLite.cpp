@@ -3,6 +3,7 @@
 #include "SQLite_Database.h"
 #include "JsonHelper/json.h"
 #include "Util.h"
+#include "Logger/Logger.h"
 
 #include <fstream>
 
@@ -158,7 +159,7 @@ std::shared_ptr<db::Table> Database_SQLite::CreateTableFromJson(const std::files
     }
     catch (std::exception& ex)
     {
-        printf("\nEXCEPTION: CreateTableFromJson: %s", ex.what());
+        logger::Error("\nEXCEPTION: CreateTableFromJson: %s", ex.what());
         return nullptr;
     }
 
@@ -173,13 +174,13 @@ std::shared_ptr<db::Table> Database_SQLite::GetTable(const std::string& tableNam
             return m_Tables[tableName];
         else
         {
-            printf("\nERROR: Table does not exist : %s", tableName.c_str());
+            logger::Error("\nERROR: Table does not exist : %s", tableName.c_str());
             return nullptr;
         }
     }
     catch (std::exception& ex) 
     {
-        printf("\nEXCEPTION: GetTable() - %s", ex.what());
+        logger::Error("\nEXCEPTION: GetTable() - %s", ex.what());
         return nullptr;
     }
 }

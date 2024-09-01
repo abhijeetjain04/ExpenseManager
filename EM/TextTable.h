@@ -48,7 +48,7 @@ namespace em
             if (rows().size() < 1)
                 return;
 
-            printf("\n%s", toString().c_str());
+            logger::Info("\n%s", toString().c_str());
         }
 
         Alignment alignment(unsigned i) const { return _alignment[i]; }
