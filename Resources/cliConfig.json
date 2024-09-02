@@ -27,7 +27,7 @@
 			{
 				"name" : "date",
 				"optionType" : "date",
-				"helperMessage" : "Custom Date to add the Expense."
+				"helperMessage" : "Custom Date(YYYY-MM-DD) to add the Expense."
 			},
 			{
 				"name" : "location",
@@ -101,7 +101,7 @@
 			{
 				"name" : "date",
 				"optionType" : "date",
-				"helperMessage" : "Filters by Specific Date."
+				"helperMessage" : "Filters by Specific Date(YYYY-MM-DD)."
 			},
 			{
 				"name" : "month",
