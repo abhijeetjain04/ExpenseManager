@@ -127,6 +127,10 @@ public:
     const std::vector<ColumnProperty>& GetColumnProperties() const { return m_ColumnProperties; }
 
 protected:
+    void CreateTable();
+    void ValidateColumns();
+    std::vector<std::string> GetColumnNamesInDB() const;
+
     Database_SQLite& GetDatabase() const { return m_Database; }
 
 protected:

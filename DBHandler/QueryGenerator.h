@@ -9,11 +9,16 @@ class Condition;
 class Table;
 class Clause_OrderBy;
 class Model;
+struct ColumnProperty;
 
 class QueryGenerator
 {
-public:
+    static std::string FormatColumn(const ColumnProperty& prop);
+    static std::string GetValueTypeAsString(std::string type);
 
+public:
+    static std::string AddColumnQuery(const std::string& tableName, const ColumnProperty& columnProp);
+    static std::string CreateTableQuery(const std::string& tableName, const std::vector<ColumnProperty>& columns);
     static std::string InsertQuery(const Table& table, const Model& model);
     static std::string UpdateQuery(const Table& table, const Model& origModel, const Model& newModel);
     static std::string SelectQuery(const Table& table, const Condition& condition, const Clause_OrderBy& orderBy);

@@ -48,12 +48,42 @@ Table::Table(Database_SQLite& database, const std::string& tablename, const std:
     , m_Name(tablename)
     , m_ColumnProperties(columnProps)
 {
+    CreateTable();
+    ValidateColumns();
 }
 
 
 bool Table::ExecQuery(const std::string& query)
 {
     return GetDatabase().ExecQuery(query);
+}
+
+// protected
+void Table::ValidateColumns()
+{
+    // if the number of columns have changed, alter the table to add new columns to database.
+    const std::vector<std::string> columnNames = std::move(GetColumnNamesInDB());
+    if (columnNames.size() == m_ColumnProperties.size())
+        return;
+
+    for (const ColumnProperty& colProp : m_ColumnProperties)
+    {
+        if (std::find(columnNames.begin(), columnNames.end(), colProp.Name) == columnNames.end())
+        {
+            std::string query = QueryGenerator::AddColumnQuery(m_Name, colProp);
+            GetDatabase().ExecQuery(query);
+        }
+    }
+}
+
+// protected
+void Table::CreateTable()
+{
+    if (!GetDatabase().GetImpl()->tableExists(m_Name))
+    {
+        std::string query = QueryGenerator::CreateTableQuery(m_Name, m_ColumnProperties);
+        GetDatabase().ExecQuery(query);
+    }
 }
 
 double Table::SumOf(const std::string& columnName, const Condition& condition)
@@ -158,6 +188,17 @@ bool Table::CheckIfExists(const Condition& condition)
     std::vector<Model> rows;
     Select(rows, condition);
     return rows.size() >= 1;
+}
+
+// protected
+std::vector<std::string> Table::GetColumnNamesInDB() const
+{
+    std::vector<std::string> columnNames;
+    std::string query = "SELECT * FROM " + m_Name + " LIMIT 1";
+    SQLite::Statement stmt(*GetDatabase().GetImpl(), query);
+    for (int i = 0; i < stmt.getColumnCount(); ++i)
+        columnNames.push_back(stmt.getColumnName(i));
+    return columnNames;
 }
 
 END_NAMESPACE_DB
