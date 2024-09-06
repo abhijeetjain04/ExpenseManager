@@ -34,57 +34,6 @@ Database_SQLite::~Database_SQLite()
     }
 }
 
-
-// private
-std::string Database_SQLite::CreateTableQuery(const std::string& tableName, const std::vector<ColumnProperty>& columns)
-{
-    auto getValueTypeString = [](std::string type)
-    {
-        util::string::ToLower(type);
-        if (type == "integer")
-            return "INTEGER";
-
-        if (type == "double")
-            return "REAL";
-
-        if (type == "text")
-            return "TEXT";
-
-        if (type == "date") // dates are stored as text in SQLITE
-            return "TEXT";
-
-        assert(false);
-        return "";
-    };
-
-    auto formatColumn = [&](const ColumnProperty& prop)
-    {
-        return std::format("{} {} {} {} {} {}",
-            prop.Name,
-            getValueTypeString(prop.ValueType),
-            prop.IsPrimaryKey ? "PRIMARY KEY" : "", 
-            prop.IsNotNull ? "NOT NULL" : "", 
-            prop.IsUnique ? "UNIQUE" : "",
-            prop.AutoIncrement ? "AUTOINCREMENT" : "");
-    };
-
-    std::ostringstream oss;
-    oss << "CREATE TABLE IF NOT EXISTS " << tableName << "(";
-
-    for(size_t i=0; i<columns.size(); ++i)
-    {
-        const auto& prop = columns[i];
-        std::string propStr = formatColumn(prop);
-        oss << propStr;
-        if (i != columns.size() - 1)
-            oss << ", ";
-    }
-
-    oss << ");";
-
-    return oss.str();
-}
-
 // 
 bool Database_SQLite::ExecQuery(const std::string& query)
 {
@@ -148,9 +97,6 @@ std::shared_ptr<db::Table> Database_SQLite::CreateTableFromJson(const std::files
 
             columnProps.push_back(ColumnProperty(name, valueType, isPrimaryKey, isNotNull, isUnique, autoIncrement));
         }
-
-        std::string query = CreateTableQuery(tableName, columnProps);
-        GetImpl()->exec(query);
 
         std::shared_ptr<db::Table> table = std::make_shared<db::Table>(*this, tableName, columnProps);
         m_Tables.insert(std::make_pair(tableName, table));

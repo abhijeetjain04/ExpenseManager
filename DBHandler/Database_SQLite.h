@@ -46,14 +46,15 @@ public:
     int GetOpenMode() const { return m_OpenMode; }
 
 private:
-    std::string CreateTableQuery(const std::string& tableName, const std::vector<ColumnProperty>& columns);
-
     SQLite::Database* GetImpl() { return m_DBImpl; }
+    const SQLite::Database* GetImpl() const { return m_DBImpl; }
 
 private:
     int                                             m_OpenMode;
     SQLite::Database*                               m_DBImpl;
     std::unordered_map<std::string, std::shared_ptr<db::Table>> m_Tables;
+
+    friend class Table;
 };
 
 
