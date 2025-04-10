@@ -116,6 +116,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)includes;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -150,18 +151,22 @@
   <ItemGroup>
     <ClCompile Include="Account\Account.cpp" />
     <ClCompile Include="Account\Manager.cpp" />
+    <ClCompile Include="ActionHandlers\Cli\AddAccount.cpp" />
     <ClCompile Include="ActionHandlers\Cli\AddCategory.cpp" />
+    <ClCompile Include="ActionHandlers\Cli\AddReminder.cpp" />
     <ClCompile Include="ActionHandlers\Cli\AddTags.cpp" />
     <ClCompile Include="ActionHandlers\Cli\CompareMonths.cpp" />
     <ClCompile Include="ActionHandlers\Cli\GitPush.cpp" />
     <ClCompile Include="ActionHandlers\Cli\List.cpp" />
-    <ClCompile Include="ActionHandlers\Cli\List_AllAccounts.cpp" />
     <ClCompile Include="ActionHandlers\Cli\Remove.cpp" />
+    <ClCompile Include="ActionHandlers\Cli\RemoveAccount.cpp" />
     <ClCompile Include="ActionHandlers\Cli\Report.cpp" />
     <ClCompile Include="ActionHandlers\Cli\SwitchAccount.cpp" />
     <ClCompile Include="ActionHandlers\Cli\Update.cpp" />
-    <ClCompile Include="ActionImplementor.cpp" />
+    <ClCompile Include="ActionImplementor\Cli.cpp" />
     <ClCompile Include="ActionHandlers\Cli\Add.cpp" />
+    <ClCompile Include="ActionImplementor\IActionImplementor.cpp" />
+    <ClCompile Include="App.cpp" />
     <ClCompile Include="Common\EnumAndStringConverter.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -175,23 +180,30 @@
     <Text Include="Scope.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="07102024_AddAccountIdAsForeignKey.h" />
     <ClInclude Include="Account\Account.h" />
     <ClInclude Include="Account\Exceptions\InvalidAccountName.h" />
     <ClInclude Include="Account\Manager.h" />
     <ClInclude Include="ActionHandlers\Cli\ActionHandlers.h" />
     <ClInclude Include="ActionHandlers\Cli\Add.h" />
+    <ClInclude Include="ActionHandlers\Cli\AddAccount.h" />
     <ClInclude Include="ActionHandlers\Cli\AddCategory.h" />
+    <ClInclude Include="ActionHandlers\Cli\AddReminder.h" />
     <ClInclude Include="ActionHandlers\Cli\AddTags.h" />
     <ClInclude Include="ActionHandlers\Cli\CompareMonths.h" />
     <ClInclude Include="ActionHandlers\Cli\GitPush.h" />
     <ClInclude Include="ActionHandlers\Cli\List.h" />
-    <ClInclude Include="ActionHandlers\Cli\List_AllAccounts.h" />
     <ClInclude Include="ActionHandlers\Cli\Remove.h" />
+    <ClInclude Include="ActionHandlers\Cli\RemoveAccount.h" />
     <ClInclude Include="ActionHandlers\Cli\Report.h" />
     <ClInclude Include="ActionHandlers\Cli\SwitchAccount.h" />
     <ClInclude Include="ActionHandlers\Cli\Update.h" />
-    <ClInclude Include="ActionImplementor.h" />
+    <ClInclude Include="ActionImplementor\IActionImplementor.h" />
+    <ClInclude Include="ActionImplementor\Cli.h" />
+    <ClInclude Include="AddAccountTableMigration.h" />
+    <ClInclude Include="App.h" />
     <ClInclude Include="Assertion.h" />
+    <ClInclude Include="CombineAllExpenseTableIntoOneMigration.h" />
     <ClInclude Include="Common\CommonEnums.h" />
     <ClInclude Include="Common\EnumAndStringConverter.h" />
     <ClInclude Include="Conditions.h" />
@@ -202,12 +214,14 @@
     <ClInclude Include="Exceptions\Database\Common.h" />
     <ClInclude Include="Exceptions\EnumStringConverter.h" />
     <ClInclude Include="Exceptions\General.h" />
+    <ClInclude Include="Migrations.h" />
     <ClInclude Include="StatusCodes.h" />
     <ClInclude Include="ErrorMessages.h" />
     <ClInclude Include="ActionHandlers\IActionHandler.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Renderer_TextTable.h" />
     <ClInclude Include="ReportHandler.h" />
+    <ClInclude Include="AddCategoryIdForeignKeyMigration.h" />
     <ClInclude Include="TextTable.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>

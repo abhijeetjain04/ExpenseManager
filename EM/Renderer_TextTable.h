@@ -1,13 +1,26 @@
 #pragma once
 
 #include "DBHandler/Table.h"
+#include "DBHandler/DateTime.h"
 #include "TextTable.h"
 #include "ReportHandler.h"
 #include <unordered_map>
+#include "Utilities/StringUtils.h"
 
 namespace em
 {
+    class Renderer_ExpenseTable_ByDate
+    {
+    public:
 
+        static void Render(const std::map<db::DateTime, double>& pricesByDate)
+        {
+            printf("\n Total Rows : %zd", pricesByDate.size());
+
+            TextTable_Expense_ByDate t(pricesByDate);
+            t.Print();
+        }
+    };
 
     /**
     * Helper class that can be used to display data from DBTable_Expense in the form of table for CLI.
@@ -75,28 +88,6 @@ namespace em
 
     };
 
-    /**
-    * Helper class that can be used to display data from DBTable_Category in the form of table for CLI.
-    */
-    class Renderer_CategoryTable
-    {
-    public:
-
-        /**
-        * This function renders the data in table format.
-        *
-        * @params [in] rows
-        *       Rows representing the rows from DBTable_Category that needs to be displayed in the table.
-        */
-        static void Render(const std::vector<db::Model>& rows)
-        {
-            printf("\n Total Rows : %zd", rows.size());
-            TextTable_Category t(rows);
-            t.Print();
-        }
-
-    };
-
     class Renderer_CompareReport
     {
     public:
@@ -107,6 +98,69 @@ namespace em
             t.Print();
         }
 
+    };
+
+    /**
+    * Helper class that can be used to display Account data in the form of table for CLI.
+    */
+    class Renderer_AccountTable
+    {
+    public:
+
+        /**
+        * This function renders the data in table format.
+        *
+        * @params [in] rows
+        *       Rows representing the rows from db::Model of Account that needs to be displayed in the table.
+        */
+        static void Render(const std::vector<db::Model>& rows)
+        {
+            printf("\n Total Rows : %zd", rows.size());
+            TextTable_Account t(rows);
+            t.Print();
+        }
+
+    };
+
+    class Renderer_Generic
+    {
+    public:
+        static void Render(const std::vector<db::Model>& rows)
+        {
+            printf("\n Total Rows : %zd", rows.size());
+            TextTable t;
+
+            for (auto iter : rows[0])
+                t.add(::utils::string::ToUpper(iter.first));
+            t.endOfRow();
+
+            for (size_t i = 0; i < rows.size(); ++i)
+            {
+                for (auto iter : rows[i])
+                {
+                    const db::DBValue& value = iter.second;
+                    if (value.IsInt())
+                    {
+                        t.add(std::to_string(value.asInt()));
+                    }
+                    else if (value.IsDouble())
+                    {
+                        t.add(std::to_string(value.asDouble()));
+                    }
+                    else if (value.IsString())
+                    {
+                        t.add(value.asString());
+                    }
+                    else if (value.IsBool())
+                    {
+                        t.add(value.asBool() ? "TRUE" : "FALSE");
+                    }
+                }
+                t.endOfRow();
+            }
+
+            t.Print();
+        }
     };
 
 }

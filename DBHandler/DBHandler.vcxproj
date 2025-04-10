@@ -109,6 +109,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)sqlite\include;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,6 +144,8 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="Condition.h" />
     <ClInclude Include="Database_SQLite.h" />
+    <ClInclude Include="DateTime.h" />
+    <ClInclude Include="Migration.h" />
     <ClInclude Include="QueryGenerator.h" />
     <ClInclude Include="Table.h" />
     <ClInclude Include="pch.h" />
@@ -166,6 +169,7 @@
     <ClCompile Include="Clause.cpp" />
     <ClCompile Include="Condition.cpp" />
     <ClCompile Include="Database_SQLite.cpp" />
+    <ClCompile Include="DateTime.cpp" />
     <ClCompile Include="QueryGenerator.cpp" />
     <ClCompile Include="Table.cpp" />
     <ClCompile Include="sqlite3.c" />

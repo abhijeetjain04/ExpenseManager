@@ -3,6 +3,7 @@
 #include "EM/Exceptions/General.h"
 #include "DBHandler/Util.h"
 #include "git2/git2.h"
+#include "DBHandler/DateTime.h"
 
 namespace em::action_handler::cli
 {
@@ -11,7 +12,7 @@ namespace em::action_handler::cli
 	em::action_handler::ResultSPtr GitPush::Execute(
 		const std::string& commandName,
 		const std::unordered_set<std::string>& flags,
-		const std::map<std::string, std::string>& options)
+		const std::map<std::string, std::vector<std::string>>& options)
 	{
 		assert(commandName == "git-push");
 		system("git status");
@@ -25,7 +26,7 @@ namespace em::action_handler::cli
 			if (input == 1)
 			{
 				system("git add .");
-				std::string dateTimeStr = db::util::FormatDateTimeAsString(db::util::GetNow());
+				std::string dateTimeStr = db::DateTime::GetNow().AsString();
 				std::string commitMessage = std::format("Updated Database => {}", dateTimeStr);
 				std::string commitCommand = std::format("git commit -m \"{}\"", commitMessage);
 				system(commitCommand.c_str());

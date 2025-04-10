@@ -10,6 +10,7 @@
 #include "ReportHandler.h"
 #include "Utils.h"
 #include "DBHandler/Table.h"
+#include "DBHandler/DateTime.h"
 
 #ifdef TEXTTABLE_ENCODE_MULTIBYTE_STRINGS
 #include <clocale>
@@ -297,7 +298,7 @@ namespace em
             {
                 add(std::to_string(row.at("row_id").asInt()));
                 add(row.at("name").asString());
-                add(row.at("category").asString());
+                add(row.at("category")["name"].asString());
                 add(std::to_string(row.at("price").asDouble()));
                 add(row.at("date").asString());
 
@@ -317,6 +318,17 @@ namespace em
         }
     };
 
+    class TextTable_Expense_ByDate : public TextTable
+    {
+    public:
+        TextTable_Expense_ByDate(const std::map<db::DateTime, double>& pricesByDate)
+            : TextTable()
+        {
+            add("DATE").add("PRICE").endOfRow();
+            for (auto [date, price] : pricesByDate)
+                add(date.AsString()).add(std::to_string(price)).endOfRow();
+        }
+    };
 
     class TextTable_Category : public TextTable
     {
@@ -409,6 +421,27 @@ namespace em
                 add(utils::date::GetMonthNameFromNumber(report.GetUnit()));
             endOfRow();
         }
+    };
+
+    class TextTable_Account : public TextTable
+    {
+    public:
+        TextTable_Account(const std::vector<db::Model>& rows)
+            : TextTable()
+            , m_Rows(rows)
+        {
+            add("ROW_ID").add("NAME").add("DESCRIPTION").endOfRow();
+            for (const db::Model& row : m_Rows)
+            {
+                add(std::to_string(row.at("row_id").asInt()))
+                    .add(row.at("name").asString())
+                    .add(row.at("description").asString())
+                    .endOfRow();
+            }
+        }
+
+    private:
+        const std::vector<db::Model>& m_Rows;
     };
 
 }

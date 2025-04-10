@@ -15,14 +15,13 @@ namespace em::action_handler::cli
     em::action_handler::ResultSPtr Remove::Execute(
         const std::string& commandName,
         const std::unordered_set<std::string>& flags,
-        const std::map<std::string, std::string>& options)
+        const std::map<std::string, std::vector<std::string>>& options)
     {
         DBG_ASSERT(commandName == "remove");
 
-        const std::string tableName = databaseMgr.GetCurrentExpenseTableName();
-        auto table = databaseMgr.GetTable(tableName);
+        auto table = databaseMgr.GetTable("expenses");
 
-        std::string rowIdStr = options.at("row_id");
+        std::string rowIdStr = options.at("row_id").front();
 
         db::Condition* removeConditions = new db::Condition(db::Condition::RelationshipType::OR);
         std::vector<std::string> rowIds;
@@ -43,10 +42,10 @@ namespace em::action_handler::cli
             return Result::Success();
         }
 
-        const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
+        const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccountName();
 
         printf("\nFollowing rows will be deleted: ");
-        Renderer_ExpenseTable::Render(currentAccountName, rows);
+        Renderer_ExpenseTable::Render(currentAccountName, rows, 0.0, true, true, true);
         printf("\nProceed? : ");
 
         int userInput = 0;

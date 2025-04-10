@@ -18,6 +18,11 @@ namespace em::action_handler
 			return std::make_shared<Result>(StatusCode::Success);
 		}
 
+		static ResultSPtr GeneralFailure(const std::string& message = "")
+		{
+			return std::make_shared<Result>(StatusCode::GeneralFailure, message);
+		}
+
 		static ResultSPtr Create(StatusCode statusCode, const std::string& message = "")
 		{
 			return std::make_shared<Result>(statusCode, message);
@@ -58,7 +63,7 @@ namespace em::action_handler
 		virtual ResultSPtr Execute(
 			const std::string& commandName,
 			const std::unordered_set<std::string>& flags,
-			const std::map<std::string, std::string>& options)
+			const std::map<std::string, std::vector<std::string>>& options)
 		{
 			return em::action_handler::Result::Create(StatusCode::Invalid);
 		}

@@ -84,6 +84,12 @@
     <ClInclude Include="Clause.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Migration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DateTime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sqlite3.c">
@@ -126,6 +132,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="QueryGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DateTime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

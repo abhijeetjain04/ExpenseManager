@@ -4,7 +4,7 @@
 #include "EM/Conditions.h"
 #include "EM/ConfigManager.h"
 #include "EM/Exceptions/General.h"
-
+#include "EM/Account/Manager.h"
 #include "DBHandler/Util.h"
 #include "DBHandler/Table.h"
 #include "Utilities/StringUtils.h"
@@ -15,37 +15,41 @@ namespace em::action_handler::cli
     ResultSPtr Add::Execute(
         const std::string& commandName,
         const std::unordered_set<std::string>& flags,
-        const std::map<std::string, std::string>& options)
+        const std::map<std::string, std::vector<std::string>>& options)
     {
         assert(commandName == "add");
 
         auto categoryTable = databaseMgr.GetTable("categories");
-        auto expenseTable = databaseMgr.GetTable(databaseMgr.GetCurrentExpenseTableName());
+        auto expenseTable = databaseMgr.GetTable("expenses");
 
         db::Model model;
         // validate if the category exists
-        model["category"] = options.at("category");
-        if (!categoryTable->CheckIfExists("name", model["category"]))
-            return Result::Create(StatusCode::CategoryDoesNotExist, std::format(ERROR_CATEGORY_DOES_NOT_EXIST, model["category"].asString()));
+        db::Model categoryModel;
+        const std::string& category = options.at("category").front();
+        if (!categoryTable->CheckIfExists("name", category, &categoryModel))
+            return Result::Create(StatusCode::CategoryDoesNotExist, std::format(ERROR_CATEGORY_DOES_NOT_EXIST, category));
 
-        model["name"] = options.at("name");
-        model["price"] = std::stod(options.at("price"));
+        model["category_id"] = categoryModel["row_id"];
+        model["name"] = options.at("name").front();
+        model["price"] = std::stod(options.at("price").front());
 
-        model["location"] = options.contains("location") ? options.at("location") : ConfigManager::GetInstance().GetDefaultLocation();
+        model["location"] = options.contains("location") ? options.at("location").front() : ConfigManager::GetInstance().GetDefaultLocation();
 
         if (flags.contains("yesterday"))
-            model["date"] = db::util::GetYesterdayDate();
+            model["date"] = db::DateTime::GetYesterdayDate().AsString();
         else
-            model["date"] = options.contains("date") ? options.at("date") : db::util::GetCurrentDate();
+            model["date"] = options.contains("date") ? options.at("date").front() : db::DateTime::GetCurrentDate().AsString();
 
         if (options.contains("tags"))
         {
             std::string tag;
-            if(!GenerateTags(options.at("tags"), tag))
-                return Result::Create(StatusCode::DBError, std::format(ERROR_TAG_DOES_NOT_EXIST, options.at("tags")));
+            if(!GenerateTags(options.at("tags").front(), tag))
+                return Result::Create(StatusCode::DBError, std::format(ERROR_TAG_DOES_NOT_EXIST, options.at("tags").front()));
 
             model["tags"] = tag;
         }
+
+        model["account_id"] = em::account::Manager::GetInstance().GetCurrentAccountId();
 
         if (!expenseTable->Insert(model))
         {

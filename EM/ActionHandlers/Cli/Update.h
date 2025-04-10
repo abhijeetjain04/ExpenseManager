@@ -1,6 +1,8 @@
 #pragma once
 
-#include "../IActionHandler.h"
+#include "EM/ActionHandlers/IActionHandler.h"
+
+namespace db { struct ForeignKeyReference; }
 
 namespace em::action_handler::cli
 {
@@ -14,10 +16,18 @@ namespace em::action_handler::cli
 		virtual em::action_handler::ResultSPtr Execute(
 			const std::string& commandName,
 			const std::unordered_set<std::string>& flags,
-			const std::map<std::string, std::string>& options) override;
+			const std::map<std::string, std::vector<std::string>>& options) override;
 
 	private:
+		/**
+		* This function validates the 'atteibuteName' and 'attributeValue' params
+		*/
 		ResultSPtr Validate(const std::string& attributeName, const std::string& attributeValue);
+
+		/**
+		* This function handles the case where we are updating a parameter that is a foreign key. e.g. category.
+		*/
+		void HandleForeignKeyUpdate(std::string& attributeName, std::string& attributeValue, db::ForeignKeyReference& fkRef) const;
 
 	};
 

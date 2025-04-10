@@ -21,15 +21,26 @@ namespace em::account
         static Manager& GetInstance();
 
         /**
+        * This function creates a new account in the database.
+        * 
+        * @params [in] newAccountName
+        *       Name of the new account that we want to create.
+        *
+        * @returns
+        *       Status Code indicating success/failure.
+        */
+        StatusCode CreateAccount(const std::string& newAccountName);
+
+        /**
         * This function is used to switch accounts.
         * 
-        * @params [in] accountName
+        * @params [in] newAccountName
         *       Name of the account that we want to switch to.
         * 
         * @returns 
-        *       True, if account was switched successfully.
+        *       Status Code indicating success/failure.
         */
-        StatusCode SwitchAccount(const std::string& newAccountName);
+        StatusCode OnSwitchAccount(const std::string& newAccountName);
 
         /**
         * Returns true if the account exists with the account manager.
@@ -40,34 +51,23 @@ namespace em::account
         bool AccountExists(const std::string& accountName) const;
 
         /**
-        * Returns the account corresponding to the account name.
-        * Returns nullptr if the account does not exist.
-        * 
-        * @params [in] accountName
-        *       Name of the account to be fetched.
-        */
-        const std::shared_ptr<Account> GetAccount(const std::string& accountName) const;
-
-        /**
         * Setter for the current account name.
         * 
         * @params [in] accountName
         *       Name of the account that will be used from now on.
         */
-        void SetCurrentAccountName(const std::string& accountName)
-        {
-            m_CurrentAccountName = accountName;
-        }
+        void SetCurrentAccountName(const std::string& accountName);
 
         /**
-        * Returns the account that is currently in use.
+        * Returns the account name that is currently in use.
         */
-        const std::shared_ptr<Account> GetCurrentAccount() const;
+        const std::string& GetCurrentAccountName() const;
 
         /**
-        * Returns flag used to determine if we are considering all accounts for DB queries.
+        * Returns the account id that is currently in use.
         */
-        bool IsUsingAllAccounts() const;
+        int GetCurrentAccountId() const;
+
 
         /**
         * Destructor 
@@ -78,11 +78,7 @@ namespace em::account
         Manager();
         Manager(const Manager&) = default;
 
-        void AddAccount(const std::string& accountName);
-
     private:
-        // Map of <account name, Account class>.
-        std::unordered_map<std::string, std::shared_ptr<Account>> m_Accounts;
         std::string m_CurrentAccountName;
         static Manager* s_Instance;
     };

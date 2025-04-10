@@ -1,0 +1,61 @@
+{
+	"name": "expenses",
+	"columns": [
+		{
+			"name": "row_id",
+			"valueType": "integer",
+			"isPrimaryKey": true,
+			"isNotNull": false,
+			"isUnique": true,
+			"autoIncrement": false
+		},
+		{
+			"name": "name",
+			"valueType": "text",
+			"isNotNull": true
+		},
+		{
+			"name": "category_id",
+			"valueType": "integer",
+			"isForeignKey": true,
+			"isNotNull": true
+		},
+		{
+			"name": "price",
+			"valueType": "double",
+			"isNotNull": true
+		},
+		{
+			"name": "date",
+			"valueType": "date"
+		},
+		{
+			"name": "location",
+			"valueType": "text",
+			"isNotNull": true
+		},
+		{
+			"name": "tags",
+			"valueType": "text",
+			"isForeignKey": true
+		},
+		{
+			"name": "account_id",
+			"valueType": "integer",
+			"isForeignKey": true,
+			"isNotNull": true
+		}
+	],
+	"foreignKeyReferences": [
+		{
+			"columnName": "category_id",
+			"referenceTableName": "categories",
+			"accessName": "category"
+		},
+		{
+			"columnName": "account_id",
+			"referenceTableName": "accounts",
+			"accessName": "account"
+		}
+	]
+}

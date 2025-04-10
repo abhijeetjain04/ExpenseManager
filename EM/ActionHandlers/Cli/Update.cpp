@@ -16,26 +16,27 @@ namespace em::action_handler::cli
     ResultSPtr Update::Execute(
         const std::string& commandName,
         const std::unordered_set<std::string>& flags,
-        const std::map<std::string, std::string>& options)
+        const std::map<std::string, std::vector<std::string>>& options)
     {
         assert(commandName == "update");
 
-        int rowId = std::atoi(options.at("row_id").c_str());
-        std::string attributeName = options.at("attributeName");
-        std::string attributeValue = options.at("attributeValue");
+        int rowId = std::atoi(options.at("row_id").front().c_str());
+
+        auto expenseTable = databaseMgr.GetTable("expenses");
+        db::Model origModel;
+        if (!expenseTable->SelectById(origModel, rowId))
+            return Result::GeneralFailure(std::format("ERROR: Cannot find entry with rows_id - '{}'.", rowId));
+
+        std::string attributeName = options.at("attributeName").front();
+        std::string attributeValue = options.at("attributeValue").front();
 
         ResultSPtr validationResult = Validate(attributeName, attributeValue);
         if (validationResult->statusCode != StatusCode::Success)
             return validationResult;
 
-        auto expenseTable = databaseMgr.GetTable(databaseMgr.GetCurrentExpenseTableName());
-
-        db::Model origModel;
-        expenseTable->SelectById(origModel, rowId);
-
-        // if the same value is being updated, we can skip
-        if(origModel[attributeName] == attributeValue)
-            return Result::Success();
+        db::ForeignKeyReference fkRef;
+        if (expenseTable->IsForeignKeyAccessName(attributeName, &fkRef))
+            HandleForeignKeyUpdate(attributeName, attributeValue, fkRef);
 
         db::Model newModel = origModel;
         newModel[attributeName] = attributeValue;
@@ -49,8 +50,28 @@ namespace em::action_handler::cli
         return Result::Success();
     }
 
+    // private
+    void Update::HandleForeignKeyUpdate(std::string& attributeName, std::string& attributeValue, db::ForeignKeyReference& fkRef) const
+    {
+        if (attributeName == "category")
+        {
+            // get the category_id and update it
+            db::Model categoryModel;
+            if (databaseMgr.GetTable("categories")->Select(categoryModel, *Condition_CategoryName::Create(attributeValue)))
+            {
+                attributeName = fkRef.ColumnName;
+                attributeValue = std::to_string(categoryModel["row_id"].asInt());
+            }
+        }
+    }
+
+    // private
     ResultSPtr Update::Validate(const std::string& attributeName, const std::string& attributeValue)
     {
+        auto expenseTable = databaseMgr.GetTable("expenses");
+        if (!expenseTable->IsForeignKeyAccessName(attributeName) && !expenseTable->IsValidColumnName(attributeName))
+            return Result::GeneralFailure(std::format("Invalid attributeName: '{}'", attributeName));
+
         // check Category, must exist in the database
         if (attributeName == "category")
         {
@@ -73,7 +94,6 @@ namespace em::action_handler::cli
         }
 
         // check tags, must exist in the database
-        
         if (attributeName == "tags")
         {
             auto tagsTable = databaseMgr.GetTable("tags");

@@ -28,11 +28,6 @@ namespace em
 		static void Create(const char* dbName, int openMode = db::OPEN_CREATE | db::OPEN_READWRITE);
 
 		/**
-		* Returns the current expense tables name depending on the account selected.
-		*/
-		std::string GetCurrentExpenseTableName() const;
-
-		/**
 		* Retrieves the logical database table from the DB.
 		* If the table does not exist, a new table will be creted.
 		*
@@ -50,12 +45,15 @@ namespace em
 		void RegisterExpenseTables();
 
 		/**
-		* This function is used to switch account.
-		*
-		* @params [in] accountName
-		*		Name of the account to switch to
+		* Runs any newly added migrations on the database.
+		* If no migration is present an empty 'migrations' table will be created.
 		*/
-		void OnSwitchAccount();
+		void RunMigrations();
+
+		/**
+		* This function returns if the database was newly created, i.e. this is the first run of the application.
+		*/
+		bool IsNewlyCreatedDatabase() const;
 
 		/**
 		* Getter for the singleton instance.
@@ -72,6 +70,7 @@ namespace em
 		DatabaseManager(DatabaseManager&&) = default;
 
 		std::unique_ptr<db::Database_SQLite> m_Database;
+		bool m_IsNewlyCreatedDatabase;
 
 		static std::mutex s_Mutex;
 		static DatabaseManager* s_Instance;

@@ -9,6 +9,7 @@
 #include "DBHandler/Util.h"
 #include "DBHandler/Table.h"
 #include "Utilities/StringUtils.h"
+#include "DBHandler/DateTime.h"
 
 namespace em::action_handler::cli
 {
@@ -17,7 +18,7 @@ namespace em::action_handler::cli
     em::action_handler::ResultSPtr List::Execute(
         const std::string& commandName,
         const std::unordered_set<std::string>& flags,
-        const std::map<std::string, std::string>& options)
+        const std::map<std::string, std::vector<std::string>>& options)
     {
         assert(commandName == "list");
 
@@ -27,84 +28,94 @@ namespace em::action_handler::cli
         if (flags.contains("tags"))
             return ListTags();
 
+        if (flags.contains("accounts"))
+            return ListAccounts();
+
+        if (flags.contains("reminders"))
+            return ListReminders();
+
         db::Condition finalCondition;
+        AppendAccountCondition(finalCondition);
 
         // handle dates
         if (flags.contains("thisMonth"))
-            finalCondition.Add(Condition_Month::Create(db::util::GetThisMonth()));
+            finalCondition.Add(Condition_Month::Create(db::DateTime::GetThisMonth()));
         if (flags.contains("today"))
-            finalCondition.Add(Condition_Date::Create(db::util::GetCurrentDate()));
+            finalCondition.Add(Condition_Date::Create(db::DateTime::GetCurrentDate().AsString()));
         if (flags.contains("thisYear"))
-            finalCondition.Add(Condition_Year::Create(db::util::GetThisYear()));
+            finalCondition.Add(Condition_Year::Create(db::DateTime::GetThisYear()));
 
         if (flags.contains("yesterday"))
         {
-            std::string date = db::util::GetYesterdayDate();
+            const std::string& date = db::DateTime::GetYesterdayDate().AsString();
             finalCondition.Add(Condition_Date::Create(date));
         }
         else if (options.contains("date"))
         {
-            std::string date = options.at("date");
+            const std::string& date = options.at("date").front();
             finalCondition.Add(Condition_Date::Create(date));
         }
 
         if (options.contains("month") && options.contains("year"))
         {
-            std::string month = options.at("month");
+            std::string month = options.at("month").front();
             utils::date::FixMonthName(month);
 
-            std::string year = options.at("year");
+            const std::string& year = options.at("year").front();
             finalCondition.Add(Condition_Month::Create(month, year));
         }
         else if (options.contains("month"))
         {
-            std::string month = options.at("month");
+            std::string month = options.at("month").front();
             utils::date::FixMonthName(month);
             finalCondition.Add(Condition_Month::Create(month));
         }
         else if (options.contains("year"))
         {
-            std::string year = options.at("year");
+            const std::string& year = options.at("year").front();
             finalCondition.Add(Condition_Year::Create(year));
         }
 
         // handle name
         if (options.contains("name"))
         {
-            std::string name = options.at("name");
+            std::string name = options.at("name").front();
             finalCondition.Add(Condition_ListNameFilter::Create(name));
         }
 
         // handle location
         if (options.contains("location"))
         {
-            std::string location = options.at("location");
+            std::string location = options.at("location").front();
             finalCondition.Add(Condition_LocationFilter::Create(location));
         }
 
         // handle categories
         if (options.contains("category"))
         {
-            auto result = AppendCategoryCondition(finalCondition, options.at("category"));
+            auto result = AppendCategoryCondition(finalCondition, options.at("category").front());
             if (result->statusCode != StatusCode::Success)
                 return result;
         }
         else if (options.contains("ignoreCategory"))
         {
             std::vector<std::string> categories;
-            em::utils::string::SplitString(options.at("ignoreCategory"), categories);
+            em::utils::string::SplitString(options.at("ignoreCategory").front(), categories);
             for (const std::string& category : categories)
-                finalCondition.Add(Condition_IgnoreCategory::Create(category));
-        }
+            {
+                auto categoriesTable = databaseMgr.GetTable("categories");
+                db::Model categoryModel;
+                if (!categoriesTable->CheckIfExists("name", category, &categoryModel))
+                    continue;
 
-        db::Clause_OrderBy orderBy("date", db::Clause_OrderBy::DESCENDING);
-        if (flags.contains("ascending"))
-            orderBy.SetType(db::Clause_OrderBy::ASCENDING);
+                finalCondition.Add(Condition_IgnoreCategory::Create(categoryModel["row_id"]));
+            }
+        }
 
         bool showTags = flags.contains("showTags");
         if (options.contains("tags"))
         {
-            auto result = AppendTagsCondition(finalCondition, options.at("tags"));
+            auto result = AppendTagsCondition(finalCondition, options.at("tags").front());
             if (result->statusCode != StatusCode::Success)
                 return result;
 
@@ -112,7 +123,7 @@ namespace em::action_handler::cli
         }
         else if (options.contains("ignoreTags"))
         {
-            const std::string& commaSeparatedTagsToIgnore = options.at("ignoreTags");
+            const std::string& commaSeparatedTagsToIgnore = options.at("ignoreTags").front();
             db::Condition* ignoreTagsCond = CreateIgnoreTagsCondition(commaSeparatedTagsToIgnore);
             finalCondition.Add(ignoreTagsCond);
         }
@@ -124,12 +135,34 @@ namespace em::action_handler::cli
         bool showAccount = flags.contains("showAccount");
         bool showLocation = flags.contains("showLocation");
 
+        // handle the order by clause
+        const std::string orderByKey = options.contains("orderBy") ? options.at("orderBy").front() : "";
+        bool isDecending = flags.contains("descending");
+        db::Clause_OrderBy orderBy = std::move(GetOrderByClause(orderByKey, isDecending));
+
+        if (options.contains("range"))
+        {
+            db::DateTime startDate = options.at("range").front();
+            db::DateTime endDate = options.at("range").back();
+
+            if (endDate < startDate)
+                return Result::GeneralFailure("StartDate cannot be greater than EndDate!");
+
+            std::vector<std::string> rangeVec = { startDate.AsString(), endDate.AsString()};
+            finalCondition.Add(new db::Condition("date", rangeVec, db::Condition::Type::BETWEEN, db::Condition::RelationshipType::AND));
+
+            return ProcessDBTableWithDateRange(finalCondition, orderBy, startDate, endDate, showTags, showAccount, showLocation);
+        }
+
+        if (flags.contains("byDate"))
+            return DisplayByDate(finalCondition, orderBy);
+
         return ProcessDBTable(finalCondition, orderBy, showTags, showAccount, showLocation);
     }
 
     // protected
     em::action_handler::ResultSPtr List::ProcessDBTable(
-        const db::Condition& dbCondition, 
+        const db::Condition& dbCondition,
         const db::Clause_OrderBy& orderBy,
         bool showTags,
         bool showAccount,
@@ -137,25 +170,27 @@ namespace em::action_handler::cli
     {
         std::vector<db::Model> rows;
 
-        const std::string tableName = databaseMgr.GetCurrentExpenseTableName();
-        auto expenseTable = databaseMgr.GetTable(tableName);
+        auto expenseTable = databaseMgr.GetTable("expenses");
         if (!expenseTable->Select(rows, dbCondition, orderBy))
             return Result::Create(StatusCode::DBError, "Failed to retrieve from table!");
 
-        // sort according to price, highest to lowest
-        std::sort(rows.begin(), rows.end(),
-            [](db::Model& e1, db::Model& e2)
-            {
-                return e1["price"].asDouble() > e2["price"].asDouble();
-                //return std::strcmp(e1["category"].asString().c_str(), e2["category"].asString().c_str()) < 0;
-            });
-
-        const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccount()->GetName();
+        const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccountName();
 
         double totalExpense = expenseTable->SumOf("price", dbCondition);
         Renderer_ExpenseTable::Render(currentAccountName, rows, totalExpense, showTags, showAccount, showLocation);
 
         return Result::Success();
+    }
+
+    // protected
+    db::Clause_OrderBy List::GetOrderByClause(const std::string& orderByKey, bool isDescending) const
+    {
+        db::Clause_OrderBy::OrderType orderType = isDescending ? db::Clause_OrderBy::DESCENDING : db::Clause_OrderBy::ASCENDING;
+
+        if (!orderByKey.empty())
+            return db::Clause_OrderBy(orderByKey, orderType);
+
+        return db::Clause_OrderBy("date", orderType);
     }
 
     // protected
@@ -170,7 +205,7 @@ namespace em::action_handler::cli
             return em::action_handler::Result::Create(StatusCode::DBError, ERROR_DB_SELECT_CATEGORY);
         }
 
-        Renderer_CategoryTable::Render(rows);
+        Renderer_Generic::Render(rows);
         return em::action_handler::Result::Success();
     }
 
@@ -186,10 +221,41 @@ namespace em::action_handler::cli
             return em::action_handler::Result::Create(StatusCode::DBError, ERROR_DB_SELECT_TAG);
         }
 
-        Renderer_CategoryTable::Render(rows);
+        Renderer_Generic::Render(rows);
         return em::action_handler::Result::Success();
     }
 
+    // protected
+    em::action_handler::ResultSPtr List::ListReminders()
+    {
+        std::vector<db::Model> rows;
+
+        auto table = databaseMgr.GetTable("reminders");
+        if (!table->Select(rows))
+        {
+            printf("\nFailed to fetch reminders!");
+            return em::action_handler::Result::Create(StatusCode::DBError, "Failed to fetch reminders!s");
+        }
+
+        Renderer_Generic::Render(rows);
+        return em::action_handler::Result::Success();
+    }
+
+    // protected
+    em::action_handler::ResultSPtr List::ListAccounts()
+    {
+        std::vector<db::Model> rows;
+
+        auto table = databaseMgr.GetTable("accounts");
+        if (!table->Select(rows))
+        {
+            ERROR_LOG(ERROR_DB_SELECT_TAG);
+            return em::action_handler::Result::Create(StatusCode::DBError, ERROR_DB_SELECT_TAG);
+        }
+
+        Renderer_AccountTable::Render(rows);
+        return em::action_handler::Result::Success();
+    }
 
     // private
     em::action_handler::ResultSPtr List::AppendCategoryCondition(
@@ -204,18 +270,28 @@ namespace em::action_handler::cli
         for (const std::string& category : categories)
         {
             // check if the category is valid.
-            if (!table->CheckIfExists("name", category))
+            db::Model categoryModel;
+            if (!table->CheckIfExists("name", category, &categoryModel))
             {
                 return em::action_handler::Result::Create(
                     StatusCode::CategoryDoesNotExist,
                     std::format(ERROR_CATEGORY_DOES_NOT_EXIST, category));
             }
 
-            categoryConditions->Add(Condition_Category::Create(category));
+            categoryConditions->Add(Condition_Category::Create(categoryModel["row_id"]));
         }
 
         finalCondition.Add(categoryConditions);
 
+        return em::action_handler::Result::Success();
+    }
+
+    // private
+    em::action_handler::ResultSPtr List::AppendAccountCondition(db::Condition& finalCondition) const
+    {
+        int accountId = em::account::Manager::GetInstance().GetCurrentAccountId();
+        std::string accountIdAsStr = std::to_string(accountId);
+        finalCondition.Add(new db::Condition("account_id", accountIdAsStr, db::Condition::Type::EQUALS));
         return em::action_handler::Result::Success();
     }
 
@@ -247,6 +323,7 @@ namespace em::action_handler::cli
         return em::action_handler::Result::Success();
     }
 
+    // protected
     db::Condition* List::CreateIgnoreTagsCondition(const std::string& commaSeparatedTagsToIgnore)
     {
         std::vector<std::string> tags = utils::string::SplitString(commaSeparatedTagsToIgnore);
@@ -257,6 +334,85 @@ namespace em::action_handler::cli
             finalCondition->Add(Condition_IgnoreTags::Create(tag));
 
         return finalCondition;
+    }
+
+    // protected
+    em::action_handler::ResultSPtr List::DisplayByDate(const db::Condition& cond, const db::Clause_OrderBy& orderBy) const
+    {
+        try 
+        {
+            std::vector<db::Model> rows;
+            GetExpenses(rows, cond, orderBy);
+
+            std::map<db::DateTime, double> pricesByDate;
+            for (const db::Model& row : rows)
+            {
+                db::DateTime date(row.at("date").asString());
+                double price = row.at("price").asDouble();
+                pricesByDate[date] += price;
+            }
+
+            Renderer_ExpenseTable_ByDate::Render(pricesByDate);
+        }
+        catch (std::exception& ex)
+        {
+            printf("\nEXCEPTION: %s", ex.what());
+            return Result::GeneralFailure(std::string(ex.what()));
+        }
+
+        return Result::Success();
+    }
+
+    // protected
+    em::action_handler::ResultSPtr List::ProcessDBTableWithDateRange(
+        const db::Condition& cond,
+        const db::Clause_OrderBy& orderBy,
+        const db::DateTime& startDate,
+        const db::DateTime& endDate,
+        bool showTags,
+        bool showAccount,
+        bool showLocation)
+    {
+        try
+        {
+            std::vector<db::Model> rows;
+
+            auto expenseTable = databaseMgr.GetTable("expenses");
+            if (!expenseTable->Select(rows, cond, orderBy))
+                return Result::Create(StatusCode::DBError, "Failed to retrieve from table!");
+
+            // sort according to price, highest to lowest
+            std::sort(rows.begin(), rows.end(),
+                [](db::Model& e1, db::Model& e2)
+                {
+                    return e1["date"].asDateTime() < e2["date"].asDateTime();
+                });
+
+            const std::string& currentAccountName = em::account::Manager::GetInstance().GetCurrentAccountName();
+
+            double totalExpense = 0.0;
+            std::for_each(rows.begin(), rows.end(), 
+                [&totalExpense](const db::Model& row) 
+                {
+                    totalExpense += row.at("price").asDouble(); 
+                });
+
+            Renderer_ExpenseTable::Render(currentAccountName, rows, totalExpense, showTags, showAccount, showLocation);
+            return Result::Success();
+        }
+        catch (std::exception& ex)
+        {
+            printf("\nEXCEPTION: %s", ex.what());
+            return Result::GeneralFailure(ex.what());
+        }
+    }
+
+    // protected
+    void List::GetExpenses(std::vector<db::Model>& rows, const db::Condition& cond, const db::Clause_OrderBy& orderBy) const
+    {
+        auto expenseTable = databaseMgr.GetTable("expenses");
+        if (!expenseTable->Select(rows, cond, orderBy))
+            printf("\nFailed to fetch rows!");
     }
 
 }

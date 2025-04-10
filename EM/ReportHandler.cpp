@@ -28,12 +28,11 @@ namespace em
         categoryTable->Select(categories);
 
         // for each expense table, go through each category, and store the expenses.
-        const std::string& expenseTableName = databaseMgr.GetCurrentExpenseTableName();
-        auto expenseTable = databaseMgr.GetTable(expenseTableName);
+        auto expenseTable = databaseMgr.GetTable("expenses");
 
         for (const db::Model& category : categories)
         {
-            cond.Add(Condition_Category::Create(category.at("name").asString()));
+            cond.Add(Condition_Category::Create(category.at("row_id").asInt()));
 
             std::vector<db::Model> expenses;
             expenseTable->Select(expenses, cond);
@@ -84,7 +83,7 @@ namespace em
         switch (option)
         {
         case Option::TODAY:
-            cond.Add(Condition_Date::Create(db::util::GetCurrentDate()));
+            cond.Add(Condition_Date::Create(db::DateTime::GetCurrentDate().AsString()));
             break;
         case Option::MONTH:
             cond.Add(Condition_Month::Create(month));

@@ -1,10 +1,12 @@
 #include "pch.h"
 #include "DatabaseManager.h"
-#include "Account/Account.h"
-#include "Account/Manager.h"
 #include "Utilities/Utils.h"
 #include "ConfigManager.h"
 #include "EM/Utils.h"
+#include "DBHandler/Table.h"
+#include "DBHandler/Migration.h"
+#include "Migrations.h"
+#include "Utilities/FileUtils.h"
 
 namespace em
 {
@@ -32,6 +34,8 @@ namespace em
 	// public
     DatabaseManager::DatabaseManager(const char* dbName, int openMode)
     {
+        std::filesystem::path dbFilepath = utils::GetExecutableDirPath() / dbName;
+        m_IsNewlyCreatedDatabase = !(::utils::file::Exists(dbFilepath));
         m_Database = std::make_unique<db::Database_SQLite>(dbName, openMode);
     }
 
@@ -51,6 +55,16 @@ namespace em
         }
     }
 
+     // public
+    void DatabaseManager::RunMigrations()
+    {
+        bool isFirstRun = m_IsNewlyCreatedDatabase;
+        m_Database->RunMigration(AddCategoryIdForeignKeyMigration(), isFirstRun);
+        m_Database->RunMigration(CombineAllExpenseTableIntoOneMigration(), isFirstRun);
+        m_Database->RunMigration(AddAccountTableMigration(), isFirstRun);
+        m_Database->RunMigration(AddAccountIdAsForeignKeyMigration(), isFirstRun);
+    }
+
     // public
     void DatabaseManager::RegisterExpenseTables()
     {
@@ -60,18 +74,10 @@ namespace em
             m_Database->CreateTableFromJson(path);
     }
 
-    std::string DatabaseManager::GetCurrentExpenseTableName() const
-    {
-        std::shared_ptr<account::Account> account = em::account::Manager::GetInstance().GetCurrentAccount();
-        const std::string& accountName = account->GetName();
-        const std::string& tableName = accountName + "_expense";
-        return tableName;
-    }
-
     // public
-    void DatabaseManager::OnSwitchAccount()
+    bool DatabaseManager::IsNewlyCreatedDatabase() const
     {
-        RegisterExpenseTables();
+        return m_IsNewlyCreatedDatabase;
     }
 
     // public
